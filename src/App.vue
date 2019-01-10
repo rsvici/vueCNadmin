@@ -1,21 +1,22 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App"
+};
 </script>
 
 <style lang="less">
-.size{
+.size {
   width: 100%;
   height: 100%;
 }
-html,body{
+html,
+body {
   .size;
   overflow: hidden;
   margin: 0;
@@ -23,5 +24,10 @@ html,body{
 }
 #app {
   .size;
+}
+.ivu-input-wrapper {
+  textarea.ivu-input {
+    font-size: 12px;
+  }
 }
 </style>

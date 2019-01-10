@@ -212,7 +212,7 @@ export default {
     },
     goMarket(index) {
       console.log(index);
-      this.$router.push({ name: "market", query: { marketId: index } });
+      this.$router.push({ name: "market", params: { businessId: index } });
     }
   },
   mounted() {

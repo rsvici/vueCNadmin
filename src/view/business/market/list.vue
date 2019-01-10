@@ -211,13 +211,13 @@ export default {
     },
     goMarket(index) {
       console.log(index);
-      this.$router.push({ name: "market", query: { marketId: index } });
+      this.$router.push({ name: "active", params: { marketId: index } });
     }
   },
   mounted() {
     // console.log(this.busnissId);
     this.tableData = this.tableDataobj;
-    this.marketId=this.$route.query.marketId;
+    this.marketId=this.$route.params.marketId;
 
     getTableData().then(res => {
       // this.tableData = res.data;

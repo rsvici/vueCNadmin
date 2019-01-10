@@ -1,5 +1,5 @@
 <template>
-  <div class="businesslist">
+  <div class="activelist">
     <Card>
       <Tables
         ref="tables"
@@ -23,20 +23,25 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
+      <Button
+        style="margin: 10px 20px;padding:10px 30px;"
+        type="success"
+        @click="routerPushAddActiveInfo"
+      >添加</Button>
     </Card>
   </div>
 </template>
 <script>
 import Tables from "_c/tables";
 import { getTableData } from "@/api/data";
-import imgurl1 from "@/assets/images/nav3_1.png"
-import imgurl2 from "@/assets/images/nav3_2.png"
-import imgurl3 from "@/assets/images/nav3_3.png"
-import imgurl4 from "@/assets/images/nav3_4.png"
-import imgurl5 from "@/assets/images/nav3_5.png"
+import imgurl1 from "@/assets/images/nav3_1.png";
+import imgurl2 from "@/assets/images/nav3_2.png";
+import imgurl3 from "@/assets/images/nav3_3.png";
+import imgurl4 from "@/assets/images/nav3_4.png";
+import imgurl5 from "@/assets/images/nav3_5.png";
 
 export default {
-  name: "wechatlist",
+  name: "activelist",
   components: {
     Tables
   },
@@ -51,7 +56,7 @@ export default {
     return {
       columns: [
         {
-          title: "商户名称",
+          title: "活动名称",
           key: "title",
           className: "tabletitle",
           render: (h, params) => {
@@ -61,7 +66,7 @@ export default {
               {
                 on: {
                   click: () => {
-                    this.goMarket(params.index);
+                    // this.goMarket(params.index);
                   }
                 }
               },
@@ -70,7 +75,7 @@ export default {
           }
         },
         {
-          title: "商户封面",
+          title: "封面",
           key: "imgurl",
           render: (h, params) => {
             // console.log(params.row.title);
@@ -80,12 +85,15 @@ export default {
               },
               style: {
                 height: "80px",
-                'margin-top':'5px',
+                "margin-top": "5px"
               }
             });
           }
         },
         { title: "简介", key: "dec" },
+        { title: "时间", key: "time" },
+        { title: "类型", key: "type" },
+        { title: "标签", key: "type1" },
         {
           title: "操作",
           key: "action",
@@ -155,33 +163,43 @@ export default {
       tableDataobj: [
         {
           title: "百丽宫影城商户1",
-          imgurl:imgurl1,
+          imgurl: imgurl1,
           dec: "345",
-          mapposition: "345"
+          time: "345",
+          type: "123",
+          type1: "123"
         },
         {
           title: "尚嘉中心商户2",
-          imgurl:imgurl2,
+          imgurl: imgurl2,
           dec: "2234",
-          mapposition: "3345"
+          time: "3345",
+          type: "123",
+          type1: "123"
         },
         {
           title: "玫瑰坊商业街商户3",
           imgurl: imgurl3,
           dec: "2344",
-          mapposition: "3465"
+          time: "3465",
+          type: "123",
+          type1: "123"
         },
         {
           title: "巴黎春天新宁店商户4",
           imgurl: imgurl4,
           dec: "2234",
-          mapposition: "3345"
+          time: "3345",
+          type: "123",
+          type1: "123"
         },
         {
           title: "龙之梦购物中心商户5",
           imgurl: imgurl5,
           dec: "2354",
-          mapposition: "7345"
+          time: "7345",
+          type: "123",
+          type1: "123"
         }
       ],
       tableData: []
@@ -209,15 +227,16 @@ export default {
       // 删除
       console.log(index);
     },
-    goMarket(index) {
-      console.log(index);
-      this.$router.push({ name: "market", query: { marketId: index } });
+    // 去添加
+    routerPushAddActiveInfo() {
+      console.log(this.$route.params.marketId);
+      this.$router.push({ name: "activeAdd", params: { marketId: this.$route.params.marketId } });
     }
   },
   mounted() {
     // console.log(this.busnissId);
     this.tableData = this.tableDataobj;
-    this.marketId=this.$route.query.marketId;
+    // this.marketId = this.$route.params.marketId;
 
     getTableData().then(res => {
       // this.tableData = res.data;

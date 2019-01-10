@@ -194,25 +194,46 @@ export default [{
         icon: 'md-home',
       },
       component: () => import('@/view/business/market/list.vue')
+    },{
+      path: '/marketAdd',
+      name: 'marketAdd',
+      meta: {
+        // hideInBread: true,
+        hideInMenu:true,
+        title: '添加',
+        notCache: true,
+      },
+      component: () => import('@/view/business/market/add.vue')
     }]
   },
   {
     path: '/active1',
     name: 'active1',
     meta: {
-      hideInMenu:true
+      hideInMenu:true,
+      title:'活动中心'
     },
     component: Main,
     children: [{
       path: '/active',
       name: 'active',
       meta: {
-        hideInMenu:true,
+        // hideInMenu:true,
         title: '活动列表',
         notCache: true,
         icon: 'md-home',
       },
       component: () => import('@/view/business/active/list.vue')
+    },{
+      path: '/activeAdd',
+      name: 'activeAdd',
+      meta: {
+        // hideInBread: true,
+        // hideInMenu:true,
+        title: '添加',
+        notCache: true,
+      },
+      component: () => import('@/view/business/active/add.vue')
     }]
   },
 

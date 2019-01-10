@@ -189,6 +189,7 @@ export default {
         // console.log(item.name);
         if (item.name == name) {
           this.tagNavList[key].query=query
+          this.tagNavList[key].params=params
         };
         return;
       });
