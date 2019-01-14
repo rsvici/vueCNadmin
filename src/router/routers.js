@@ -48,7 +48,7 @@ export default [{
     path: '/wechatList',
     name: 'wechatList',
     meta: {
-      hideInBread: true
+      hideInBread: true,
     },
     component: Main,
     children: [{
@@ -59,10 +59,30 @@ export default [{
         notCache: true,
         icon: 'md-home',
       },
-      component: () => import('@/view/wechatlist/wechatlist.vue')
+      component: () => import('@/view/wechatlist/list.vue')
+    }, {
+      path: 'wechatAdd',
+      name: 'wechatAdd',
+      meta: {
+        title: '添加微信矩阵',
+        notCache: true,
+        hideInMenu: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/wechatlist/add.vue')
+    }, {
+      path: 'wechatUpdate',
+      name: 'wechatUpdate',
+      meta: {
+        title: '修改微信矩阵',
+        notCache: true,
+        hideInMenu: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/wechatlist/update.vue')
     }]
   },
-  
+
   {
     path: '/userInfo',
     name: 'userInfo',
@@ -74,11 +94,47 @@ export default [{
       path: '/userInfo',
       name: 'userInfo',
       meta: {
-        title: '用户信息',
+        title: '注册用户信息',
         notCache: true,
         icon: 'md-home',
       },
       component: () => import('@/view/userinfo/userinfo.vue')
+    }]
+  },
+  {
+    path: '/check',
+    name: 'check',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: '/check',
+      name: 'check',
+      meta: {
+        title: '活动审核',
+        notCache: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/check/list.vue')
+    }]
+  },
+  {
+    path: '/comment',
+    name: 'comment',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: '/comment',
+      name: 'comment',
+      meta: {
+        title: '评论管理',
+        notCache: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/comment/list.vue')
     }]
   },
   {
@@ -97,7 +153,7 @@ export default [{
           title: '热门精彩',
           notCache: true,
         },
-        component: () => import('@/view/business/list/zhongshan.vue')
+        component: () => import('@/view/business/active/list.vue')
       },
       {
         path: '/HFindWonderful',
@@ -106,7 +162,7 @@ export default [{
           title: '发现精彩',
           notCache: true,
         },
-        component: () => import('@/view/business/list/zhongshan.vue')
+        component: () => import('@/view/business/active/list.vue')
       }, {
         path: '/HhotSpace',
         name: 'HhotSpace',
@@ -114,7 +170,7 @@ export default [{
           title: '热门场馆',
           notCache: true,
         },
-        component: () => import('@/view/business/list/zhongshan.vue')
+        component: () => import('@/view/business/active/list.vue')
       }, {
         path: '/HGame',
         name: 'HGame',
@@ -122,7 +178,7 @@ export default [{
           title: '电子竞技',
           notCache: true,
         },
-        component: () => import('@/view/business/list/zhongshan.vue')
+        component: () => import('@/view/business/active/list.vue')
       }
     ]
   },
@@ -131,7 +187,7 @@ export default [{
     name: 'busniss',
     meta: {
       icon: 'md-menu',
-      title: '长宁时尚地图'
+      title: '热门商圈'
     },
     component: Main,
     children: [{
@@ -178,7 +234,7 @@ export default [{
     name: 'market1',
     meta: {
       // hideInBread: true,
-      hideInMenu:true,
+      hideInMenu: true,
       title: '商户中心',
 
     },
@@ -188,18 +244,18 @@ export default [{
       name: 'market',
       meta: {
         // hideInBread: true,
-        hideInMenu:true,
+        hideInMenu: true,
         title: '商户列表',
         notCache: true,
         icon: 'md-home',
       },
       component: () => import('@/view/business/market/list.vue')
-    },{
+    }, {
       path: '/marketAdd',
       name: 'marketAdd',
       meta: {
         // hideInBread: true,
-        hideInMenu:true,
+        hideInMenu: true,
         title: '添加',
         notCache: true,
       },
@@ -210,8 +266,8 @@ export default [{
     path: '/active1',
     name: 'active1',
     meta: {
-      hideInMenu:true,
-      title:'活动中心'
+      hideInMenu: true,
+      title: '活动中心'
     },
     component: Main,
     children: [{
@@ -224,7 +280,7 @@ export default [{
         icon: 'md-home',
       },
       component: () => import('@/view/business/active/list.vue')
-    },{
+    }, {
       path: '/activeAdd',
       name: 'activeAdd',
       meta: {
@@ -236,6 +292,26 @@ export default [{
       component: () => import('@/view/business/active/add.vue')
     }]
   },
+
+  {
+    path: '/log',
+    name: 'log',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: '/log',
+      name: 'log',
+      meta: {
+        title: '日志信息',
+        notCache: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/log/log.vue')
+    }]
+  },
+
 
   {
     path: '/401',

@@ -23,11 +23,6 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
-      <Button
-        style="margin: 10px 20px;padding:10px 30px;"
-        type="success"
-        @click="routerPushAddActiveInfo"
-      >添加</Button>
     </Card>
   </div>
 </template>
@@ -57,28 +52,12 @@ export default {
       columns: [
         {
           title: "活动名称",
-          key: "title",
-        },
-        {
-          title: "封面",
-          key: "imgurl",
-          render: (h, params) => {
-            // console.log(params.row.title);
-            return h("img", {
-              attrs: {
-                src: params.row.imgurl
-              },
-              style: {
-                height: "80px",
-                "margin-top": "5px"
-              }
-            });
-          }
+          key: "title"
         },
         { title: "简介", key: "dec" },
         { title: "时间", key: "time" },
-        { title: "类型", key: "type" },
-        { title: "标签", key: "type1" },
+        { title: "评论内容", key: "type" },
+        { title: "评论人", key: "type1" },
         {
           title: "操作",
           key: "action",
@@ -117,11 +96,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.commentGoTop(params.index);
                     }
                   }
                 },
-                "修改"
+                "置顶"
               ),
               h(
                 "Button",
@@ -197,10 +176,6 @@ export default {
         filename: `table-${new Date().valueOf()}.csv`
       });
     },
-    changePage(event) {
-      //分页
-      console.log(event);
-    },
     show(index) {
       // 查看
       this.$Modal.info({
@@ -208,14 +183,17 @@ export default {
         content: `Name`
       });
     },
+    changePage(event) {
+      //分页
+      console.log(event);
+    },
     remove(index) {
       // 删除
       console.log(index);
     },
-    // 去添加
-    routerPushAddActiveInfo() {
-      console.log(this.$route.params.marketId);
-      this.$router.push({ name: "activeAdd", params: { marketId: this.$route.params.marketId } });
+    // 置顶
+    commentGoTop() {
+     
     }
   },
   mounted() {

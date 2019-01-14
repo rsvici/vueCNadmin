@@ -23,11 +23,6 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
-      <Button
-        style="margin: 10px 20px;padding:10px 30px;"
-        type="success"
-        @click="routerPushAddActiveInfo"
-      >添加</Button>
     </Card>
   </div>
 </template>
@@ -91,24 +86,6 @@ export default {
                 "Button",
                 {
                   props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.show(params.index);
-                    }
-                  }
-                },
-                "查看"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
                     type: "warning",
                     size: "small"
                   },
@@ -117,11 +94,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.routerPushAddActiveCheck(params.index);
                     }
                   }
                 },
-                "修改"
+                "审核"
               ),
               h(
                 "Button",
@@ -201,19 +178,12 @@ export default {
       //分页
       console.log(event);
     },
-    show(index) {
-      // 查看
-      this.$Modal.info({
-        title: "User Info",
-        content: `Name`
-      });
-    },
     remove(index) {
       // 删除
       console.log(index);
     },
     // 去添加
-    routerPushAddActiveInfo() {
+    routerPushAddActiveCheck() {
       console.log(this.$route.params.marketId);
       this.$router.push({ name: "activeAdd", params: { marketId: this.$route.params.marketId } });
     }

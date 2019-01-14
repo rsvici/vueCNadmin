@@ -3,14 +3,21 @@
     height: 100%;
     background-image: url('../../assets/images/login-bg.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: 0 100%;
     position: relative;
+   
     &-con{
         position: absolute;
         right: 160px;
         top: 50%;
         transform: translateY(-60%);
         width: 300px;
+        &-title{
+           line-height: 70px;
+           font-size: 30px;
+           color: black;
+           font-weight: 700;
+        }
         &-header{
             font-size: 16px;
             font-weight: 300;
@@ -26,4 +33,11 @@
             color: #c3c3c3;
         }
     }
+    &-copyright{
+        position: absolute;
+        right: 50px;
+        bottom: 1%;
+        width: 20%;
+    }
+
 }
