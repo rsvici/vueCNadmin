@@ -1,5 +1,5 @@
 <template>
-  <component :is="iconType" :type="iconName" :color="iconColor" :size="iconSize"/>
+  <component :is="iconType" :type="iconName" :color="iconColor" :size="size"/>
 </template>
 
 <script>
@@ -33,7 +33,10 @@ export default {
     getCustomIconName (iconName) {
       return iconName.slice(1)
     }
-  }
+  },
+  mounted() {
+    // console.log(this.size)
+  },
 }
 </script>
 

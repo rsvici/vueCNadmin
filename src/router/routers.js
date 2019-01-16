@@ -57,7 +57,7 @@ export default [{
       meta: {
         title: '微信矩阵',
         notCache: true,
-        icon: 'md-home',
+        icon: '_juzhenduoxuan',
       },
       component: () => import('@/view/wechatlist/list.vue')
     }, {
@@ -96,7 +96,7 @@ export default [{
       meta: {
         title: '注册用户信息',
         notCache: true,
-        icon: 'md-home',
+        icon: '_yonghu',
       },
       component: () => import('@/view/userinfo/userinfo.vue')
     }]
@@ -114,7 +114,7 @@ export default [{
       meta: {
         title: '活动审核',
         notCache: true,
-        icon: 'md-home',
+        icon: '_shenhe',
       },
       component: () => import('@/view/check/list.vue')
     }]
@@ -132,7 +132,7 @@ export default [{
       meta: {
         title: '评论管理',
         notCache: true,
-        icon: 'md-home',
+        icon: '_pinglun',
       },
       component: () => import('@/view/comment/list.vue')
     }]
@@ -144,7 +144,7 @@ export default [{
     meta: {
       title: '热门活动',
       notCache: true,
-      icon: 'md-home'
+      icon: '_remen'
     },
     children: [{
         path: '/HBanner',
@@ -186,7 +186,7 @@ export default [{
     path: '/busniss',
     name: 'busniss',
     meta: {
-      icon: 'md-menu',
+      icon: '_shangquan-',
       title: '热门商圈'
     },
     component: Main,
@@ -306,12 +306,11 @@ export default [{
       meta: {
         title: '日志信息',
         notCache: true,
-        icon: 'md-home',
+        icon: '_rizhi-',
       },
       component: () => import('@/view/log/log.vue')
     }]
   },
-
 
   {
     path: '/401',

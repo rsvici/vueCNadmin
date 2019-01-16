@@ -25,8 +25,9 @@
         <FormItem label="缩略图 : ">
           <div
             class="demo-upload-list"
-           v-if="imageUrl">
-            <template >
+            v-if="imageUrl"
+          >
+            <template>
               <img :src="imageUrl">
               <div class="demo-upload-list-cover">
                 <Icon
@@ -75,30 +76,30 @@
           <Button
             style="margin-left: 10px"
             type="success"
+            @click="referingForm"
           >提交</Button>
-          <Button style="margin-left: 10px">取消</Button>
+          <Button
+            style="margin-left: 10px"
+            @click="cancelForm"
+          >取消</Button>
         </FormItem>
-
       </Form>
     </Card>
   </div>
 </template>
 <script>
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import {  routeEqual } from "@/libs/util";
 export default {
-  components: {
-    VueUeditorWrap
-  },
   data() {
     return {
       formItem: {
         name: "", // 名称
         imageUrl: "", // 图片url
-        officialcountsUrl: "", // 公众号url
+        officialcountsUrl: "" // 公众号url
       },
       // 上传图片
-      imageUrl:'',
-      visible: false,
+      imageUrl: "",
+      visible: false
     };
   },
   methods: {
@@ -107,7 +108,7 @@ export default {
     },
     handleSuccess(res, file) {
       console.log(res);
-      this.imageUrl ='https://thinkjs.org/static/img/new/logo.png?v=0cb0b';
+      this.imageUrl = "https://thinkjs.org/static/img/new/logo.png?v=0cb0b";
     },
     handleFormatError(file) {
       this.$Notice.warning({
@@ -120,11 +121,16 @@ export default {
         title: "文件大小超过限制",
         desc: "请上传不超过2M的图片。"
       });
+    },
+    referingForm(){
+
+    },
+    cancelForm(){
+      this.$store.state.app.tagNavList= this.$store.state.app.tagNavList.filter(item => !routeEqual(this.$route, item))
+      this.$router.go(-1);
     }
   },
-  mounted() {
-   
-  }
+  mounted() {}
 };
 </script>
 <style>

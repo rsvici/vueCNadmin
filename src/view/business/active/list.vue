@@ -57,7 +57,7 @@ export default {
       columns: [
         {
           title: "活动名称",
-          key: "title",
+          key: "title"
         },
         {
           title: "封面",
@@ -79,6 +79,27 @@ export default {
         { title: "时间", key: "time" },
         { title: "类型", key: "type" },
         { title: "标签", key: "type1" },
+        {
+          title: "审核状态",
+          key: "checkType",
+          filters: [
+            {
+              label: "通过",
+              value: "通过"
+            },
+            {
+              label: "未通过",
+              value: "未通过"
+            },
+            {
+              label: "未审核",
+              value: "未审核"
+            }
+          ],
+          filterMethod(value, row) {
+            return row.checkType.indexOf(value) > -1;
+          }
+        },
         {
           title: "操作",
           key: "action",
@@ -147,44 +168,49 @@ export default {
       ],
       tableDataobj: [
         {
-          title: "百丽宫影城商户1",
+          title: "百丽宫影城活动1",
           imgurl: imgurl1,
           dec: "345",
           time: "345",
           type: "123",
-          type1: "123"
+          type1: "123",
+          checkType: "通过"
         },
         {
-          title: "尚嘉中心商户2",
+          title: "百丽宫影城活动2",
           imgurl: imgurl2,
           dec: "2234",
           time: "3345",
           type: "123",
-          type1: "123"
+          type1: "123",
+          checkType: "未审核"
         },
         {
-          title: "玫瑰坊商业街商户3",
+          title: "百丽宫影城活动3",
           imgurl: imgurl3,
           dec: "2344",
           time: "3465",
           type: "123",
-          type1: "123"
+          type1: "123",
+          checkType: "未通过"
         },
         {
-          title: "巴黎春天新宁店商户4",
+          title: "百丽宫影城活动4",
           imgurl: imgurl4,
           dec: "2234",
           time: "3345",
           type: "123",
-          type1: "123"
+          type1: "123",
+          checkType: "通过"
         },
         {
-          title: "龙之梦购物中心商户5",
+          title: "百丽宫影城活动5",
           imgurl: imgurl5,
           dec: "2354",
           time: "7345",
           type: "123",
-          type1: "123"
+          type1: "123",
+          checkType: "通过"
         }
       ],
       tableData: []
@@ -215,7 +241,10 @@ export default {
     // 去添加
     routerPushAddActiveInfo() {
       console.log(this.$route.params.marketId);
-      this.$router.push({ name: "activeAdd", params: { marketId: this.$route.params.marketId } });
+      this.$router.push({
+        name: "activeAdd",
+        params: { marketId: this.$route.params.marketId }
+      });
     }
   },
   mounted() {

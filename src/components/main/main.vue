@@ -19,6 +19,8 @@
         :collapsed="collapsed"
         @on-select="turnToPage"
         :menu-list="menuList"
+        :icon-size='18'
+        :root-icon-size='18'
       >
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
