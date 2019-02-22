@@ -1,10 +1,10 @@
 <template>
   <div>
     <Card>
-      <tables
+      <Table 
         ref="tables"
         editable
-        v-model="tableData"
+        :data="tableData"
         :columns="columns"
       />
       <div style="margin: 10px;overflow: hidden">
@@ -31,8 +31,8 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getMatrixList } from "@/api/data";
-import { postdelMatrix } from "@/api/data";
+import { getIntegralList } from "@/api/data";
+import { postdelIntegralt } from "@/api/data";
 
 export default {
   name: "wechatlist",
@@ -42,16 +42,15 @@ export default {
   data() {
     return {
       columns: [
-        { title: "公众号名称", key: "name" },
-        { title: "公众号链接", key: "officialCcountsUrl" },
+        { title: "积分价格", key: "integralPrice" },
         {
-          title: "公众号封面",
-          key: "imageUrl",
+          title: "商品封面",
+          key: "integralUrl",
           render: (h, params) => {
             // console.log(params.row.title);
             return h("img", {
               attrs: {
-                src: params.row.imageUrl
+                src: params.row.integralUrl
               },
               style: {
                 height: "80px",
@@ -125,7 +124,7 @@ export default {
     remove(params) {
       // 删除
       console.log(params.row.id,params);
-      postdelMatrix({
+      postdelIntegralt({
         id:params.row.id
       }).then(res => {
        this.tableData.splice(params.index,1)
@@ -135,19 +134,19 @@ export default {
       //修改页面
       // console.log(params);
       this.$router.push({
-        name: "wechatUpdate",
+        name: "integraltUpdate",
         params: { wechatDate: params.row }
       });
     },
     routerPushAddWechat() {
       console.log(this.$route.params.marketId);
       this.$router.push({
-        name: "wechatAdd"
+        name: "integraltAdd"
       });
     }
   },
   mounted() {
-    getMatrixList({
+    getIntegralList({
       pageSize: 15,
       pageNo: 1
     }).then(res => {

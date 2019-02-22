@@ -28,8 +28,8 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from '@/api/data'
-
+import { getUserList } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
 export default {
   name: "wechatlist",
   components: {
@@ -38,45 +38,32 @@ export default {
   data() {
     return {
       columns: [
-        { title: "用户名", key: "username" },
-        { title: "手机号", key: "tel" },
-        { title: "出生日期", key: "birth" },
-        { title: "微信id", key: "openid" },
-        { title: "积分", key: "point" },
-      ],
-      tableData: [
+        { title: "openid", key: "openid" },
+        { title: "手机号", key: "phone" },
+        { title: "出生日期", key: "birthday" },
         {
-          username: "张1三",
-          tel: "17331119413",
-          birth: "2018-10-21",
-          point:'30',
-          openid:'12XXXX123'
-        }, {
-          username: "张2三",
-          tel: "17331119413",
-          birth: "2018-10-21",
-          point:'30',
-          openid:'12XXXX123'
-        }, {
-          username: "张3三",
-          tel: "17331119413",
-          birth: "2018-10-21",
-          point:'30',
-          openid:'12XXXX123'
-        }, {
-          username: "张4三",
-          tel: "17331119413",
-          birth: "2018-10-21",
-          point:'30',
-          openid:'12XXXX123'
-        }, {
-          username: "张5三",
-          tel: "17331119413",
-          birth: "2018-10-21",
-          point:'30',
-          openid:'12XXXX123'
+          title: "地址",
+          key: "",
+          render: (h, params) => {
+            console.log(params);
+            return h(
+              "div",params.row.province+params.row.city+params.row.county+params.row.live
+            );
+          }
+        },
+        {
+          title: "创建时间",
+          key: "createDate",
+          render: (h, params) => {
+            console.log(params);
+            return h(
+              "div",
+              formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
+            );
+          }
         }
-      ]
+      ],
+      tableData: []
     };
   },
   methods: {
@@ -103,8 +90,9 @@ export default {
     }
   },
   mounted() {
-    getTableData().then(res => {
-      // this.tableData = res.data;
+    console.log(getUserList);
+    getUserList().then(res => {
+      this.tableData = res.data.data.parameterType;
       console.log(res);
     });
   }

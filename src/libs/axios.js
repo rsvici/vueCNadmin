@@ -37,7 +37,7 @@ class HttpRequest {
     instance.interceptors.request.use(config => {
       // 添加全局的loading...
       if (!Object.keys(this.queue).length) {
-        // Spin.show() // 不建议开启，因为界面不友好
+        // ====Spin.show() // 不建议开启，因为界面不友好
       }
       this.queue[url] = true
       return config

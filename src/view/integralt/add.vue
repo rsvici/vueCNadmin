@@ -9,30 +9,30 @@
 
         <FormItem label="公众号名称 : ">
           <Input
-            v-model="formItem.name"
+            v-model="formItem.integralPrice"
             placeholder="请输入公众号名称"
           />
         </FormItem>
 
-        <FormItem label="公众号URL : ">
+        <!-- <FormItem label="公众号URL : ">
           <Input
             v-model="formItem.officialCcountsUrl"
             placeholder="请输入公众号URL"
           />
-        </FormItem>
+        </FormItem> -->
 
         <!-- 上传图片 -->
         <FormItem label="缩略图 : ">
           <div
             class="demo-upload-list"
-            v-if="formItem.imageUrl"
+            v-if="formItem.integralUrl"
           >
             <template>
-              <img :src="formItem.imageUrl">
+              <img :src="formItem.integralUrl">
               <div class="demo-upload-list-cover">
                 <Icon
                   type="ios-eye-outline"
-                  @click.native="handleView(formItem.imageUrl)"
+                  @click.native="handleView(formItem.integralUrl)"
                 ></Icon>
               </div>
             </template>
@@ -65,7 +65,7 @@
             v-model="visible"
           >
             <img
-              :src="formItem.imageUrl"
+              :src="formItem.integralUrl"
               v-if="visible"
               style="width: 100%"
             >
@@ -89,14 +89,14 @@
 </template>
 <script>
 import { routeEqual } from "@/libs/util";
-import { postAddMatrixList } from "@/api/data";
+import { postAddIntegraltList } from "@/api/data";
 export default {
   data() {
     return {
       formItem: {
-        name: "", // 名称
-        imageUrl: "", // 图片url
-        officialCcountsUrl: "" // 公众号url
+        integralPrice: "", // 名称
+        integralUrl: "", // 图片url
+        // officialCcountsUrl: "" // 公众号url
       },
       // 上传图片
       visible: false
@@ -108,7 +108,7 @@ export default {
     },
     handleSuccess(res, file) {
       console.log(res);
-      this.formItem.imageUrl = res.data;
+      this.formItem.integralUrl = res.data;
     },
     handleFormatError(file) {
       this.$Notice.warning({
@@ -126,7 +126,7 @@ export default {
       //提交
       var that = this;
       var newMatrixInfo = this.formItem;
-      postAddMatrixList(newMatrixInfo).then(res => {
+      postAddIntegraltList(newMatrixInfo).then(res => {
         console.log(res);
         that.cancelForm();
       });

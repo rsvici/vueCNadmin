@@ -11,9 +11,9 @@ const resolve = dir => {
 // 如果您的应用程序部署在子路径中，则需要在这指定子路径
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? './'
-  : '/'
+const BASE_URL = process.env.NODE_ENV === 'production' ?
+  './' :
+  '/'
 
 module.exports = {
   // Project deployment base
@@ -34,9 +34,18 @@ module.exports = {
       .set('_c', resolve('src/components'))
   },
   // 打包时不生成.map文件
-  productionSourceMap: false
+  productionSourceMap: false,
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
+  devServer: {
+    proxy: 'http://www.appsun.com.cn/CLMAP/'
+  }
+
   // devServer: {
-  //   proxy: 'localhost:3000'
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://www.appsun.com.cn/ClMAP/',
+  //       changeOrigin: true
+  //     }
+  //   }
   // }
 }

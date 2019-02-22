@@ -16,7 +16,7 @@
 
         <FormItem label="公众号URL : ">
           <Input
-            v-model="formItem.officialcountsUrl"
+            v-model="formItem.officialCcountsUrl"
             placeholder="请输入公众号URL"
           />
         </FormItem>
@@ -25,13 +25,14 @@
         <FormItem label="缩略图 : ">
           <div
             class="demo-upload-list"
-           v-if="imageUrl">
-            <template >
-              <img :src="imageUrl">
+            v-if="formItem.imageUrl"
+          >
+            <template>
+              <img :src="formItem.imageUrl">
               <div class="demo-upload-list-cover">
                 <Icon
                   type="ios-eye-outline"
-                  @click.native="handleView(imageUrl)"
+                  @click.native="handleView(formItem.imageUrl)"
                 ></Icon>
               </div>
             </template>
@@ -42,12 +43,12 @@
             :show-upload-list="false"
             :on-success="handleSuccess"
             :format="['jpg','jpeg','png']"
-            :max-size="2048"
+            :max-size="20480"
             :on-format-error="handleFormatError"
             :on-exceeded-size="handleMaxSize"
             multiple
             type="drag"
-            action="http://www.appsun.com.cn/GZUSER/substance/uploadFile"
+            action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
             style="display: inline-block;width:120px;"
           >
             <div style="width: 120px;height:120px;line-height: 120px;">
@@ -64,7 +65,7 @@
             v-model="visible"
           >
             <img
-              :src="imageUrl"
+              :src="formItem.imageUrl"
               v-if="visible"
               style="width: 100%"
             >
@@ -75,30 +76,31 @@
           <Button
             style="margin-left: 10px"
             type="success"
+            @click="referingForm"
           >提交</Button>
-          <Button style="margin-left: 10px">取消</Button>
+          <Button
+            style="margin-left: 10px"
+            @click="cancelForm"
+          >取消</Button>
         </FormItem>
-
       </Form>
     </Card>
   </div>
 </template>
 <script>
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import { routeEqual } from "@/libs/util";
+import { postUpdMatrix } from "@/api/data";
 export default {
-  components: {
-    VueUeditorWrap
-  },
   data() {
     return {
       formItem: {
+        id:'',
         name: "", // 名称
         imageUrl: "", // 图片url
-        officialcountsUrl: "", // 公众号url
+        officialCcountsUrl: "" // 公众号url
       },
       // 上传图片
-      imageUrl:'',
-      visible: false,
+      visible: false
     };
   },
   methods: {
@@ -107,7 +109,7 @@ export default {
     },
     handleSuccess(res, file) {
       console.log(res);
-      this.imageUrl ='https://thinkjs.org/static/img/new/logo.png?v=0cb0b';
+      this.formItem.imageUrl = res.data;
     },
     handleFormatError(file) {
       this.$Notice.warning({
@@ -120,10 +122,27 @@ export default {
         title: "文件大小超过限制",
         desc: "请上传不超过2M的图片。"
       });
+    },
+    referingForm() {
+      //提交
+      var that = this;
+      var newMatrixInfo = this.formItem;
+      console.log(newMatrixInfo)
+      postUpdMatrix(newMatrixInfo).then(res => {
+        console.log(res);
+        that.cancelForm();
+      });
+    },
+    cancelForm() {
+      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
+        item => !routeEqual(this.$route, item)
+      );
+      this.$router.go(-1);
     }
   },
   mounted() {
-    console.log(this.$route.params.wechatDate)
+    console.log(this.$route.params.wechatDate);
+    this.formItem=this.$route.params.wechatDate
   }
 };
 </script>

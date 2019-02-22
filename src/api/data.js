@@ -7,15 +7,93 @@ export const getTableData = () => {
   })
 }
 
-// 获取微信矩阵
-export const getMatrixList = () => {
+// 获取微信矩阵列表
+export const getMatrixList = info => {
   return axios.request({
-    url: '/CLMAP/matrixList/list',
+    url: 'matrixList/list',
+    params: info,
     method: 'get'
   })
 }
 
+// 添加微信矩阵
+export const postAddMatrixList = info => {
+  return axios.request({
+    url: 'matrixList/add',
+    params: info,
+    method: 'post'
+  })
+}
+// 修改微信矩阵
+export const postUpdMatrix = info => {
+  return axios.request({
+    url: 'matrixList/update',
+    params: info,
+    method: 'post'
+  })
+}
 
+// 删除微信矩阵
+export const postdelMatrix = info => {
+  return axios.request({
+    url: 'matrixList/delete',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+// 获取积分商品列表
+export const getIntegralList = info => {
+  return axios.request({
+    url: 'integral/list',
+    params: info,
+    method: 'get'
+  })
+}
+
+// 添加积分商品列表
+export const postAddIntegraltList = info => {
+  return axios.request({
+    url: 'integral/add',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 修改积分商品列表
+export const postUpdIntegralt = info => {
+  return axios.request({
+    url: 'integral/update',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 删除积分商品列表
+export const postdelIntegralt = info => {
+  return axios.request({
+    url: 'integral/delete',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+
+
+
+
+
+
+
+// 获取用户信息列表
+export const getUserList = () => {
+  return axios.request({
+    url: 'login/registeredList',
+    method: 'get'
+  })
+}
 
 
 // export const getDragList = () => {

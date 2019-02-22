@@ -26,43 +26,30 @@
           <FormItem label="封面 : ">
             <div
               class="demo-upload-list"
-              v-for="item in uploadList"
-              :key="item.id"
+              v-if="imageUrl"
             >
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url">
+              <template>
+                <img :src="imageUrl">
                 <div class="demo-upload-list-cover">
                   <Icon
                     type="ios-eye-outline"
-                    @click.native="handleView(item.url)"
-                  ></Icon>
-                  <Icon
-                    type="ios-trash-outline"
-                    @click.native="handleRemove(item)"
+                    @click.native="handleView(imageUrl)"
                   ></Icon>
                 </div>
               </template>
-              <template v-else>
-                <Progress
-                  v-if="item.showProgress"
-                  :percent="item.percentage"
-                  hide-info
-                ></Progress>
-              </template>
             </div>
+            <!-- 上传 -->
             <Upload
               ref="upload"
               :show-upload-list="false"
-              :default-file-list="defaultList"
               :on-success="handleSuccess"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
-              :before-upload="handleBeforeUpload"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/GZUSER/substance/uploadFile"
+              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -72,12 +59,14 @@
                 ></Icon>
               </div>
             </Upload>
+
+            <!-- 图片大图 -->
             <Modal
-              title="图片"
+              title="封面"
               v-model="visible"
             >
               <img
-                :src="imgUrl"
+                :src="imageUrl"
                 v-if="visible"
                 style="width: 100%"
               >
@@ -135,74 +124,91 @@
 
         <!-- 第二页 -->
         <div v-show="showWebNum==1">
-          <FormItem label="演唱会人员 : ">
-            <Input
-              v-model="formItem.activeDec"
-              type="textarea"
-              :autosize="{minRows: 2,maxRows: 5}"
-              placeholder="请输入演唱会人员介绍信息"
-            />
-          </FormItem>
-          <!-- 上传图片 -->
-          <FormItem label="人员图片 : ">
-            <div
-              class="demo-upload-list"
-              v-for="item in uploadList"
-              :key="item.id"
-            >
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url">
-                <div class="demo-upload-list-cover">
+          <Card style="width:60%;margin-left:100px;">
+            <FormItem label="人员姓名 : ">
+              <Input
+                v-model="actionInfo.actionName0"
+                type="text"
+                placeholder="请输入人员姓名"
+              />
+            </FormItem>
+            <FormItem label="饰演角色 : ">
+              <Input
+                v-model="actionInfo.actionName1"
+                type="text"
+                placeholder="请输入饰演角色"
+              />
+            </FormItem>
+
+            <!-- 上传图片 -->
+            <FormItem label="人员头像 : ">
+              <div
+                class="demo-upload-list"
+                v-if="actionInfo.actionUrl"
+              >
+                <template>
+                  <img :src="actionInfo.actionUrl">
+                  <div class="demo-upload-list-cover">
+                    <Icon
+                      type="ios-eye-outline"
+                      @click.native="handleView(actionInfo.actionUrl)"
+                    ></Icon>
+                  </div>
+                </template>
+              </div>
+              <!-- 上传 -->
+              <Upload
+                ref="upload"
+                :show-upload-list="false"
+                :on-success="handleActionSuccess"
+                :format="['jpg','jpeg','png']"
+                :max-size="2048"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                multiple
+                type="drag"
+                action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+                style="display: inline-block;width:120px;"
+              >
+                <div style="width: 120px;height:120px;line-height: 120px;">
                   <Icon
-                    type="ios-eye-outline"
-                    @click.native="handleView(item.url)"
-                  ></Icon>
-                  <Icon
-                    type="ios-trash-outline"
-                    @click.native="handleRemove(item)"
+                    type="ios-camera"
+                    size="30"
                   ></Icon>
                 </div>
-              </template>
-              <template v-else>
-                <Progress
-                  v-if="item.showProgress"
-                  :percent="item.percentage"
-                  hide-info
-                ></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload"
-              :show-upload-list="false"
-              :default-file-list="defaultList"
-              :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
-              :max-size="2048"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              :before-upload="handleBeforeUpload"
-              multiple
-              type="drag"
-              action="http://www.appsun.com.cn/GZUSER/substance/uploadFile"
-              style="display: inline-block;width:120px;"
-            >
-              <div style="width: 120px;height:120px;line-height: 120px;">
-                <Icon
-                  type="ios-camera"
-                  size="30"
-                ></Icon>
-              </div>
-            </Upload>
-            <Modal
-              title="图片"
-              v-model="visible"
-            >
-              <img
-                :src="imgUrl"
-                v-if="visible"
-                style="width: 100%"
+              </Upload>
+
+              <!-- 图片大图 -->
+              <Modal
+                title="人员头像"
+                v-model="visible"
               >
-            </Modal>
+                <img
+                  :src="actionInfo.actionUrl"
+                  v-if="visible"
+                  style="width: 100%"
+                >
+              </Modal>
+            </FormItem>
+
+            <FormItem>
+              <Button
+                type="info"
+                @click="addActionInfo"
+              >添加</Button>
+            </FormItem>
+          </Card>
+
+          <FormItem
+            label="演员列表 : "
+            style="margin-top:30px;"
+          >
+            <Table
+              border
+              :columns="columns"
+              :data="columnsdata"
+            >
+            </Table>
           </FormItem>
 
           <FormItem label="购票连接(可选) : ">
@@ -212,16 +218,6 @@
               placeholder="请输入购票URL格式:http://xxx.xxx.xxx"
             />
           </FormItem>
-
-          <FormItem label="演员列表 : ">
-            <Table
-              border
-              :columns="columns"
-              :data="columnsdata"
-            >
-            </Table>
-          </FormItem>
-
           <!-- 多选 -->
           <!-- <FormItem label="Checkbox">
           <CheckboxGroup v-model="formItem.checkbox">
@@ -280,189 +276,182 @@
   </div>
 </template>
 <script>
-import imgurl5 from '@/assets/images/nav3_5.png'
-const VueUeditorWrap = require('vue-ueditor-wrap')
+import imgurl5 from "@/assets/images/nav3_5.png";
+const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
     VueUeditorWrap
   },
-  data () {
+  data() {
     return {
       showWebNum: 0, // 显示页面
       formItem: {
-        acitveName: '', // 名称
-        activeDec: '', // 简介
-        date: '', // 时间
-        acitveAddress: '', // 地点
-        activeSelectType: '',
-        activeRadioType1: '0',
-        activeRadioType2: '0',
-        buyTirckUrl: '',
-
-        radio: 'male',
-        checkbox: [],
-        switch: true,
-        time: '',
-        slider: [20, 50],
-        textarea: ''
+        acitveName: "", // 名称
+        activeDec: "", // 简介
+        date: "", // 时间
+        acitveAddress: "", // 地点
+        activeSelectType: "",
+        activeRadioType1: "0",
+        activeRadioType2: "0",
+        buyTirckUrl: ""
+      },
+      actionInfo: {
+        actionName0: "",
+        actionName1: "",
+        actionUrl:'',
       },
       options1: {
         // 选择时间
         shortcuts: [
           {
-            text: '1 周',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              return [start, end]
+            text: "1 周",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              return [start, end];
             }
           },
           {
-            text: '1个月',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              return [start, end]
+            text: "1个月",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              return [start, end];
             }
           },
           {
-            text: '3个月',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              return [start, end]
+            text: "3个月",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              return [start, end];
             }
           }
         ]
       },
-      msg: '', // 富文本内容
+      msg: "", // 富文本内容
       myConfig: {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: '60%',
-        UEDITOR_HOME_URL: '/UEditor/',
-        serverUrl: 'http://www.appsun.com.cn/GZUSER/ueditor/dispatch'
+        initialFrameWidth: "60%",
+        UEDITOR_HOME_URL: "./UEditor/",
+        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
       },
       // 上传图片
-      defaultList: [{
-        url: imgurl5
-      }],
+      imageUrl: "",
       visible: false,
-      uploadList: [], // 更新列表
-      imgUrl: '', // 图片url
       // 表格
       columns: [
         {
-          title: '图片',
-          key: 'imgUrl',
+          title: "图片",
+          key: "actionUrl",
           render: (h, params) => {
             // console.log(params.row.title);
-            return h('img', {
+            return h("img", {
               attrs: {
-                src: imgurl5
+                src: params.row.actionUrl
               },
               style: {
-                height: '80px',
-                width: '80px',
-                'margin-top': '5px'
+                height: "80px",
+                width: "80px",
+                "margin-top": "5px"
               }
-            })
+            });
           }
         },
         {
-          title: '描述一',
-          key: 'dec1'
+          title: "描述一",
+          key: "actionName0"
         },
         {
-          title: '描述二',
-          key: 'dec2'
+          title: "描述二",
+          key: "actionName1"
         },
         {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 150,
-          align: 'center',
+          align: "center",
           render: (h, params) => {
-            return h('div', [
+            return h("div", [
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    type: "error",
+                    size: "small"
                   },
                   on: {
                     click: () => {
-                      this.talbeRemove(params.index)
+                      this.talbeRemove(params.index);
                     }
                   }
                 },
-                'Delete'
+                "删除"
               )
-            ])
+            ]);
           }
         }
       ],
       columnsdata: [
         {
-          imgUrl: imgurl5,
-          dec1: '1',
-          dec2: '1'
+          actionUrl: imgurl5,
+          actionName0: "1",
+          actionName1: "1"
         }
       ]
-    }
+    };
   },
   methods: {
-    handleView (imgUrl) {
-      this.imgUrl = imgUrl
-      this.visible = true
+    handleView() {
+      this.visible = true;
     },
-    handleRemove (file) {
-      const fileList = this.$refs.upload.fileList
-      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1)
+    handleSuccess(res, file) {
+      console.log(res);
+      this.imageUrl = "https://thinkjs.org/static/img/new/logo.png?v=0cb0b";
     },
-    handleSuccess (res, file) {
-      console.log(res)
-      file.url = res.data
+    handleActionSuccess(res, file) {
+      console.log(res);
+      this.actionInfo.actionUrl = "https://thinkjs.org/static/img/new/logo.png?v=0cb0b";
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '文件格式不正确',
-        desc: '图片格式不正确，请选择JPG或PNG。'
-      })
+        title: "文件格式不正确",
+        desc: "图片格式不正确，请选择JPG或PNG。"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '文件大小超过限制',
-        desc: '请上传不超过2M的图片。'
-      })
+        title: "文件大小超过限制",
+        desc: "请上传不超过2M的图片。"
+      });
     },
-    handleBeforeUpload () {
-      const check = this.uploadList.length < 5
-      if (!check) {
-        this.$Notice.warning({
-          title: '超过上传上限'
-        })
+    talbeRemove(rowindex) {
+      console.log(rowindex);
+    },
+    addActionInfo() {
+      console.log(this.formItem);
+      this.columnsdata.push(this.actionInfo);
+      this.actionInfo={
+        actionName0: "",
+        actionName1: "",
+        actionUrl:'',
       }
-      return check
-    },
-    talbeRemove (rowindex) {
-      console.log(rowindex)
     }
   },
-  mounted () {
-    this.uploadList = this.$refs.upload.fileList
+  mounted() {
+    this.uploadList = this.$refs.upload.fileList;
   },
   watch: {
-    msg (val) {
-      console.log(val)
+    msg(val) {
+      console.log(val);
     }
   }
-}
+};
 </script>
 <style>
 .demo-upload-list {

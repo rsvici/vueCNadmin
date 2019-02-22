@@ -82,6 +82,44 @@ export default [{
       component: () => import('@/view/wechatlist/update.vue')
     }]
   },
+  {
+    path: '/integralt',
+    name: 'integralt',
+    meta: {
+      hideInBread: true,
+    },
+    component: Main,
+    children: [{
+      path: '/integralt',
+      name: 'integralt',
+      meta: {
+        title: '积分管理',
+        notCache: true,
+        icon: '_juzhenduoxuan',
+      },
+      component: () => import('@/view/integralt/list.vue')
+    }, {
+      path: 'integraltAdd',
+      name: 'integraltAdd',
+      meta: {
+        title: '添加积分信息',
+        notCache: true,
+        hideInMenu: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/integralt/add.vue')
+    }, {
+      path: 'integraltUpdate',
+      name: 'integraltUpdate',
+      meta: {
+        title: '修改积分信息',
+        notCache: true,
+        hideInMenu: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/integralt/update.vue')
+    }]
+  },
 
   {
     path: '/userInfo',
