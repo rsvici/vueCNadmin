@@ -42,7 +42,6 @@ export const postdelMatrix = info => {
   })
 }
 
-
 // 获取积分商品列表
 export const getIntegralList = info => {
   return axios.request({
@@ -79,14 +78,6 @@ export const postdelIntegralt = info => {
   })
 }
 
-
-
-
-
-
-
-
-
 // 获取用户信息列表
 export const getUserList = () => {
   return axios.request({
@@ -94,7 +85,6 @@ export const getUserList = () => {
     method: 'get'
   })
 }
-
 
 // export const getDragList = () => {
 //   return axios.request({

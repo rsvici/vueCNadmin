@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <Table 
+      <Table
         ref="tables"
         editable
         :data="tableData"
@@ -30,130 +30,129 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
-import { getIntegralList } from "@/api/data";
-import { postdelIntegralt } from "@/api/data";
+import Tables from '_c/tables'
+import { getIntegralList } from '@/api/data'
+import { postdelIntegralt } from '@/api/data'
 
 export default {
-  name: "wechatlist",
+  name: 'wechatlist',
   components: {
     Tables
   },
-  data() {
+  data () {
     return {
       columns: [
-        { title: "积分价格", key: "integralPrice" },
+        { title: '积分价格', key: 'integralPrice' },
         {
-          title: "商品封面",
-          key: "integralUrl",
+          title: '商品封面',
+          key: 'integralUrl',
           render: (h, params) => {
             // console.log(params.row.title);
-            return h("img", {
+            return h('img', {
               attrs: {
                 src: params.row.integralUrl
               },
               style: {
-                height: "80px",
-                "margin-top": "5px"
+                height: '80px',
+                'margin-top': '5px'
               }
-            });
+            })
           }
         },
         {
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           width: 250,
-          align: "center",
-          searchable: "false",
+          align: 'center',
+          searchable: 'false',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "warning",
-                    size: "small"
+                    type: 'warning',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.updateInfo(params);
+                      this.updateInfo(params)
                     }
                   }
                 },
-                "修改"
+                '修改'
               ),
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "error",
-                    size: "small"
+                    type: 'error',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.remove(params);
+                      this.remove(params)
                     }
                   }
                 },
-                "删除"
+                '删除'
               )
-            ]);
+            ])
           }
         }
       ],
       tableData: []
-    };
+    }
   },
   methods: {
-    exportExcel() {
+    exportExcel () {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      });
+      })
     },
-    changePage(event) {
-      //分页
-      console.log(event);
+    changePage (event) {
+      // 分页
+      console.log(event)
     },
-    remove(params) {
+    remove (params) {
       // 删除
-      console.log(params.row.id,params);
+      console.log(params.row.id, params)
       postdelIntegralt({
-        id:params.row.id
+        id: params.row.id
       }).then(res => {
-       this.tableData.splice(params.index,1)
-      });
+        this.tableData.splice(params.index, 1)
+      })
     },
-    updateInfo(params) {
-      //修改页面
+    updateInfo (params) {
+      // 修改页面
       // console.log(params);
       this.$router.push({
-        name: "integraltUpdate",
+        name: 'integraltUpdate',
         params: { wechatDate: params.row }
-      });
+      })
     },
-    routerPushAddWechat() {
-      console.log(this.$route.params.marketId);
+    routerPushAddWechat () {
+      console.log(this.$route.params.marketId)
       this.$router.push({
-        name: "integraltAdd"
-      });
+        name: 'integraltAdd'
+      })
     }
   },
-  mounted() {
+  mounted () {
     getIntegralList({
       pageSize: 15,
       pageNo: 1
     }).then(res => {
-      this.tableData = res.data.data.parameterType;
-      console.log(res);
-      
-    });
+      this.tableData = res.data.data.parameterType
+      console.log(res)
+    })
   }
-};
+}
 </script>

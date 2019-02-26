@@ -276,182 +276,182 @@
   </div>
 </template>
 <script>
-import imgurl5 from "@/assets/images/nav3_5.png";
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import imgurl5 from '@/assets/images/nav3_5.png'
+const VueUeditorWrap = require('vue-ueditor-wrap')
 export default {
   components: {
     VueUeditorWrap
   },
-  data() {
+  data () {
     return {
       showWebNum: 0, // 显示页面
       formItem: {
-        acitveName: "", // 名称
-        activeDec: "", // 简介
-        date: "", // 时间
-        acitveAddress: "", // 地点
-        activeSelectType: "",
-        activeRadioType1: "0",
-        activeRadioType2: "0",
-        buyTirckUrl: ""
+        acitveName: '', // 名称
+        activeDec: '', // 简介
+        date: '', // 时间
+        acitveAddress: '', // 地点
+        activeSelectType: '',
+        activeRadioType1: '0',
+        activeRadioType2: '0',
+        buyTirckUrl: ''
       },
       actionInfo: {
-        actionName0: "",
-        actionName1: "",
-        actionUrl:'',
+        actionName0: '',
+        actionName1: '',
+        actionUrl: ''
       },
       options1: {
         // 选择时间
         shortcuts: [
           {
-            text: "1 周",
-            value() {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              return [start, end];
+            text: '1 周',
+            value () {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              return [start, end]
             }
           },
           {
-            text: "1个月",
-            value() {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              return [start, end];
+            text: '1个月',
+            value () {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              return [start, end]
             }
           },
           {
-            text: "3个月",
-            value() {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              return [start, end];
+            text: '3个月',
+            value () {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              return [start, end]
             }
           }
         ]
       },
-      msg: "", // 富文本内容
+      msg: '', // 富文本内容
       myConfig: {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: "60%",
-        UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
+        initialFrameWidth: '60%',
+        UEDITOR_HOME_URL: './UEditor/',
+        serverUrl: 'http://www.appsun.com.cn/GZUSER/ueditor/dispatch'
       },
       // 上传图片
-      imageUrl: "",
+      imageUrl: '',
       visible: false,
       // 表格
       columns: [
         {
-          title: "图片",
-          key: "actionUrl",
+          title: '图片',
+          key: 'actionUrl',
           render: (h, params) => {
             // console.log(params.row.title);
-            return h("img", {
+            return h('img', {
               attrs: {
                 src: params.row.actionUrl
               },
               style: {
-                height: "80px",
-                width: "80px",
-                "margin-top": "5px"
+                height: '80px',
+                width: '80px',
+                'margin-top': '5px'
               }
-            });
+            })
           }
         },
         {
-          title: "描述一",
-          key: "actionName0"
+          title: '描述一',
+          key: 'actionName0'
         },
         {
-          title: "描述二",
-          key: "actionName1"
+          title: '描述二',
+          key: 'actionName1'
         },
         {
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           width: 150,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "error",
-                    size: "small"
+                    type: 'error',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
-                      this.talbeRemove(params.index);
+                      this.talbeRemove(params.index)
                     }
                   }
                 },
-                "删除"
+                '删除'
               )
-            ]);
+            ])
           }
         }
       ],
       columnsdata: [
         {
           actionUrl: imgurl5,
-          actionName0: "1",
-          actionName1: "1"
+          actionName0: '1',
+          actionName1: '1'
         }
       ]
-    };
+    }
   },
   methods: {
-    handleView() {
-      this.visible = true;
+    handleView () {
+      this.visible = true
     },
-    handleSuccess(res, file) {
-      console.log(res);
-      this.imageUrl = "https://thinkjs.org/static/img/new/logo.png?v=0cb0b";
+    handleSuccess (res, file) {
+      console.log(res)
+      this.imageUrl = 'https://thinkjs.org/static/img/new/logo.png?v=0cb0b'
     },
-    handleActionSuccess(res, file) {
-      console.log(res);
-      this.actionInfo.actionUrl = "https://thinkjs.org/static/img/new/logo.png?v=0cb0b";
+    handleActionSuccess (res, file) {
+      console.log(res)
+      this.actionInfo.actionUrl = 'https://thinkjs.org/static/img/new/logo.png?v=0cb0b'
     },
-    handleFormatError(file) {
+    handleFormatError (file) {
       this.$Notice.warning({
-        title: "文件格式不正确",
-        desc: "图片格式不正确，请选择JPG或PNG。"
-      });
+        title: '文件格式不正确',
+        desc: '图片格式不正确，请选择JPG或PNG。'
+      })
     },
-    handleMaxSize(file) {
+    handleMaxSize (file) {
       this.$Notice.warning({
-        title: "文件大小超过限制",
-        desc: "请上传不超过2M的图片。"
-      });
+        title: '文件大小超过限制',
+        desc: '请上传不超过2M的图片。'
+      })
     },
-    talbeRemove(rowindex) {
-      console.log(rowindex);
+    talbeRemove (rowindex) {
+      console.log(rowindex)
     },
-    addActionInfo() {
-      console.log(this.formItem);
-      this.columnsdata.push(this.actionInfo);
-      this.actionInfo={
-        actionName0: "",
-        actionName1: "",
-        actionUrl:'',
+    addActionInfo () {
+      console.log(this.formItem)
+      this.columnsdata.push(this.actionInfo)
+      this.actionInfo = {
+        actionName0: '',
+        actionName1: '',
+        actionUrl: ''
       }
     }
   },
-  mounted() {
-    this.uploadList = this.$refs.upload.fileList;
+  mounted () {
+    this.uploadList = this.$refs.upload.fileList
   },
   watch: {
-    msg(val) {
-      console.log(val);
+    msg (val) {
+      console.log(val)
     }
   }
-};
+}
 </script>
 <style>
 .demo-upload-list {

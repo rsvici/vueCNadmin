@@ -23,17 +23,22 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
+      <Button
+        style="margin: 10px 20px;padding:10px 30px;"
+        type="success"
+        @click="routerPushAddActiveInfo"
+      >添加</Button>
     </Card>
   </div>
 </template>
 <script>
 import Tables from "_c/tables";
 import { getTableData } from "@/api/data";
-import imgurl1 from "@/assets/images/nav3_1.png"
-import imgurl2 from "@/assets/images/nav3_2.png"
-import imgurl3 from "@/assets/images/nav3_3.png"
-import imgurl4 from "@/assets/images/nav3_4.png"
-import imgurl5 from "@/assets/images/nav3_5.png"
+import imgurl1 from "@/assets/images/nav3_1.png";
+import imgurl2 from "@/assets/images/nav3_2.png";
+import imgurl3 from "@/assets/images/nav3_3.png";
+import imgurl4 from "@/assets/images/nav3_4.png";
+import imgurl5 from "@/assets/images/nav3_5.png";
 
 export default {
   name: "wechatlist",
@@ -80,7 +85,7 @@ export default {
               },
               style: {
                 height: "80px",
-                'margin-top':'5px',
+                "margin-top": "5px"
               }
             });
           }
@@ -156,13 +161,13 @@ export default {
       tableDataobj: [
         {
           title: "百丽宫影城",
-          imgurl:imgurl1,
+          imgurl: imgurl1,
           dec: "345",
           mapposition: "345"
         },
         {
           title: "尚嘉中心",
-          imgurl:imgurl2,
+          imgurl: imgurl2,
           dec: "2234",
           mapposition: "3345"
         },
@@ -213,15 +218,23 @@ export default {
     goMarket(index) {
       console.log(index);
       this.$router.push({ name: "market", params: { businessId: index } });
+    },
+    // 去添加
+    routerPushAddActiveInfo() {
+      console.log(this.$route.params.marketId);
+      this.$router.push({
+        name: "busnissAdd",
+        params: { marketId: this.$route.params.marketId }
+      });
     }
   },
   mounted() {
     // console.log(this.busnissId);
     this.tableData = this.tableDataobj;
-    getTableData().then(res => {
-      // this.tableData = res.data;
-      // console.log(res);
-    });
+    // getTableData().then(res => {
+    //   // this.tableData = res.data;
+    //   // console.log(res);
+    // });
   }
 };
 </script>

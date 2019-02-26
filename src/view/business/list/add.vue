@@ -7,22 +7,28 @@
       >
         <!-- 第一页 -->
 
-        <FormItem label="公众号名称 : ">
+        <FormItem label="商户名称 : ">
           <Input
             v-model="formItem.name"
-            placeholder="请输入公众号名称"
+            placeholder="请输入商户名称"
           />
         </FormItem>
 
-        <FormItem label="公众号URL : ">
+        <FormItem label="X轴坐标: ">
           <Input
             v-model="formItem.officialCcountsUrl"
-            placeholder="请输入公众号URL"
+            placeholder="请输入X轴坐标"
           />
         </FormItem>
 
+        <FormItem label="Y轴坐标 : ">
+          <Input
+            v-model="formItem.officialCcountsUrl"
+            placeholder="请输入Y轴坐标"
+          />
+        </FormItem>
         <!-- 上传图片 -->
-        <FormItem label="缩略图 : ">
+        <FormItem label="商圈封面 : ">
           <div
             class="demo-upload-list"
             v-if="formItem.imageUrl"
@@ -61,7 +67,7 @@
 
           <!-- 图片大图 -->
           <Modal
-            title="公众号封面"
+            title="商圈封面"
             v-model="visible"
           >
             <img
@@ -88,58 +94,58 @@
   </div>
 </template>
 <script>
-import { routeEqual } from '@/libs/util'
-import { postAddMatrixList } from '@/api/data'
+import { routeEqual } from "@/libs/util";
+import { postAddMatrixList } from "@/api/data";
 export default {
-  data () {
+  data() {
     return {
       formItem: {
-        name: '', // 名称
-        imageUrl: '', // 图片url
-        officialCcountsUrl: '' // 公众号url
+        name: "", // 名称
+        imageUrl: "", // 图片url
+        officialCcountsUrl: "" // 公众号url
       },
       // 上传图片
       visible: false
-    }
+    };
   },
   methods: {
-    handleView () {
-      this.visible = true
+    handleView() {
+      this.visible = true;
     },
-    handleSuccess (res, file) {
-      console.log(res)
-      this.formItem.imageUrl = res.data
+    handleSuccess(res, file) {
+      console.log(res);
+      this.formItem.imageUrl = res.data;
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '文件格式不正确',
-        desc: '图片格式不正确，请选择JPG或PNG。'
-      })
+        title: "文件格式不正确",
+        desc: "图片格式不正确，请选择JPG或PNG。"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '文件大小超过限制',
-        desc: '请上传不超过2M的图片。'
-      })
+        title: "文件大小超过限制",
+        desc: "请上传不超过2M的图片。"
+      });
     },
-    referingForm () {
+    referingForm() {
       // 提交
-      var that = this
-      var newMatrixInfo = this.formItem
+      var that = this;
+      var newMatrixInfo = this.formItem;
       postAddMatrixList(newMatrixInfo).then(res => {
-        console.log(res)
-        that.cancelForm()
-      })
+        console.log(res);
+        that.cancelForm();
+      });
     },
-    cancelForm () {
+    cancelForm() {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
         item => !routeEqual(this.$route, item)
-      )
-      this.$router.go(-1)
+      );
+      this.$router.go(-1);
     }
   },
-  mounted () {}
-}
+  mounted() {}
+};
 </script>
 <style>
 .demo-upload-list {

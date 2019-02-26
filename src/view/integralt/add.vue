@@ -88,58 +88,58 @@
   </div>
 </template>
 <script>
-import { routeEqual } from "@/libs/util";
-import { postAddIntegraltList } from "@/api/data";
+import { routeEqual } from '@/libs/util'
+import { postAddIntegraltList } from '@/api/data'
 export default {
-  data() {
+  data () {
     return {
       formItem: {
-        integralPrice: "", // 名称
-        integralUrl: "", // 图片url
+        integralPrice: '', // 名称
+        integralUrl: '' // 图片url
         // officialCcountsUrl: "" // 公众号url
       },
       // 上传图片
       visible: false
-    };
-  },
-  methods: {
-    handleView() {
-      this.visible = true;
-    },
-    handleSuccess(res, file) {
-      console.log(res);
-      this.formItem.integralUrl = res.data;
-    },
-    handleFormatError(file) {
-      this.$Notice.warning({
-        title: "文件格式不正确",
-        desc: "图片格式不正确，请选择JPG或PNG。"
-      });
-    },
-    handleMaxSize(file) {
-      this.$Notice.warning({
-        title: "文件大小超过限制",
-        desc: "请上传不超过2M的图片。"
-      });
-    },
-    referingForm() {
-      //提交
-      var that = this;
-      var newMatrixInfo = this.formItem;
-      postAddIntegraltList(newMatrixInfo).then(res => {
-        console.log(res);
-        that.cancelForm();
-      });
-    },
-    cancelForm() {
-      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
-        item => !routeEqual(this.$route, item)
-      );
-      this.$router.go(-1);
     }
   },
-  mounted() {}
-};
+  methods: {
+    handleView () {
+      this.visible = true
+    },
+    handleSuccess (res, file) {
+      console.log(res)
+      this.formItem.integralUrl = res.data
+    },
+    handleFormatError (file) {
+      this.$Notice.warning({
+        title: '文件格式不正确',
+        desc: '图片格式不正确，请选择JPG或PNG。'
+      })
+    },
+    handleMaxSize (file) {
+      this.$Notice.warning({
+        title: '文件大小超过限制',
+        desc: '请上传不超过2M的图片。'
+      })
+    },
+    referingForm () {
+      // 提交
+      var that = this
+      var newMatrixInfo = this.formItem
+      postAddIntegraltList(newMatrixInfo).then(res => {
+        console.log(res)
+        that.cancelForm()
+      })
+    },
+    cancelForm () {
+      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
+        item => !routeEqual(this.$route, item)
+      )
+      this.$router.go(-1)
+    }
+  },
+  mounted () {}
+}
 </script>
 <style>
 .demo-upload-list {
