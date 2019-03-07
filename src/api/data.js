@@ -78,6 +78,52 @@ export const postdelIntegralt = info => {
   })
 }
 
+
+// 获取商圈列表
+export const getTradingAreaList = info => {
+  return axios.request({
+    url: 'tradingArea/list',
+    params: info,
+    method: 'get'
+  })
+}
+
+// 添加商圈列表
+export const postAddTradingArea = info => {
+  return axios.request({
+    url: 'tradingArea/add',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 修改商圈列表
+export const postUpdTradingArea = info => {
+  return axios.request({
+    url: 'tradingArea/update',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 删除商圈列表
+export const postdelTradingArea  = info => {
+  return axios.request({
+    url: 'tradingArea/delete',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+
+
+
+
+
+
+
+
 // 获取用户信息列表
 export const getUserList = () => {
   return axios.request({

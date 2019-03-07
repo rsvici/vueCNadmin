@@ -275,6 +275,17 @@ export default [{
       notCache: true
     },
     component: () => import('@/view/business/list/add.vue')
+  },
+  {
+    path: '/busnissUpdate',
+    name: 'busnissUpdate',
+    meta: {
+      // hideInBread: true,
+      hideInMenu: true,
+      title: '修改商场',
+      notCache: true
+    },
+    component: () => import('@/view/business/list/update.vue')
   }
   ]
 },

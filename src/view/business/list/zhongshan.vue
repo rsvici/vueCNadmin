@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="businesslist">
     <Card>
-      <tables
+      <Tables
         ref="tables"
         editable
-        searchable
         search-place="top"
         v-model="tableData"
         :columns="columns"
@@ -23,12 +22,24 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
+      <Button
+        style="margin: 10px 20px;padding:10px 30px;"
+        type="success"
+        @click="routerPushAddActiveInfo"
+      >添加</Button>
     </Card>
   </div>
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from "@/api/data";
+import { getTradingAreaList } from "@/api/data";
+import { postdelTradingArea } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
+import imgurl1 from "@/assets/images/nav3_1.png";
+import imgurl2 from "@/assets/images/nav3_2.png";
+import imgurl3 from "@/assets/images/nav3_3.png";
+import imgurl4 from "@/assets/images/nav3_4.png";
+import imgurl5 from "@/assets/images/nav3_5.png";
 
 export default {
   name: "wechatlist",
@@ -39,16 +50,59 @@ export default {
   props: {
     busnissId: {
       type: String,
-      default: "1"
+      default: "0"
     }
   },
   data() {
     return {
       columns: [
-        { title: "商场名称", key: "title" },
-        { title: "商场封面", key: "imgurl" },
-        { title: "地图经纬度", key: "mapposition" },
-        { title: "描述", key: "dec" },
+        {
+          title: "商场名称",
+          key: "name",
+          className: "tabletitle",
+          render: (h, params) => {
+            // console.log(params.row.title);
+            return h(
+              "a",
+              {
+                on: {
+                  click: () => {
+                    this.goMarket(params.index);
+                  }
+                }
+              },
+              params.row.name
+            );
+          }
+        },
+        {
+          title: "商场封面",
+          key: "url",
+          render: (h, params) => {
+            // console.log(params.row.title);
+            return h("img", {
+              attrs: {
+                src: params.row.url
+              },
+              style: {
+                height: "80px",
+                "margin-top": "5px"
+              }
+            });
+          }
+        },
+        { title: "地图经纬度", key: "longitude" },
+        { title: "描述", key: "description" },
+        {
+          title: "创建时间",
+          key: "createDate",
+          render: (h, params) => {
+            return h(
+              "div",
+              formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
+            );
+          }
+        },
         {
           title: "操作",
           key: "action",
@@ -69,11 +123,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params);
                     }
                   }
                 },
-                "查看"
+                "查看详情"
               ),
               h(
                 "Button",
@@ -87,7 +141,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.updateInfo(params);
                     }
                   }
                 },
@@ -105,7 +159,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index);
+                      this.remove(params);
                     }
                   }
                 },
@@ -114,104 +168,6 @@ export default {
             ]);
           }
         }
-      ],
-      tableDataobj: [
-        [
-          {
-            title: "中山公园1",
-            imgurl: "234",
-            dec: "345",
-            mapposition: "345"
-          },
-          {
-            title: "中山公园2",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "中山公园3",
-            imgurl: "2344",
-            dec: "2344",
-            mapposition: "3465"
-          },
-          {
-            title: "中山公园4",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "中山公园5",
-            imgurl: "2354",
-            dec: "2354",
-            mapposition: "7345"
-          }
-        ],
-        [
-          {
-            title: "新虹桥商圈1",
-            imgurl: "234",
-            dec: "345",
-            mapposition: "345"
-          },
-          {
-            title: "新虹桥商圈2",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "新虹桥商圈3",
-            imgurl: "2344",
-            dec: "2344",
-            mapposition: "3465"
-          },
-          {
-            title: "新虹桥商圈4",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "新虹桥商圈5",
-            imgurl: "2354",
-            dec: "2354",
-            mapposition: "7345"
-          }
-        ],
-        [
-          {
-            title: "临空商圈1",
-            imgurl: "234",
-            dec: "345",
-            mapposition: "345"
-          },
-          {
-            title: "临空商圈2",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "临空商圈3",
-            imgurl: "2344",
-            dec: "2344",
-            mapposition: "3465"
-          },
-          {
-            title: "临空商圈4",
-            imgurl: "2234",
-            dec: "2234",
-            mapposition: "3345"
-          },
-          {
-            title: "临空商圈5",
-            imgurl: "2354",
-            dec: "2354",
-            mapposition: "7345"
-          }
-        ]
       ],
       tableData: []
     };
@@ -224,31 +180,72 @@ export default {
       });
     },
     changePage(event) {
-      //分页
+      // 分页
       console.log(event);
     },
-    show(index) {
+    show(params) {
+      console.log(params.row.content);
       // 查看
       this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+        title: params.row.name,
+        scrollable: true,
+        closable: true,
+        content: params.row.content
       });
     },
-    remove(index) {
+    remove(params) {
       // 删除
+      console.log(params.row.id, params);
+      // return;
+      postdelTradingArea({
+        id: params.row.id
+      }).then(res => {
+        this.tableData.splice(params.index, 1);
+      });
+    },
+    updateInfo(query) {
+      // 修改页面
+      console.log(query);
+      this.$router.push({
+        path: "/busnissUpdate",
+        query: { shopData: query.row }
+      });
+    },
+    goMarket(index) {
       console.log(index);
+      this.$router.push({ name: "market", params: { businessId: index } });
+    },
+    // 去添加
+    routerPushAddActiveInfo() {
+      this.$router.push({
+        path: "/busnissAdd",
+        query: { marketId:0}
+      });
     }
   },
   mounted() {
-    console.log(this.busnissId);
-    this.tableData = this.tableDataobj[this.busnissId];
-    getTableData().then(res => {
-      // this.tableData = res.data;
-      console.log(res);
+    // console.log(this.busnissId);
+    getTradingAreaList({
+      type: 0,
+      isShoppingMal:0
+    }).then(res => {
+      this.tableData = res.data.data.parameterType;
+      // console.log(res);
     });
-  },
-  "on-row-click": (data, index) => {
-    console.log(data, index);
   }
 };
 </script>
+<style lang="less">
+tbody {
+  .tabletitle {
+    color: -webkit-link;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+.ivu-modal-confirm-body{
+  p{
+    word-wrap: break-word;
+  }
+}
+</style>

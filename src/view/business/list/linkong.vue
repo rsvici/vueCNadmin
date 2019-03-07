@@ -4,7 +4,6 @@
       <Tables
         ref="tables"
         editable
-        searchable
         search-place="top"
         v-model="tableData"
         :columns="columns"
@@ -33,7 +32,9 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from "@/api/data";
+import { getTradingAreaList } from "@/api/data";
+import { postdelTradingArea } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
 import imgurl1 from "@/assets/images/nav3_1.png";
 import imgurl2 from "@/assets/images/nav3_2.png";
 import imgurl3 from "@/assets/images/nav3_3.png";
@@ -57,7 +58,7 @@ export default {
       columns: [
         {
           title: "商场名称",
-          key: "title",
+          key: "name",
           className: "tabletitle",
           render: (h, params) => {
             // console.log(params.row.title);
@@ -70,18 +71,18 @@ export default {
                   }
                 }
               },
-              params.row.title
+              params.row.name
             );
           }
         },
         {
           title: "商场封面",
-          key: "imgurl",
+          key: "url",
           render: (h, params) => {
             // console.log(params.row.title);
             return h("img", {
               attrs: {
-                src: params.row.imgurl
+                src: params.row.url
               },
               style: {
                 height: "80px",
@@ -90,8 +91,18 @@ export default {
             });
           }
         },
-        { title: "地图经纬度", key: "mapposition" },
-        { title: "描述", key: "dec" },
+        { title: "地图经纬度", key: "longitude" },
+        { title: "描述", key: "description" },
+        {
+          title: "创建时间",
+          key: "createDate",
+          render: (h, params) => {
+            return h(
+              "div",
+              formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
+            );
+          }
+        },
         {
           title: "操作",
           key: "action",
@@ -112,11 +123,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params);
                     }
                   }
                 },
-                "查看"
+                "查看详情"
               ),
               h(
                 "Button",
@@ -130,7 +141,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.updateInfo(params);
                     }
                   }
                 },
@@ -148,7 +159,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index);
+                      this.remove(params);
                     }
                   }
                 },
@@ -156,38 +167,6 @@ export default {
               )
             ]);
           }
-        }
-      ],
-      tableDataobj: [
-        {
-          title: "百丽宫影城",
-          imgurl: imgurl1,
-          dec: "345",
-          mapposition: "345"
-        },
-        {
-          title: "尚嘉中心",
-          imgurl: imgurl2,
-          dec: "2234",
-          mapposition: "3345"
-        },
-        {
-          title: "玫瑰坊商业街",
-          imgurl: imgurl3,
-          dec: "2344",
-          mapposition: "3465"
-        },
-        {
-          title: "巴黎春天新宁店",
-          imgurl: imgurl4,
-          dec: "2234",
-          mapposition: "3345"
-        },
-        {
-          title: "龙之梦购物中心",
-          imgurl: imgurl5,
-          dec: "2354",
-          mapposition: "7345"
         }
       ],
       tableData: []
@@ -201,19 +180,36 @@ export default {
       });
     },
     changePage(event) {
-      //分页
+      // 分页
       console.log(event);
     },
-    show(index) {
+    show(params) {
+      console.log(params.row.content);
       // 查看
       this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+        title: params.row.name,
+        scrollable: true,
+        closable: true,
+        content: params.row.content
       });
     },
-    remove(index) {
+    remove(params) {
       // 删除
-      console.log(index);
+      console.log(params.row.id, params);
+      // return;
+      postdelTradingArea({
+        id: params.row.id
+      }).then(res => {
+        this.tableData.splice(params.index, 1);
+      });
+    },
+    updateInfo(query) {
+      // 修改页面
+      console.log(query);
+      this.$router.push({
+        path: "/busnissUpdate",
+        query: { shopData: query.row }
+      });
     },
     goMarket(index) {
       console.log(index);
@@ -221,20 +217,21 @@ export default {
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.$route.params.marketId);
       this.$router.push({
-        name: "busnissAdd",
-        params: { marketId: this.$route.params.marketId }
+        path: "/busnissAdd",
+        query: { marketId:2}
       });
     }
   },
   mounted() {
     // console.log(this.busnissId);
-    this.tableData = this.tableDataobj;
-    // getTableData().then(res => {
-    //   // this.tableData = res.data;
-    //   // console.log(res);
-    // });
+    getTradingAreaList({
+      type: 2,
+      isShoppingMal:0
+    }).then(res => {
+      this.tableData = res.data.data.parameterType;
+      // console.log(res);
+    });
   }
 };
 </script>
@@ -244,6 +241,11 @@ tbody {
     color: -webkit-link;
     text-decoration: underline;
     cursor: pointer;
+  }
+}
+.ivu-modal-confirm-body{
+  p{
+    word-wrap: break-word;
   }
 }
 </style>
