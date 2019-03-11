@@ -189,10 +189,9 @@ export default {
       this.$Modal.info({
         title: params.row.name,
         scrollable: true,
-        width:600,
+        width: 600,
         closable: true,
-        content: params.row.content,
-      
+        content: params.row.content
       });
     },
     remove(params) {
@@ -215,13 +214,13 @@ export default {
     },
     goMarket(index) {
       console.log(index);
-      this.$router.push({ name: "market", params: { businessId: index } });
+      this.$router.push({ path: "/market", query: { marketId: index } });
     },
     // 去添加
     routerPushAddActiveInfo() {
       this.$router.push({
         path: "/busnissAdd",
-        query: { marketId:1}
+        query: { busnissId: 1 }
       });
     }
   },
@@ -229,7 +228,7 @@ export default {
     // console.log(this.busnissId);
     getTradingAreaList({
       type: 1,
-      isShoppingMal:0
+      isShoppingMall: 0
     }).then(res => {
       this.tableData = res.data.data.parameterType;
       // console.log(res);
@@ -245,8 +244,8 @@ tbody {
     cursor: pointer;
   }
 }
-.ivu-modal-confirm-body{
-  p{
+.ivu-modal-confirm-body {
+  p {
     word-wrap: break-word;
   }
 }

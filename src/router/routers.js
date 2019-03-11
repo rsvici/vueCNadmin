@@ -316,10 +316,20 @@ export default [{
     meta: {
       // hideInBread: true,
       hideInMenu: true,
-      title: '添加',
+      title: '添加商户',
       notCache: true
     },
     component: () => import('@/view/business/market/add.vue')
+  }, {
+    path: '/marketUpdate',
+    name: 'marketUpdate',
+    meta: {
+      // hideInBread: true,
+      hideInMenu: true,
+      title: '修改商户',
+      notCache: true
+    },
+    component: () => import('@/view/business/market/update.vue')
   }]
 },
 {
@@ -346,7 +356,7 @@ export default [{
     meta: {
       // hideInBread: true,
       // hideInMenu:true,
-      title: '添加',
+      title: '添加活动',
       notCache: true
     },
     component: () => import('@/view/business/active/add.vue')

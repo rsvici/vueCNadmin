@@ -111,7 +111,7 @@
 </template>
 <script>
 import { routeEqual } from "@/libs/util";
-import { postAddTradingArea } from "@/api/data";
+import { postUpdTradingArea } from "@/api/data";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
@@ -168,9 +168,9 @@ export default {
       var that = this;
       // this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
       var newTradingArea = this.formItem;
-      // console.log(newTradingArea)
-      postAddTradingArea(newTradingArea).then(res => {
-        // console.log(res);
+      console.log(newTradingArea)
+      postUpdTradingArea(newTradingArea).then(res => {
+        console.log(res);
         that.cancelForm();
       });
     },
@@ -182,7 +182,10 @@ export default {
     }
   },
   mounted() {
-    this.formItem.type = this.$route.query.marketId;
+    this.formItem = this.$route.query.shopData;
+    // this.longitudeX= this.formItem.longitude.split(',')[0]
+    // this.longitudeY= this.formItem.longitude.split(',')[1]
+    this.msg=this.$route.query.shopData.msg;
   }
 };
 </script>

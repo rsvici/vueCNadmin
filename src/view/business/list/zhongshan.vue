@@ -213,13 +213,13 @@ export default {
     },
     goMarket(index) {
       console.log(index);
-      this.$router.push({ name: "market", params: { businessId: index } });
+      this.$router.push({ path: "/market", query: { marketId: index } });
     },
     // 去添加
     routerPushAddActiveInfo() {
       this.$router.push({
         path: "/busnissAdd",
-        query: { marketId:0}
+        query: { busnissId: 0 }
       });
     }
   },
@@ -227,7 +227,7 @@ export default {
     // console.log(this.busnissId);
     getTradingAreaList({
       type: 0,
-      isShoppingMal:0
+      isShoppingMall: 0
     }).then(res => {
       this.tableData = res.data.data.parameterType;
       // console.log(res);
@@ -243,8 +243,8 @@ tbody {
     cursor: pointer;
   }
 }
-.ivu-modal-confirm-body{
-  p{
+.ivu-modal-confirm-body {
+  p {
     word-wrap: break-word;
   }
 }

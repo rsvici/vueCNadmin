@@ -122,7 +122,7 @@ export default {
       longitudeX:'',
       longitudeY:'',
       formItem: {
-        isShoppingMall:'1',
+        isShoppingMall:'0',
         name: "", // 名称
         url: "", // 图片url
         type: "", // 商圈类型
@@ -182,8 +182,7 @@ export default {
     }
   },
   mounted() {
-    this.formItem.type = this.$route.query.marketId;
-
+    this.formItem.type = this.$route.query.busnissId;
   }
 };
 </script>

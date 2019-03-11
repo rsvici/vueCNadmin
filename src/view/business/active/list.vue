@@ -240,22 +240,22 @@ export default {
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.$route.params.marketId);
+      console.log(this.$route.params.activeId);
       this.$router.push({
         name: "activeAdd",
-        params: { marketId: this.$route.params.marketId }
+        params: { activeId: this.$route.params.activeId }
       });
     }
   },
   mounted() {
     // console.log(this.busnissId);
     this.tableData = this.tableDataobj;
-    // this.marketId = this.$route.params.marketId;
+    this.activeId = this.$route.params.activeId;
 
-    getTableData().then(res => {
-      // this.tableData = res.data;
-      // console.log(res);
-    });
+    // getTableData().then(res => {
+    //   // this.tableData = res.data;
+    //   // console.log(res);
+    // });
   }
 };
 </script>

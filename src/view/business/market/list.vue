@@ -4,7 +4,6 @@
       <Tables
         ref="tables"
         editable
-        searchable
         search-place="top"
         v-model="tableData"
         :columns="columns"
@@ -23,17 +22,24 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
+      <Button
+        style="margin: 10px 20px;padding:10px 30px;"
+        type="success"
+        @click="routerPushAddActiveInfo"
+      >添加</Button>
     </Card>
   </div>
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from "@/api/data";
-import imgurl1 from "@/assets/images/nav3_1.png"
-import imgurl2 from "@/assets/images/nav3_2.png"
-import imgurl3 from "@/assets/images/nav3_3.png"
-import imgurl4 from "@/assets/images/nav3_4.png"
-import imgurl5 from "@/assets/images/nav3_5.png"
+import { getTradingAreaList } from "@/api/data";
+import { postdelTradingArea } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
+import imgurl1 from "@/assets/images/nav3_1.png";
+import imgurl2 from "@/assets/images/nav3_2.png";
+import imgurl3 from "@/assets/images/nav3_3.png";
+import imgurl4 from "@/assets/images/nav3_4.png";
+import imgurl5 from "@/assets/images/nav3_5.png";
 
 export default {
   name: "wechatlist",
@@ -52,7 +58,7 @@ export default {
       columns: [
         {
           title: "商户名称",
-          key: "title",
+          key: "name",
           className: "tabletitle",
           render: (h, params) => {
             // console.log(params.row.title);
@@ -61,31 +67,41 @@ export default {
               {
                 on: {
                   click: () => {
-                    this.goMarket(params.index);
+                    this.goMarket(params);
                   }
                 }
               },
-              params.row.title
+              params.row.name
             );
           }
         },
         {
-          title: "商户封面",
-          key: "imgurl",
+          title: "商户名称",
+          key: "url",
           render: (h, params) => {
             // console.log(params.row.title);
             return h("img", {
               attrs: {
-                src: params.row.imgurl
+                src: params.row.url
               },
               style: {
                 height: "80px",
-                'margin-top':'5px',
+                "margin-top": "5px"
               }
             });
           }
         },
-        { title: "简介", key: "dec" },
+        { title: "描述", key: "description" },
+        {
+          title: "创建时间",
+          key: "createDate",
+          render: (h, params) => {
+            return h(
+              "div",
+              formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
+            );
+          }
+        },
         {
           title: "操作",
           key: "action",
@@ -106,11 +122,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params);
                     }
                   }
                 },
-                "查看"
+                "查看详情"
               ),
               h(
                 "Button",
@@ -124,7 +140,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.updateInfo(params);
                     }
                   }
                 },
@@ -142,7 +158,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index);
+                      this.remove(params);
                     }
                   }
                 },
@@ -152,75 +168,72 @@ export default {
           }
         }
       ],
-      tableDataobj: [
-        {
-          title: "百丽宫影城商户1",
-          imgurl:imgurl1,
-          dec: "345",
-          mapposition: "345"
-        },
-        {
-          title: "尚嘉中心商户2",
-          imgurl:imgurl2,
-          dec: "2234",
-          mapposition: "3345"
-        },
-        {
-          title: "玫瑰坊商业街商户3",
-          imgurl: imgurl3,
-          dec: "2344",
-          mapposition: "3465"
-        },
-        {
-          title: "巴黎春天新宁店商户4",
-          imgurl: imgurl4,
-          dec: "2234",
-          mapposition: "3345"
-        },
-        {
-          title: "龙之梦购物中心商户5",
-          imgurl: imgurl5,
-          dec: "2354",
-          mapposition: "7345"
-        }
-      ],
       tableData: []
     };
   },
   methods: {
+    // 导出csv
     exportExcel() {
-      // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
       });
     },
+    // 分页
     changePage(event) {
-      //分页
       console.log(event);
     },
-    show(index) {
-      // 查看
+    // 查看详细信息
+    show(params) {
+      console.log(params.row.content);
       this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+        title: params.row.name,
+        scrollable: true,
+        closable: true,
+        content: params.row.content
       });
     },
-    remove(index) {
-      // 删除
-      console.log(index);
+    // 删除
+    remove(params) {
+      console.log(params.row.id, params);
+      // return;
+      postdelTradingArea({
+        id: params.row.id
+      }).then(res => {
+        this.tableData.splice(params.index, 1);
+      });
     },
-    goMarket(index) {
-      console.log(index);
-      this.$router.push({ name: "active", params: { marketId: index } });
+    // 修改页面
+    updateInfo(query) {
+      console.log(query);
+      this.$router.push({
+        path: "/marketUpdate",
+        query: { shopData: query.row }
+      });
+    },
+    // 去子页面
+    goMarket(item) {
+      console.log(item.row.id);
+      this.$router.push({ path: "/active", query: {activeId: item.row.id } });
+    },
+
+    // 去添加
+    routerPushAddActiveInfo() {
+      this.$router.push({
+        path: "/marketAdd",
+        query: { marketId: this.$route.query.marketId }
+      });
     }
   },
   mounted() {
-    // console.log(this.busnissId);
-    this.tableData = this.tableDataobj;
-    this.marketId=this.$route.params.marketId;
+    // 商场id
+    console.log(this.$route.query.marketId);
 
-    getTableData().then(res => {
-      // this.tableData = res.data;
+    // 获取商户列表
+    getTradingAreaList({
+      type: this.$route.query.marketId,
+      isShoppingMall: 1
+    }).then(res => {
+      this.tableData = res.data.data.parameterType;
       // console.log(res);
     });
   }
@@ -234,5 +247,9 @@ tbody {
     cursor: pointer;
   }
 }
+.ivu-modal-confirm-body {
+  p {
+    word-wrap: break-word;
+  }
+}
 </style>
-

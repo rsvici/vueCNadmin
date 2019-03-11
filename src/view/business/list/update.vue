@@ -111,7 +111,7 @@
 </template>
 <script>
 import { routeEqual } from "@/libs/util";
-import { postAddTradingArea } from "@/api/data";
+import { postUpdTradingArea } from "@/api/data";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
@@ -122,7 +122,7 @@ export default {
       longitudeX:'',
       longitudeY:'',
       formItem: {
-        isShoppingMall:'1',
+        isShoppingMall:'0',
         name: "", // 名称
         url: "", // 图片url
         type: "", // 商圈类型
@@ -169,9 +169,9 @@ export default {
       this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
       var newTradingArea = this.formItem;
       console.log(newTradingArea)
-      postAddTradingArea(newTradingArea).then(res => {
+      postUpdTradingArea(newTradingArea).then(res => {
         console.log(res);
-        // that.cancelForm();
+        that.cancelForm();
       });
     },
     cancelForm() {
