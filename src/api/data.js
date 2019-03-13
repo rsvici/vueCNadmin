@@ -79,7 +79,7 @@ export const postdelIntegralt = info => {
 }
 
 
-// 获取商圈列表
+// 获取商圈,商场列表
 export const getTradingAreaList = info => {
   return axios.request({
     url: 'tradingArea/list',
@@ -88,7 +88,7 @@ export const getTradingAreaList = info => {
   })
 }
 
-// 添加商圈列表
+// 添加商圈,商场
 export const postAddTradingArea = info => {
   return axios.request({
     url: 'tradingArea/add',
@@ -97,7 +97,7 @@ export const postAddTradingArea = info => {
   })
 }
 
-// 修改商圈列表
+// 修改商圈,商场
 export const postUpdTradingArea = info => {
   return axios.request({
     url: 'tradingArea/update',
@@ -106,7 +106,7 @@ export const postUpdTradingArea = info => {
   })
 }
 
-// 删除商圈列表
+// 删除商圈,商场
 export const postdelTradingArea  = info => {
   return axios.request({
     url: 'tradingArea/delete',
@@ -115,7 +115,26 @@ export const postdelTradingArea  = info => {
   })
 }
 
-
+// 活动
+// 活动
+// 活动
+// 活动
+// 获取活动列表
+export const getActivityList = info => {
+  return axios.request({
+    url: 'activity/list',
+    params: info,
+    method: 'get'
+  })
+}
+// 添加活动
+export const postAddactivity = info => {
+  return axios.request({
+    url: 'activity/add',
+    data: info,
+    method: 'post'
+  })
+}
 
 
 

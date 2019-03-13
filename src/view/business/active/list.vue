@@ -33,7 +33,7 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from "@/api/data";
+import { getActivityList } from "@/api/data";
 import imgurl1 from "@/assets/images/nav3_1.png";
 import imgurl2 from "@/assets/images/nav3_2.png";
 import imgurl3 from "@/assets/images/nav3_3.png";
@@ -240,22 +240,24 @@ export default {
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.$route.params.activeId);
+      console.log(this.$route.query.activeId);
       this.$router.push({
-        name: "activeAdd",
-        params: { activeId: this.$route.params.activeId }
+        path: "/activeAdd",
+        query: { activeId: this.$route.query.activeId }
       });
     }
   },
   mounted() {
     // console.log(this.busnissId);
     this.tableData = this.tableDataobj;
-    this.activeId = this.$route.params.activeId;
+    this.activeId = this.$route.query.activeId;
 
-    // getTableData().then(res => {
-    //   // this.tableData = res.data;
-    //   // console.log(res);
-    // });
+    getActivityList({
+      Id:this.$route.query.activeId
+    }).then(res => {
+      // this.tableData = res.data;
+      // console.log(res);
+    });
   }
 };
 </script>
