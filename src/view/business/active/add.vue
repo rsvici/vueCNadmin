@@ -293,9 +293,9 @@
   </div>
 </template>
 <script>
-import imgurl5 from "@/assets/images/nav3_5.png";
 import { postAddactivity } from "@/api/data";
 const VueUeditorWrap = require("vue-ueditor-wrap");
+import { routeEqual } from "@/libs/util";
 export default {
   components: {
     VueUeditorWrap
@@ -306,17 +306,17 @@ export default {
       formItem: {
         name: "", // 名称
         introduction: "", // 简介
-        tradingAreaId:'', //商户id
+        tradingAreaId: "", //商户id
         coverUrl: "", //封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", //结束时间
         place: "", // 地点
         activityType: "", //活动类型
-        type:'1', //类型
+        type: "1", //类型
         labelOne: "0", //标签
         labelTow: "0", //标签
         ticketLink: "", //购票链接
-        activityDec: "", //活动详情
+        activityDec: "" //活动详情
       },
       actionInfo: {
         name: "",
@@ -386,13 +386,7 @@ export default {
           }
         }
       ],
-      columnsdata: [
-        {
-          url: imgurl5,
-          name: "1",
-          role: "1"
-        }
-      ]
+      columnsdata: []
     };
   },
   methods: {
@@ -441,14 +435,21 @@ export default {
     },
     // 添加活动
     addActivty() {
+      var that = this;
       this.formItem.activityDetail = this.columnsdata;
       console.log(this.formItem);
       var newTradingArea = this.formItem;
       // console.log(newTradingArea)
       postAddactivity(newTradingArea).then(res => {
         console.log(res);
-        // that.cancelForm();
+        that.cancelForm();
       });
+    },
+    cancelForm() {
+      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
+        item => !routeEqual(this.$route, item)
+      );
+      this.$router.go(-1);
     }
   },
   mounted() {

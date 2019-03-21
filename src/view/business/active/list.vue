@@ -33,13 +33,14 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getActivityList } from "@/api/data";
-import imgurl1 from "@/assets/images/nav3_1.png";
-import imgurl2 from "@/assets/images/nav3_2.png";
-import imgurl3 from "@/assets/images/nav3_3.png";
-import imgurl4 from "@/assets/images/nav3_4.png";
-import imgurl5 from "@/assets/images/nav3_5.png";
-
+import { getActivityList, postDelActivity } from "@/api/data";
+import {
+  formatDate,
+  formatCheck,
+  formatType,
+  formatLabelOne,
+  formatLabelTow
+} from "@/libs/formatdate";
 export default {
   name: "activelist",
   components: {
@@ -57,16 +58,16 @@ export default {
       columns: [
         {
           title: "活动名称",
-          key: "title"
+          key: "name"
         },
         {
           title: "封面",
-          key: "imgurl",
+          key: "coverUrl",
           render: (h, params) => {
             // console.log(params.row.title);
             return h("img", {
               attrs: {
-                src: params.row.imgurl
+                src: params.row.coverUrl
               },
               style: {
                 height: "80px",
@@ -75,29 +76,63 @@ export default {
             });
           }
         },
-        { title: "简介", key: "dec" },
-        { title: "时间", key: "time" },
-        { title: "类型", key: "type" },
-        { title: "标签", key: "type1" },
+        { title: "简介", key: "introduction" },
+        {
+          title: "时间",
+          key: "activityBeginTime",
+          render: (h, params) => {
+            return h(
+              "div",
+              formatDate(
+                new Date(params.row.activityBeginTime),
+                "yyyy-MM-dd hh:mm"
+              )
+            );
+          }
+        },
+        {
+          title: "类型",
+          key: "type",
+          render: (h, params) => {
+            return h("div", formatType(params.row.type));
+          }
+        },
+        {
+          title: "标签1",
+          key: "labelOne",
+          render: (h, params) => {
+            return h("div", formatLabelOne(params.row.labelOne));
+          }
+        },
+        {
+          title: "标签2",
+          key: "labelTow",
+          render: (h, params) => {
+            return h("div", formatLabelTow(params.row.labelTow));
+          }
+        },
         {
           title: "审核状态",
-          key: "checkType",
+          key: "auditStatus",
+          render: (h, params) => {
+            return h("div", formatCheck(params.row.auditStatus));
+          },
           filters: [
             {
               label: "通过",
-              value: "通过"
+              value: "1"
             },
             {
               label: "未通过",
-              value: "未通过"
+              value: "2"
             },
             {
               label: "未审核",
-              value: "未审核"
+              value: "0"
             }
           ],
           filterMethod(value, row) {
-            return row.checkType.indexOf(value) > -1;
+            return row.auditStatus.indexOf(value) > -1;
           }
         },
         {
@@ -138,7 +173,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.update(params);
                     }
                   }
                 },
@@ -156,7 +191,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index);
+                      this.remove(params);
                     }
                   }
                 },
@@ -164,53 +199,6 @@ export default {
               )
             ]);
           }
-        }
-      ],
-      tableDataobj: [
-        {
-          title: "百丽宫影城活动1",
-          imgurl: imgurl1,
-          dec: "345",
-          time: "345",
-          type: "123",
-          type1: "123",
-          checkType: "通过"
-        },
-        {
-          title: "百丽宫影城活动2",
-          imgurl: imgurl2,
-          dec: "2234",
-          time: "3345",
-          type: "123",
-          type1: "123",
-          checkType: "未审核"
-        },
-        {
-          title: "百丽宫影城活动3",
-          imgurl: imgurl3,
-          dec: "2344",
-          time: "3465",
-          type: "123",
-          type1: "123",
-          checkType: "未通过"
-        },
-        {
-          title: "百丽宫影城活动4",
-          imgurl: imgurl4,
-          dec: "2234",
-          time: "3345",
-          type: "123",
-          type1: "123",
-          checkType: "通过"
-        },
-        {
-          title: "百丽宫影城活动5",
-          imgurl: imgurl5,
-          dec: "2354",
-          time: "7345",
-          type: "123",
-          type1: "123",
-          checkType: "通过"
         }
       ],
       tableData: []
@@ -234,9 +222,24 @@ export default {
         content: `Name`
       });
     },
-    remove(index) {
+    update(item){
+      console.log(item.row);
+      this.$router.push({
+        path: "/activeUpdata",
+        query: { activeData: JSON.stringify(item.row) }
+      });
+    },
+    remove(item) {
       // 删除
-      console.log(index);
+      postDelActivity({
+        id: item.row.id
+      }).then(res => {
+        getActivityList({
+          Id: this.$route.query.activeId
+        }).then(res => {
+          this.tableData = res.data.data.parameterType;
+        });
+      });
     },
     // 去添加
     routerPushAddActiveInfo() {
@@ -248,15 +251,10 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.busnissId);
-    this.tableData = this.tableDataobj;
-    this.activeId = this.$route.query.activeId;
-
     getActivityList({
-      Id:this.$route.query.activeId
+      Id: this.$route.query.activeId
     }).then(res => {
-      // this.tableData = res.data;
-      // console.log(res);
+      this.tableData = res.data.data.parameterType;
     });
   }
 };

@@ -360,6 +360,16 @@ export default [{
       notCache: true
     },
     component: () => import('@/view/business/active/add.vue')
+  }, {
+    path: '/activeUpdata',
+    name: 'activeUpdata',
+    meta: {
+      // hideInBread: true,
+      // hideInMenu:true,
+      title: '修改活动',
+      notCache: true
+    },
+    component: () => import('@/view/business/active/update.vue')
   }]
 },
 

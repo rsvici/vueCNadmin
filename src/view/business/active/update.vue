@@ -9,15 +9,15 @@
         <div v-show="showWebNum==0">
           <FormItem label="名称 : ">
             <Input
-              v-model="formItem.acitveName"
+              v-model="formItem.name"
               placeholder="请输入活动名称"
             />
           </FormItem>
           <FormItem label="简介 : ">
             <Input
-              v-model="formItem.activeDec"
+              v-model="formItem.introduction"
               type="textarea"
-              :autosize="{minRows: 2,maxRows: 5}"
+              :autosize="{minRows: 2,maxRows:10}"
               placeholder="请输入活动简介"
             />
           </FormItem>
@@ -26,14 +26,14 @@
           <FormItem label="封面 : ">
             <div
               class="demo-upload-list"
-              v-if="imageUrl"
+              v-if="formItem.coverUrl"
             >
               <template>
-                <img :src="imageUrl">
+                <img :src="formItem.coverUrl">
                 <div class="demo-upload-list-cover">
                   <Icon
                     type="ios-eye-outline"
-                    @click.native="handleView(imageUrl)"
+                    @click.native="handleView(formItem.coverUrl)"
                   ></Icon>
                 </div>
               </template>
@@ -66,7 +66,7 @@
               v-model="visible"
             >
               <img
-                :src="imageUrl"
+                :src="formItem.coverUrl"
                 v-if="visible"
                 style="width: 100%"
               >
@@ -75,37 +75,53 @@
 
           <FormItem label="活动时间 : ">
             <DatePicker
+              type="datetime"
+              placeholder="开始时间"
+              style="width: 200px"
+              v-model="formItem.activityBeginTime"
+            ></DatePicker>
+            - 至 -
+            <DatePicker
+              type="datetime"
+              placeholder="结束时间"
+              style="width: 200px"
+              v-model="formItem.activityEndTime"
+            ></DatePicker>
+          </FormItem>
+
+          <!-- <FormItem label="活动时间 : ">
+            <DatePicker
               type="datetimerange"
-              :options="options1"
               placement="bottom-start"
               placeholder="选择时间"
               style="width: 285px"
-              v-model="formItem.date"
+              v-model="formItem.activityBeginTime"
             ></DatePicker>
-          </FormItem>
+          </FormItem> -->
+
           <FormItem label="地点 : ">
             <Input
-              v-model="formItem.acitveAddress"
+              v-model="formItem.place"
               placeholder="请输入活动地点"
             />
           </FormItem>
           <FormItem label="类型">
-            <Select v-model="formItem.activeSelectType">
-              <Option value="1">话剧</Option>
-              <Option value="2">电影</Option>
-              <Option value="3">演唱会</Option>
-              <Option value="4">...</Option>
+            <Select v-model="formItem.activityType">
+              <Option value="0">话剧</Option>
+              <Option value="1">电影</Option>
+              <Option value="2">演唱会</Option>
+              <Option value="3">...</Option>
             </Select>
           </FormItem>
           <FormItem label="标签1">
-            <RadioGroup v-model="formItem.activeRadioType1">
+            <RadioGroup v-model="formItem.labelOne">
               <Radio label="0">文化/体育</Radio>
               <Radio label="1">购物</Radio>
               <Radio label="2">餐饮/美食</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="标签2">
-            <RadioGroup v-model="formItem.activeRadioType2">
+            <RadioGroup v-model="formItem.labelTow">
               <Radio label="0">乐文</Radio>
               <Radio label="1">乐影</Radio>
               <Radio label="2">乐动</Radio>
@@ -127,14 +143,14 @@
           <Card style="width:60%;margin-left:100px;">
             <FormItem label="人员姓名 : ">
               <Input
-                v-model="actionInfo.actionName0"
+                v-model="actionInfo.name"
                 type="text"
                 placeholder="请输入人员姓名"
               />
             </FormItem>
             <FormItem label="饰演角色 : ">
               <Input
-                v-model="actionInfo.actionName1"
+                v-model="actionInfo.role"
                 type="text"
                 placeholder="请输入饰演角色"
               />
@@ -144,14 +160,14 @@
             <FormItem label="人员头像 : ">
               <div
                 class="demo-upload-list"
-                v-if="actionInfo.actionUrl"
+                v-if="actionInfo.url"
               >
                 <template>
-                  <img :src="actionInfo.actionUrl">
+                  <img :src="actionInfo.url">
                   <div class="demo-upload-list-cover">
                     <Icon
                       type="ios-eye-outline"
-                      @click.native="handleView(actionInfo.actionUrl)"
+                      @click.native="handleView(actionInfo.url)"
                     ></Icon>
                   </div>
                 </template>
@@ -184,7 +200,7 @@
                 v-model="visible"
               >
                 <img
-                  :src="actionInfo.actionUrl"
+                  :src="actionInfo.url"
                   v-if="visible"
                   style="width: 100%"
                 >
@@ -213,7 +229,7 @@
 
           <FormItem label="购票连接(可选) : ">
             <Input
-              v-model="formItem.buyTirckUrl"
+              v-model="formItem.ticketLink"
               type="url"
               placeholder="请输入购票URL格式:http://xxx.xxx.xxx"
             />
@@ -245,7 +261,7 @@
         <div v-show="showWebNum==2">
           <FormItem label="详情简介 : ">
             <VueUeditorWrap
-              v-model="msg"
+              v-model="formItem.activityDec"
               :config="myConfig"
               :key="1"
             ></VueUeditorWrap>
@@ -259,8 +275,9 @@
             <Button
               style="margin-left: 10px"
               type="success"
-            >提交</Button>
-            <Button style="margin-left: 10px">取消</Button>
+              @click="addActivty"
+            >修改</Button>
+            <Button style="margin-left: 10px"    @click="cancelForm">取消</Button>
           </FormItem>
         </div>
 
@@ -276,182 +293,178 @@
   </div>
 </template>
 <script>
-import imgurl5 from '@/assets/images/nav3_5.png'
-const VueUeditorWrap = require('vue-ueditor-wrap')
+import { postUpdActivity } from "@/api/data";
+import { routeEqual } from "@/libs/util";
+const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
     VueUeditorWrap
   },
-  data () {
+  data() {
     return {
       showWebNum: 0, // 显示页面
       formItem: {
-        acitveName: '', // 名称
-        activeDec: '', // 简介
-        date: '', // 时间
-        acitveAddress: '', // 地点
-        activeSelectType: '',
-        activeRadioType1: '0',
-        activeRadioType2: '0',
-        buyTirckUrl: ''
+        name: "", // 名称
+        introduction: "", // 简介
+        tradingAreaId: "", //商户id
+        coverUrl: "", //封面
+        activityBeginTime: "", // 开始时间
+        activityEndTime: "", //结束时间
+        place: "", // 地点
+        activityType: "", //活动类型
+        type: "1", //类型
+        labelOne: "0", //标签
+        labelTow: "0", //标签
+        ticketLink: "", //购票链接
+        activityDec: "" //活动详情
       },
       actionInfo: {
-        actionName0: '',
-        actionName1: '',
-        actionUrl: ''
+        name: "",
+        role: "",
+        url: ""
       },
-      options1: {
-        // 选择时间
-        shortcuts: [
-          {
-            text: '1 周',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              return [start, end]
-            }
-          },
-          {
-            text: '1个月',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              return [start, end]
-            }
-          },
-          {
-            text: '3个月',
-            value () {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              return [start, end]
-            }
-          }
-        ]
-      },
-      msg: '', // 富文本内容
       myConfig: {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: '60%',
-        UEDITOR_HOME_URL: './UEditor/',
-        serverUrl: 'http://www.appsun.com.cn/GZUSER/ueditor/dispatch'
+        initialFrameWidth: "60%",
+        UEDITOR_HOME_URL: "./UEditor/",
+        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
       },
       // 上传图片
-      imageUrl: '',
       visible: false,
       // 表格
       columns: [
         {
-          title: '图片',
-          key: 'actionUrl',
+          title: "图片",
+          key: "url",
           render: (h, params) => {
             // console.log(params.row.title);
-            return h('img', {
+            return h("img", {
               attrs: {
-                src: params.row.actionUrl
+                src: params.row.url
               },
               style: {
-                height: '80px',
-                width: '80px',
-                'margin-top': '5px'
+                height: "80px",
+                width: "80px",
+                "margin-top": "5px"
               }
-            })
+            });
           }
         },
         {
-          title: '描述一',
-          key: 'actionName0'
+          title: "描述一",
+          key: "name"
         },
         {
-          title: '描述二',
-          key: 'actionName1'
+          title: "描述二",
+          key: "role"
         },
         {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 150,
-          align: 'center',
+          align: "center",
           render: (h, params) => {
-            return h('div', [
+            return h("div", [
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    type: "error",
+                    size: "small"
                   },
                   on: {
                     click: () => {
-                      this.talbeRemove(params.index)
+                      this.talbeRemove(params.index);
                     }
                   }
                 },
-                '删除'
+                "删除"
               )
-            ])
+            ]);
           }
         }
       ],
-      columnsdata: [
-        {
-          actionUrl: imgurl5,
-          actionName0: '1',
-          actionName1: '1'
-        }
-      ]
-    }
+      columnsdata: []
+    };
   },
   methods: {
-    handleView () {
-      this.visible = true
+    handleView() {
+      this.visible = true;
     },
-    handleSuccess (res, file) {
-      console.log(res)
-      this.imageUrl = 'https://thinkjs.org/static/img/new/logo.png?v=0cb0b'
+    // 图片上传成功
+    handleSuccess(res, file) {
+      console.log(res);
+      this.formItem.coverUrl = res.data;
     },
-    handleActionSuccess (res, file) {
-      console.log(res)
-      this.actionInfo.actionUrl = 'https://thinkjs.org/static/img/new/logo.png?v=0cb0b'
+    // 演员列表上传成功
+    handleActionSuccess(res, file) {
+      console.log(res);
+      this.actionInfo.url = res.data;
     },
-    handleFormatError (file) {
+    // 上传文件错误
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '文件格式不正确',
-        desc: '图片格式不正确，请选择JPG或PNG。'
-      })
+        title: "文件格式不正确",
+        desc: "图片格式不正确，请选择JPG或PNG。"
+      });
     },
-    handleMaxSize (file) {
+    // 上传超过限制
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '文件大小超过限制',
-        desc: '请上传不超过2M的图片。'
-      })
+        title: "文件大小超过限制",
+        desc: "请上传不超过2M的图片。"
+      });
     },
-    talbeRemove (rowindex) {
-      console.log(rowindex)
+    // 删除列表
+    talbeRemove(rowindex) {
+      console.log(rowindex);
+      this.columnsdata.splice(rowindex, 1);
+      console.log(this.columnsdata);
     },
-    addActionInfo () {
-      console.log(this.formItem)
-      this.columnsdata.push(this.actionInfo)
+    // 添加角色列表
+    addActionInfo() {
+      console.log(this.formItem);
+      this.columnsdata.push(this.actionInfo);
       this.actionInfo = {
-        actionName0: '',
-        actionName1: '',
-        actionUrl: ''
-      }
+        name: "",
+        role: "",
+        url: ""
+      };
+    },
+    // 添加活动
+    addActivty() {
+      var that=this;
+      this.formItem.activityDetail = this.columnsdata;
+      console.log(this.formItem);
+      var newTradingArea = this.formItem;
+      // console.log(newTradingArea)
+      postUpdActivity(newTradingArea).then(res => {
+        console.log(res);
+        that.cancelForm();
+      });
+    },
+    cancelForm() {
+      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
+        item => !routeEqual(this.$route, item)
+      );
+      this.$router.go(-1);
     }
   },
-  mounted () {
-    this.uploadList = this.$refs.upload.fileList
+  mounted() {
+    this.formItem = JSON.parse(this.$route.query.activeData);
+    console.log(this.formItem.activityDetail);
+    this.formItem.activityBeginTime = new Date(this.formItem.activityBeginTime);
+    this.formItem.activityEndTime = new Date(this.formItem.activityEndTime);
+    this.columnsdata = this.formItem.activityDetail;
   },
   watch: {
-    msg (val) {
-      console.log(val)
+    msg(val) {
+      console.log(val);
     }
   }
-}
+};
 </script>
 <style>
 .demo-upload-list {

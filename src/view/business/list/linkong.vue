@@ -35,11 +35,7 @@ import Tables from "_c/tables";
 import { getTradingAreaList } from "@/api/data";
 import { postdelTradingArea } from "@/api/data";
 import { formatDate } from "@/libs/formatdate";
-import imgurl1 from "@/assets/images/nav3_1.png";
-import imgurl2 from "@/assets/images/nav3_2.png";
-import imgurl3 from "@/assets/images/nav3_3.png";
-import imgurl4 from "@/assets/images/nav3_4.png";
-import imgurl5 from "@/assets/images/nav3_5.png";
+
 
 export default {
   name: "wechatlist",

@@ -135,6 +135,24 @@ export const postAddactivity = info => {
     method: 'post'
   })
 }
+// 删除活动
+export const postDelActivity  = info => {
+  return axios.request({
+    url: 'activity/delete',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 修改活动
+export const postUpdActivity  = info => {
+  return axios.request({
+    url: 'activity/update',
+    data: info,
+    method: 'post'
+  })
+}
+
 
 
 
