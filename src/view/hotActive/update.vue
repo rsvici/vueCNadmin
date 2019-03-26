@@ -22,6 +22,57 @@
             />
           </FormItem>
 
+          <!-- banner -->
+          <FormItem label="banner : ">
+            <div
+              class="demo-upload-list"
+              v-if="formItem.activityUrl"
+            >
+              <template>
+                <img :src="formItem.activityUrl">
+                <div class="demo-upload-list-cover">
+                  <Icon
+                    type="ios-eye-outline"
+                    @click.native="handleView(formItem.activityUrl)"
+                  ></Icon>
+                </div>
+              </template>
+            </div>
+            <!-- 上传 -->
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleBannerSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              multiple
+              type="drag"
+              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              style="display: inline-block;width:120px;"
+            >
+              <div style="width: 120px;height:120px;line-height: 120px;">
+                <Icon
+                  type="ios-camera"
+                  size="30"
+                ></Icon>
+              </div>
+            </Upload>
+
+            <!-- 图片大图 -->
+            <Modal
+              title="封面"
+              v-model="visible"
+            >
+              <img
+                :src="formItem.activityUrl"
+                v-if="visible"
+                style="width: 100%"
+              >
+            </Modal>
+          </FormItem>
+
           <!-- 上传图片 -->
           <FormItem label="封面 : ">
             <div
@@ -276,8 +327,11 @@
               style="margin-left: 10px"
               type="success"
               @click="addActivty"
-            >提交</Button>
-            <Button style="margin-left: 10px">取消</Button>
+            >修改</Button>
+            <Button
+              style="margin-left: 10px"
+              @click="cancelForm"
+            >取消</Button>
           </FormItem>
         </div>
 
@@ -293,9 +347,9 @@
   </div>
 </template>
 <script>
-import { postAddactivity } from "@/api/data";
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import { postUpdActivity } from "@/api/data";
 import { routeEqual } from "@/libs/util";
+const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
     VueUeditorWrap
@@ -307,6 +361,7 @@ export default {
         name: "", // 名称
         introduction: "", // 简介
         tradingAreaId: "", //商户id
+        activityUrl:"",//banner
         coverUrl: "", //封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", //结束时间
@@ -393,6 +448,11 @@ export default {
     handleView() {
       this.visible = true;
     },
+       // banner上传成功
+    handleBannerSuccess(res, file) {
+      console.log(res);
+      this.formItem.activityUrl = res.data;
+    },
     // 图片上传成功
     handleSuccess(res, file) {
       console.log(res);
@@ -435,12 +495,12 @@ export default {
     },
     // 添加活动
     addActivty() {
-      var that = this;
+      var that=this;
       this.formItem.activityDetail = this.columnsdata;
       console.log(this.formItem);
       var newTradingArea = this.formItem;
       // console.log(newTradingArea)
-      postAddactivity(newTradingArea).then(res => {
+      postUpdActivity(newTradingArea).then(res => {
         console.log(res);
         that.cancelForm();
       });
@@ -453,7 +513,11 @@ export default {
     }
   },
   mounted() {
-    this.formItem.tradingAreaId = Number(this.$route.query.tradingAreaId);
+    this.formItem = JSON.parse(this.$route.query.activeData);
+    console.log(this.formItem.activityDetail);
+    this.formItem.activityBeginTime = new Date(this.formItem.activityBeginTime);
+    this.formItem.activityEndTime = new Date(this.formItem.activityEndTime);
+    this.columnsdata = this.formItem.activityDetail;
   },
   watch: {
     msg(val) {

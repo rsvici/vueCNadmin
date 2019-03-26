@@ -63,7 +63,7 @@ export default {
               {
                 on: {
                   click: () => {
-                    this.goMarket(params.index);
+                    this.goMarket(params.row.id);
                   }
                 }
               },
@@ -209,7 +209,7 @@ export default {
     },
     goMarket(index) {
       console.log(index);
-      this.$router.push({ path: "/market", query: { marketId: index } });
+      this.$router.push({ path: "/active", query: { tradingAreaId: index } });
     },
     // 去添加
     routerPushAddActiveInfo() {

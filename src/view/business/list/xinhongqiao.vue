@@ -35,11 +35,6 @@ import Tables from "_c/tables";
 import { getTradingAreaList } from "@/api/data";
 import { postdelTradingArea } from "@/api/data";
 import { formatDate } from "@/libs/formatdate";
-import imgurl1 from "@/assets/images/nav3_1.png";
-import imgurl2 from "@/assets/images/nav3_2.png";
-import imgurl3 from "@/assets/images/nav3_3.png";
-import imgurl4 from "@/assets/images/nav3_4.png";
-import imgurl5 from "@/assets/images/nav3_5.png";
 
 export default {
   name: "wechatlist",
@@ -67,7 +62,7 @@ export default {
               {
                 on: {
                   click: () => {
-                    this.goMarket(params.index);
+                    this.goMarket(params.row.id);
                   }
                 }
               },
@@ -189,7 +184,6 @@ export default {
       this.$Modal.info({
         title: params.row.name,
         scrollable: true,
-        width: 600,
         closable: true,
         content: params.row.content
       });
@@ -212,9 +206,9 @@ export default {
         query: { shopData: query.row }
       });
     },
-    goMarket(index) {
-      console.log(index);
-      this.$router.push({ path: "/market", query: { marketId: index } });
+    goMarket(busniss) {
+      console.log(busniss);
+      this.$router.push({ path: "/active", query: { tradingAreaId: busniss } });
     },
     // 去添加
     routerPushAddActiveInfo() {
@@ -225,7 +219,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.busnissId);
     getTradingAreaList({
       type: 1,
       isShoppingMall: 0

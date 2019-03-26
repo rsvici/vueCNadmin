@@ -243,16 +243,16 @@ export default {
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.$route.query.activeId);
+      console.log(this.$route.query.tradingAreaId);
       this.$router.push({
         path: "/activeAdd",
-        query: { activeId: this.$route.query.activeId }
+        query: { tradingAreaId: this.$route.query.tradingAreaId }
       });
     }
   },
   mounted() {
     getActivityList({
-      Id: this.$route.query.activeId
+      tradingAreaId: this.$route.query.tradingAreaId
     }).then(res => {
       this.tableData = res.data.data.parameterType;
     });

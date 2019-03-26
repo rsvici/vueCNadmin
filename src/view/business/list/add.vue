@@ -183,6 +183,7 @@ export default {
   },
   mounted() {
     this.formItem.type = this.$route.query.busnissId;
+    // this.formItem.type = 3;
   }
 };
 </script>

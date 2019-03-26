@@ -1,5 +1,5 @@
 // 时间格式化
-export function formatDate(date, fmt) {
+export function formatDate (date, fmt) {
   let o = {
     'M+': date.getMonth() + 1, // 月份
     'd+': date.getDate(), // 日
@@ -19,67 +19,67 @@ export function formatDate(date, fmt) {
   return fmt
 }
 // 审核格式化
-export function formatCheck(formatData) {
+export function formatCheck (formatData) {
   switch (formatData) {
     case '0':
       formatData = '未审核'
-      break;
+      break
     case '1':
       formatData = '通过'
-      break;
+      break
     case '2':
       formatData = '未通过'
-      break;
+      break
   }
   return formatData
 }
 
 // 类型格式化
-export function formatType(formatData) {
+export function formatType (formatData) {
   switch (formatData) {
     case '0':
       formatData = '话剧'
-      break;
+      break
     case '1':
       formatData = '电影'
-      break;
+      break
     case '2':
       formatData = '演唱会'
-      break;
+      break
   }
   return formatData
 }
 
 // 标签1格式化
-export function formatLabelOne(formatData) {
+export function formatLabelOne (formatData) {
   switch (formatData) {
     case '0':
       formatData = '文化 / 体育'
-      break;
+      break
     case '1':
       formatData = '购物'
-      break;
+      break
     case '2':
       formatData = '餐饮/美食'
-      break;
+      break
   }
   return formatData
 }
 // 标签2格式化
-export function formatLabelTow(formatData) {
+export function formatLabelTow (formatData) {
   switch (formatData) {
     case '0':
       formatData = '乐文'
-      break;
+      break
     case '1':
       formatData = '乐影'
-      break;
+      break
     case '2':
       formatData = '乐动'
-      break;
+      break
     case '3':
       formatData = '乐演'
-      break;
+      break
   }
   return formatData
 }

@@ -22,8 +22,62 @@
             />
           </FormItem>
 
+           <!-- banner -->
+          <FormItem label="banner : ">
+            <div
+              class="demo-upload-list"
+              v-if="formItem.activityUrl"
+            >
+              <template>
+                <img :src="formItem.activityUrl">
+                <div class="demo-upload-list-cover">
+                  <Icon
+                    type="ios-eye-outline"
+                    @click.native="handleView(formItem.activityUrl)"
+                  ></Icon>
+                </div>
+              </template>
+            </div>
+            <!-- 上传 -->
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleBannerSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              multiple
+              type="drag"
+              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              style="display: inline-block;width:120px;"
+            >
+              <div style="width: 120px;height:120px;line-height: 120px;">
+                <Icon
+                  type="ios-camera"
+                  size="30"
+                ></Icon>
+              </div>
+            </Upload>
+
+            <!-- 图片大图 -->
+            <Modal
+              title="封面"
+              v-model="visible"
+            >
+              <img
+                :src="formItem.activityUrl"
+                v-if="visible"
+                style="width: 100%"
+              >
+            </Modal>
+          </FormItem>
+
+
+
+
           <!-- 上传图片 -->
-          <FormItem label="封面 : ">
+          <FormItem label="活动图 : ">
             <div
               class="demo-upload-list"
               v-if="formItem.coverUrl"
@@ -307,6 +361,7 @@ export default {
         name: "", // 名称
         introduction: "", // 简介
         tradingAreaId: "", //商户id
+        activityUrl:"",//banner
         coverUrl: "", //封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", //结束时间
@@ -393,6 +448,11 @@ export default {
     handleView() {
       this.visible = true;
     },
+      // banner上传成功
+    handleBannerSuccess(res, file) {
+      console.log(res);
+      this.formItem.activityUrl = res.data;
+    },
     // 图片上传成功
     handleSuccess(res, file) {
       console.log(res);
@@ -453,7 +513,7 @@ export default {
     }
   },
   mounted() {
-    this.formItem.tradingAreaId = Number(this.$route.query.tradingAreaId);
+    this.formItem.tradingAreaId = Number(this.$route.query.activeId);
   },
   watch: {
     msg(val) {

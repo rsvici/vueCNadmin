@@ -78,7 +78,6 @@ export const postdelIntegralt = info => {
   })
 }
 
-
 // 获取商圈,商场列表
 export const getTradingAreaList = info => {
   return axios.request({
@@ -107,7 +106,7 @@ export const postUpdTradingArea = info => {
 }
 
 // 删除商圈,商场
-export const postdelTradingArea  = info => {
+export const postdelTradingArea = info => {
   return axios.request({
     url: 'tradingArea/delete',
     params: info,
@@ -136,7 +135,7 @@ export const postAddactivity = info => {
   })
 }
 // 删除活动
-export const postDelActivity  = info => {
+export const postDelActivity = info => {
   return axios.request({
     url: 'activity/delete',
     params: info,
@@ -145,21 +144,13 @@ export const postDelActivity  = info => {
 }
 
 // 修改活动
-export const postUpdActivity  = info => {
+export const postUpdActivity = info => {
   return axios.request({
     url: 'activity/update',
     data: info,
     method: 'post'
   })
 }
-
-
-
-
-
-
-
-
 
 // 获取用户信息列表
 export const getUserList = () => {
