@@ -91,7 +91,7 @@ export const getTradingAreaList = info => {
 export const postAddTradingArea = info => {
   return axios.request({
     url: 'tradingArea/add',
-    params: info,
+    data: info,
     method: 'post'
   })
 }
@@ -151,6 +151,26 @@ export const postUpdActivity = info => {
     method: 'post'
   })
 }
+
+// 审核活动
+export const postAudtitActivity = info => {
+  return axios.request({
+    url: 'activity/audit',
+    data: info,
+    method: 'post'
+  })
+}
+
+// 评论列表
+export const getCommentList = info => {
+  return axios.request({
+    url: 'collect/listComment',
+    data: info,
+    method: 'get'
+  })
+}
+
+
 
 // 获取用户信息列表
 export const getUserList = () => {

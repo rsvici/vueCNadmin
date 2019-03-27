@@ -217,7 +217,8 @@ export default {
           }
         }
       ],
-      tableData: []
+      tableData: [],
+      tradingAreaId: ""
     };
   },
   methods: {
@@ -251,7 +252,7 @@ export default {
         id: item.row.id
       }).then(res => {
         getActivityList({
-          Id: this.$route.query.activeId
+          Id: this.tradingAreaId
         }).then(res => {
           this.tableData = res.data.data.parameterType;
         });
@@ -259,10 +260,11 @@ export default {
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.$route.query.activeId);
+      console.log(this.tradingAreaId);
+
       this.$router.push({
         path: "/hotActiveAdd",
-        query: { activeId: this.$route.query.activeId }
+        query: { activeId: this.tradingAreaId }
       });
     }
   },
@@ -287,6 +289,7 @@ export default {
             tradingAreaId = 49;
             break;
         }
+        this.tradingAreaId = tradingAreaId;
         getActivityList({
           tradingAreaId: tradingAreaId
         }).then(res => {
@@ -312,6 +315,7 @@ export default {
         tradingAreaId = 49;
         break;
     }
+    this.tradingAreaId = tradingAreaId;
     getActivityList({
       tradingAreaId: tradingAreaId
     }).then(res => {

@@ -238,8 +238,12 @@ tbody {
   }
 }
 .ivu-modal-confirm-body {
+  padding-left: 0px;
   p {
     word-wrap: break-word;
+  }
+  img{
+    width: 100%;
   }
 }
 </style>

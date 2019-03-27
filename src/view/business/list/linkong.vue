@@ -36,7 +36,6 @@ import { getTradingAreaList } from "@/api/data";
 import { postdelTradingArea } from "@/api/data";
 import { formatDate } from "@/libs/formatdate";
 
-
 export default {
   name: "wechatlist",
   components: {
@@ -239,8 +238,12 @@ tbody {
   }
 }
 .ivu-modal-confirm-body {
+  padding-left: 0px;
   p {
     word-wrap: break-word;
+  }
+  img{
+    width: 100%;
   }
 }
 </style>

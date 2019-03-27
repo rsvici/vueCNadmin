@@ -1,12 +1,10 @@
 <template>
   <div class="activelist">
     <Card>
-      <Tables
+      <Table
         ref="tables"
         editable
-        searchable
-        search-place="top"
-        v-model="tableData"
+        :data="tableData"
         :columns="columns"
       />
       <div style="margin: 10px;overflow: hidden">
@@ -28,13 +26,8 @@
 </template>
 <script>
 import Tables from "_c/tables";
-import { getTableData } from "@/api/data";
-import imgurl1 from "@/assets/images/nav3_1.png";
-import imgurl2 from "@/assets/images/nav3_2.png";
-import imgurl3 from "@/assets/images/nav3_3.png";
-import imgurl4 from "@/assets/images/nav3_4.png";
-import imgurl5 from "@/assets/images/nav3_5.png";
-
+import { getCommentList } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
 export default {
   name: "activelist",
   components: {
@@ -52,12 +45,24 @@ export default {
       columns: [
         {
           title: "活动名称",
-          key: "title"
+          key: "activityName"
         },
-        { title: "简介", key: "dec" },
-        { title: "时间", key: "time" },
-        { title: "评论内容", key: "type" },
-        { title: "评论人", key: "type1" },
+        {
+          title: "活动简介",
+          key: "introduction"
+        },
+        { title: "评论内容", key: "commentDes" },
+        {
+          title: "评论时间",
+          key: "commentTime",
+          render: (h, params) => {
+            return h(
+              "div",
+              formatDate(new Date(params.row.commentTime), "yyyy-MM-dd hh:mm")
+            );
+          }
+        },
+        { title: "用户名", key: "nickname" },
         {
           title: "操作",
           key: "action",
@@ -66,24 +71,6 @@ export default {
           searchable: "false",
           render: (h, params) => {
             return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.show(params.index);
-                    }
-                  }
-                },
-                "查看"
-              ),
               h(
                 "Button",
                 {
@@ -124,48 +111,7 @@ export default {
           }
         }
       ],
-      tableDataobj: [
-        {
-          title: "百丽宫影城商户1",
-          imgurl: imgurl1,
-          dec: "345",
-          time: "345",
-          type: "123",
-          type1: "123"
-        },
-        {
-          title: "尚嘉中心商户2",
-          imgurl: imgurl2,
-          dec: "2234",
-          time: "3345",
-          type: "123",
-          type1: "123"
-        },
-        {
-          title: "玫瑰坊商业街商户3",
-          imgurl: imgurl3,
-          dec: "2344",
-          time: "3465",
-          type: "123",
-          type1: "123"
-        },
-        {
-          title: "巴黎春天新宁店商户4",
-          imgurl: imgurl4,
-          dec: "2234",
-          time: "3345",
-          type: "123",
-          type1: "123"
-        },
-        {
-          title: "龙之梦购物中心商户5",
-          imgurl: imgurl5,
-          dec: "2354",
-          time: "7345",
-          type: "123",
-          type1: "123"
-        }
-      ],
+
       tableData: []
     };
   },
@@ -192,18 +138,12 @@ export default {
       console.log(index);
     },
     // 置顶
-    commentGoTop() {
-     
-    }
+    commentGoTop() {}
   },
   mounted() {
-    // console.log(this.busnissId);
-    this.tableData = this.tableDataobj;
-    // this.marketId = this.$route.params.marketId;
-
-    getTableData().then(res => {
-      // this.tableData = res.data;
-      // console.log(res);
+    var that = this;
+    getCommentList().then(res => {
+      that.tableData = res.data.data.parameterType;
     });
   }
 };
