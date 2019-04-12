@@ -160,8 +160,9 @@
             <Select v-model="formItem.activityType">
               <Option value="0">话剧</Option>
               <Option value="1">电影</Option>
-              <Option value="2">演唱会</Option>
-              <Option value="3">...</Option>
+              <Option value="2">活动</Option>
+              <Option value="3">运动</Option>
+              <Option value="4">...</Option>
             </Select>
           </FormItem>
           <FormItem label="标签1">
@@ -361,7 +362,7 @@ export default {
         name: "", // 名称
         introduction: "", // 简介
         tradingAreaId: "", //商户id
-        activityUrl:"",//banner
+        activityUrl: "", //banner
         coverUrl: "", //封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", //结束时间
@@ -382,9 +383,9 @@ export default {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: "60%",
+        initialFrameWidth: 500,
         UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
+        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
       },
       // 上传图片
       visible: false,
@@ -448,7 +449,7 @@ export default {
     handleView() {
       this.visible = true;
     },
-       // banner上传成功
+    // banner上传成功
     handleBannerSuccess(res, file) {
       console.log(res);
       this.formItem.activityUrl = res.data;
@@ -495,7 +496,7 @@ export default {
     },
     // 添加活动
     addActivty() {
-      var that=this;
+      var that = this;
       this.formItem.activityDetail = this.columnsdata;
       console.log(this.formItem);
       var newTradingArea = this.formItem;
@@ -515,8 +516,14 @@ export default {
   mounted() {
     this.formItem = JSON.parse(this.$route.query.activeData);
     console.log(this.formItem.activityDetail);
-    this.formItem.activityBeginTime = new Date(this.formItem.activityBeginTime);
-    this.formItem.activityEndTime = new Date(this.formItem.activityEndTime);
+    if (this.formItem.activityBeginTime > 1000) {
+      this.formItem.activityBeginTime = new Date(
+        this.formItem.activityBeginTime
+      );
+    }
+    if (this.formItem.activityEndTime > 1000) {
+      this.formItem.activityEndTime = new Date(this.formItem.activityEndTime);
+    }
     this.columnsdata = this.formItem.activityDetail;
   },
   watch: {

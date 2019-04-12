@@ -1,11 +1,5 @@
 import axios from '@/libs/api.request'
 
-export const getTableData = () => {
-  return axios.request({
-    url: 'get_table_data',
-    method: 'get'
-  })
-}
 
 // 获取微信矩阵列表
 export const getMatrixList = info => {

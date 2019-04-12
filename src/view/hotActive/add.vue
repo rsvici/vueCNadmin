@@ -22,7 +22,7 @@
             />
           </FormItem>
 
-           <!-- banner -->
+          <!-- banner -->
           <FormItem label="banner : ">
             <div
               class="demo-upload-list"
@@ -72,9 +72,6 @@
               >
             </Modal>
           </FormItem>
-
-
-
 
           <!-- 上传图片 -->
           <FormItem label="活动图 : ">
@@ -163,8 +160,9 @@
             <Select v-model="formItem.activityType">
               <Option value="0">话剧</Option>
               <Option value="1">电影</Option>
-              <Option value="2">演唱会</Option>
-              <Option value="3">...</Option>
+              <Option value="2">活动</Option>
+              <Option value="3">运动</Option>
+              <Option value="4">...</Option>
             </Select>
           </FormItem>
           <FormItem label="标签1">
@@ -281,6 +279,74 @@
             </Table>
           </FormItem>
 
+
+
+          <!-- 封面 -->
+          <!-- 上传图片 -->
+          <FormItem label="封面 : ">
+            <div
+              class="demo-upload-list"
+              v-for="item in uploadImageList"
+              v-bind:key="item.uid"
+            >
+              <template v-if="item.status == 'finished'">
+                <img :src="item.url">
+                <div class="demo-upload-list-cover">
+                  <Icon
+                    type="ios-eye-outline"
+                    @click.native="handleViewImageList(item)"
+                  ></Icon>
+                  <Icon
+                    type="ios-trash-outline"
+                    @click.native="handleRemoveImageList(item)"
+                  ></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress
+                  v-if="item.showProgress"
+                  :percent="item.percentage"
+                  hide-info
+                ></Progress>
+              </template>
+            </div>
+            <!-- 上传 -->
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="ImageListSuccess"
+              :default-file-list="uploadImageList"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              multiple
+              type="drag"
+              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              style="display: inline-block;width:120px;"
+            >
+              <div style="width: 120px;height:120px;line-height: 120px;">
+                <Icon
+                  type="ios-camera"
+                  size="30"
+                ></Icon>
+              </div>
+            </Upload>
+
+            <!-- 图片大图 -->
+            <Modal
+              title="封面"
+              v-model="imageListVisible"
+            >
+              <img
+                :src="showuploadImageList.url"
+                v-if="imageListVisible"
+                style="width: 100%"
+              >
+            </Modal>
+          </FormItem>
+
+
           <FormItem label="购票连接(可选) : ">
             <Input
               v-model="formItem.ticketLink"
@@ -288,16 +354,6 @@
               placeholder="请输入购票URL格式:http://xxx.xxx.xxx"
             />
           </FormItem>
-          <!-- 多选 -->
-          <!-- <FormItem label="Checkbox">
-          <CheckboxGroup v-model="formItem.checkbox">
-            <Checkbox label="Eat"></Checkbox>
-            <Checkbox label="Sleep"></Checkbox>
-            <Checkbox label="Run"></Checkbox>
-            <Checkbox label="Movie"></Checkbox>
-          </CheckboxGroup>
-          </FormItem> -->
-          <!-- 选择页面 -->
           <FormItem>
             <Button
               type="info"
@@ -310,7 +366,6 @@
             >下一页</Button>
           </FormItem>
         </div>
-
         <!-- 富文本 -->
         <div v-show="showWebNum==2">
           <FormItem label="详情简介 : ">
@@ -334,7 +389,6 @@
             <Button style="margin-left: 10px">取消</Button>
           </FormItem>
         </div>
-
         <FormItem>
           <Steps :current="showWebNum">
             <Step title="步骤1"></Step>
@@ -356,12 +410,19 @@ export default {
   },
   data() {
     return {
-      showWebNum: 0, // 显示页面
+      // 多图上传
+      imageListVisible: false,  //是否显示图片
+      uploadImageList:[], //上传数组  
+      defaultList:[],  //暂无用
+      showuploadImageList:[],   // 显示多图图片
+
+      // 显示页面
+      showWebNum: 0,
       formItem: {
         name: "", // 名称
         introduction: "", // 简介
         tradingAreaId: "", //商户id
-        activityUrl:"",//banner
+        activityUrl: "", //banner
         coverUrl: "", //封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", //结束时间
@@ -382,9 +443,9 @@ export default {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: "60%",
+        initialFrameWidth: 500,
         UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
+        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
       },
       // 上传图片
       visible: false,
@@ -448,7 +509,7 @@ export default {
     handleView() {
       this.visible = true;
     },
-      // banner上传成功
+    // banner上传成功
     handleBannerSuccess(res, file) {
       console.log(res);
       this.formItem.activityUrl = res.data;
@@ -463,6 +524,20 @@ export default {
       console.log(res);
       this.actionInfo.url = res.data;
     },
+
+
+
+    // 多图上传
+    handleViewImageList(item){
+        this.imageListVisible = true;
+        this.showuploadImageList=item
+        
+    },
+    ImageListSuccess(res, file){
+      file.url=res.url
+      console.log(file)
+    },
+
     // 上传文件错误
     handleFormatError(file) {
       this.$Notice.warning({
@@ -514,6 +589,8 @@ export default {
   },
   mounted() {
     this.formItem.tradingAreaId = Number(this.$route.query.activeId);
+    this.uploadList = this.$refs.upload.fileList;
+    console.log( this.uploadList);
   },
   watch: {
     msg(val) {

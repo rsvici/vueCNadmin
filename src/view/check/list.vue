@@ -69,7 +69,7 @@ export default {
             });
           }
         },
-        { title: "简介", key: "introduction" },
+        { title: "简介", key: "introduction"  ,ellipsis: true },
         {
           title: "时间",
           key: "activityBeginTime",
@@ -85,9 +85,9 @@ export default {
         },
         {
           title: "类型",
-          key: "type",
+          key: "activityType",
           render: (h, params) => {
-            return h("div", formatType(params.row.type));
+            return h("div", formatType(params.row.activityType));
           }
         },
         {

@@ -49,7 +49,8 @@ export default {
         },
         {
           title: "活动简介",
-          key: "introduction"
+          key: "introduction",
+           ellipsis: true 
         },
         { title: "评论内容", key: "commentDes" },
         {

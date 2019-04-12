@@ -109,8 +109,9 @@
             <Select v-model="formItem.activityType">
               <Option value="0">话剧</Option>
               <Option value="1">电影</Option>
-              <Option value="2">演唱会</Option>
-              <Option value="3">...</Option>
+              <Option value="2">活动</Option>
+              <Option value="3">运动</Option>
+              <Option value="4">...</Option>
             </Select>
           </FormItem>
           <FormItem label="标签1">
@@ -329,7 +330,7 @@ export default {
         initialFrameHeight: 400,
         initialFrameWidth: "60%",
         UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/GZUSER/ueditor/dispatch"
+        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
       },
       // 上传图片
       visible: false,
