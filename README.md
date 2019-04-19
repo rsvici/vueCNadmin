@@ -1,6 +1,6 @@
 ## clone the project
 ```bush
-git clone ttps://github.com/rsvici/vueCNadmin.git
+git clone https://github.com/rsvici/vueCNadmin.git
 ```
 
 ## Install
