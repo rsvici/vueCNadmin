@@ -10,8 +10,9 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
+            :page-size="15"
             @on-change="changePage"
           ></Page>
         </div>
@@ -42,6 +43,11 @@ export default {
   },
   data() {
     return {
+      // 分页
+      current: 1,
+      total: 0,
+
+      // 表单
       columns: [
         {
           title: "活动名称",
@@ -50,7 +56,7 @@ export default {
         {
           title: "活动简介",
           key: "introduction",
-           ellipsis: true 
+          ellipsis: true
         },
         { title: "评论内容", key: "commentDes" },
         {
@@ -112,7 +118,6 @@ export default {
           }
         }
       ],
-
       tableData: []
     };
   },
@@ -131,21 +136,28 @@ export default {
       });
     },
     changePage(event) {
-      //分页
-      console.log(event);
+      // 分页
+      this.getCommentListFun(event);
     },
     remove(index) {
       // 删除
       console.log(index);
     },
     // 置顶
-    commentGoTop() {}
+    commentGoTop() {},
+    getCommentListFun(pageNo) {
+      var that = this;
+      getCommentList({
+        pageSize: 15,
+        pageNo
+      }).then(res => {
+        that.tableData = res.data.data.parameterType;
+        that.total = res.data.data.totalRecord;
+      });
+    }
   },
   mounted() {
-    var that = this;
-    getCommentList().then(res => {
-      that.tableData = res.data.data.parameterType;
-    });
+    this.getCommentListFun(1);
   }
 };
 </script>
@@ -158,4 +170,3 @@ tbody {
   }
 }
 </style>
-

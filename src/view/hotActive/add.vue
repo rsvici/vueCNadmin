@@ -33,7 +33,7 @@
                 <div class="demo-upload-list-cover">
                   <Icon
                     type="ios-eye-outline"
-                    @click.native="handleView(formItem.activityUrl)"
+                    @click.native="handleViewBanner(formItem.activityUrl)"
                   ></Icon>
                 </div>
               </template>
@@ -62,12 +62,12 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="封面"
-              v-model="visible"
+              title="banner"
+              v-model="visibleBanner"
             >
               <img
                 :src="formItem.activityUrl"
-                v-if="visible"
+                v-if="visibleBanner"
                 style="width: 100%"
               >
             </Modal>
@@ -113,7 +113,7 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="封面"
+              title="活动图"
               v-model="visible"
             >
               <img
@@ -139,16 +139,6 @@
               v-model="formItem.activityEndTime"
             ></DatePicker>
           </FormItem>
-
-          <!-- <FormItem label="活动时间 : ">
-            <DatePicker
-              type="datetimerange"
-              placement="bottom-start"
-              placeholder="选择时间"
-              style="width: 285px"
-              v-model="formItem.activityBeginTime"
-            ></DatePicker>
-          </FormItem> -->
 
           <FormItem label="地点 : ">
             <Input
@@ -217,10 +207,7 @@
                 <template>
                   <img :src="actionInfo.url">
                   <div class="demo-upload-list-cover">
-                    <Icon
-                      type="ios-eye-outline"
-                      @click.native="handleView(actionInfo.url)"
-                    ></Icon>
+                    <Icon type="ios-eye-outline"></Icon>
                   </div>
                 </template>
               </div>
@@ -245,18 +232,6 @@
                   ></Icon>
                 </div>
               </Upload>
-
-              <!-- 图片大图 -->
-              <Modal
-                title="人员头像"
-                v-model="visible"
-              >
-                <img
-                  :src="actionInfo.url"
-                  v-if="visible"
-                  style="width: 100%"
-                >
-              </Modal>
             </FormItem>
 
             <FormItem>
@@ -279,18 +254,16 @@
             </Table>
           </FormItem>
 
-
-
           <!-- 封面 -->
           <!-- 上传图片 -->
-          <FormItem label="封面 : ">
+          <FormItem label="剧照 : ">
             <div
               class="demo-upload-list"
-              v-for="item in uploadImageList"
-              v-bind:key="item.uid"
+              v-for="(item,index) in uploadImageList"
+              v-bind:key="index"
             >
-              <template v-if="item.status == 'finished'">
-                <img :src="item.url">
+              <template>
+                <img :src="item">
                 <div class="demo-upload-list-cover">
                   <Icon
                     type="ios-eye-outline"
@@ -298,29 +271,20 @@
                   ></Icon>
                   <Icon
                     type="ios-trash-outline"
-                    @click.native="handleRemoveImageList(item)"
+                    @click.native="handleRemoveImageList(index)"
                   ></Icon>
                 </div>
               </template>
-              <template v-else>
-                <Progress
-                  v-if="item.showProgress"
-                  :percent="item.percentage"
-                  hide-info
-                ></Progress>
-              </template>
+
             </div>
             <!-- 上传 -->
             <Upload
               ref="upload"
               :show-upload-list="false"
               :on-success="ImageListSuccess"
-              :default-file-list="uploadImageList"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
               :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              multiple
               type="drag"
               action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
@@ -335,17 +299,16 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="封面"
+              title="剧照"
               v-model="imageListVisible"
             >
               <img
-                :src="showuploadImageList.url"
+                :src="showuploadImage"
                 v-if="imageListVisible"
                 style="width: 100%"
               >
             </Modal>
           </FormItem>
-
 
           <FormItem label="购票连接(可选) : ">
             <Input
@@ -402,8 +365,8 @@
 </template>
 <script>
 import { postAddactivity } from "@/api/data";
-const VueUeditorWrap = require("vue-ueditor-wrap");
 import { routeEqual } from "@/libs/util";
+const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
   components: {
     VueUeditorWrap
@@ -411,28 +374,27 @@ export default {
   data() {
     return {
       // 多图上传
-      imageListVisible: false,  //是否显示图片
-      uploadImageList:[], //上传数组  
-      defaultList:[],  //暂无用
-      showuploadImageList:[],   // 显示多图图片
+      imageListVisible: false, // 是否显示图片
+      uploadImageList: [], // 上传数组
+      showuploadImage: [], // 显示图片
 
       // 显示页面
       showWebNum: 0,
       formItem: {
         name: "", // 名称
         introduction: "", // 简介
-        tradingAreaId: "", //商户id
-        activityUrl: "", //banner
-        coverUrl: "", //封面
+        tradingAreaId: "", // 商户id
+        activityUrl: "", // banner
+        coverUrl: "", // 封面
         activityBeginTime: "", // 开始时间
-        activityEndTime: "", //结束时间
+        activityEndTime: "", // 结束时间
         place: "", // 地点
-        activityType: "", //活动类型
-        type: "1", //类型
-        labelOne: "0", //标签
-        labelTow: "0", //标签
-        ticketLink: "", //购票链接
-        activityDec: "" //活动详情
+        activityType: "", // 活动类型
+        type: "1", // 类型
+        labelOne: "0", // 标签
+        labelTow: "0", // 标签
+        ticketLink: "", // 购票链接
+        activityDec: "" // 活动详情
       },
       actionInfo: {
         name: "",
@@ -449,6 +411,7 @@ export default {
       },
       // 上传图片
       visible: false,
+      visibleBanner:false,
       // 表格
       columns: [
         {
@@ -509,6 +472,10 @@ export default {
     handleView() {
       this.visible = true;
     },
+    handleViewBanner() {
+      this.visibleBanner = true;
+    },
+
     // banner上传成功
     handleBannerSuccess(res, file) {
       console.log(res);
@@ -527,16 +494,21 @@ export default {
 
 
 
-    // 多图上传
-    handleViewImageList(item){
-        this.imageListVisible = true;
-        this.showuploadImageList=item
-        
+    // 封面上传
+    handleViewImageList(item) {
+      //显示图片
+      this.imageListVisible = true;
+      this.showuploadImage = item;
     },
-    ImageListSuccess(res, file){
-      file.url=res.url
-      console.log(file)
+    ImageListSuccess(res, file) {
+      this.uploadImageList.push(res.data);
+      console.log(this.uploadImageList);
     },
+    handleRemoveImageList(index) {
+      //删除指定图片
+      this.uploadImageList.splice(index, 1);
+    },
+    
 
     // 上传文件错误
     handleFormatError(file) {
@@ -572,9 +544,8 @@ export default {
     addActivty() {
       var that = this;
       this.formItem.activityDetail = this.columnsdata;
-      console.log(this.formItem);
+      this.formItem.still  = this.uploadImageList.join(',');
       var newTradingArea = this.formItem;
-      // console.log(newTradingArea)
       postAddactivity(newTradingArea).then(res => {
         console.log(res);
         that.cancelForm();
@@ -590,7 +561,7 @@ export default {
   mounted() {
     this.formItem.tradingAreaId = Number(this.$route.query.activeId);
     this.uploadList = this.$refs.upload.fileList;
-    console.log( this.uploadList);
+    console.log(this.uploadList);
   },
   watch: {
     msg(val) {

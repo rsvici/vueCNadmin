@@ -1,6 +1,6 @@
 // 时间格式化
-export function formatDate(date, fmt) {
-  if(date.getTime()<100){
+export function formatDate (date, fmt) {
+  if (date.getTime() < 100) {
     return ''
   }
   let o = {
@@ -22,7 +22,7 @@ export function formatDate(date, fmt) {
   return fmt
 }
 // 审核格式化
-export function formatCheck(formatData) {
+export function formatCheck (formatData) {
   switch (formatData) {
     case '0':
       formatData = '未审核'
@@ -38,7 +38,7 @@ export function formatCheck(formatData) {
 }
 
 // 类型格式化
-export function formatType(formatData) {
+export function formatType (formatData) {
   switch (formatData) {
     case '0':
       formatData = '话剧'
@@ -59,7 +59,7 @@ export function formatType(formatData) {
 }
 
 // 标签1格式化
-export function formatLabelOne(formatData) {
+export function formatLabelOne (formatData) {
   switch (formatData) {
     case '0':
       formatData = '文化 / 体育'
@@ -74,7 +74,7 @@ export function formatLabelOne(formatData) {
   return formatData
 }
 // 标签2格式化
-export function formatLabelTow(formatData) {
+export function formatLabelTow (formatData) {
   switch (formatData) {
     case '0':
       formatData = '乐文'

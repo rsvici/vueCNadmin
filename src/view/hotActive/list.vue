@@ -12,8 +12,8 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
             @on-change="changePage"
           ></Page>
         </div>
@@ -55,6 +55,10 @@ export default {
   },
   data() {
     return {
+      // 分页
+      current: 1,
+      total: 0,
+      // 表格
       columns: [
         {
           title: "活动名称",
@@ -175,7 +179,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params.row.id);
                     }
                   }
                 },
@@ -193,7 +197,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.update(params);
+                      this.update(params.row.id);
                     }
                   }
                 },
@@ -233,21 +237,20 @@ export default {
       });
     },
     changePage(event) {
-      //分页
-      console.log(event);
+      // 分页
+      this.getActivityListFun(this.tradingAreaId, event);
     },
-    show(index) {
+    show(activeId) {
       // 查看
-      this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+       this.$router.push({
+        path: "/hotActiveShow",
+        query: { activeId }
       });
     },
-    update(item) {
-      console.log(item.row);
+    update(activeId) {
       this.$router.push({
         path: "/hotActiveUpdata",
-        query: { activeData: JSON.stringify(item.row) }
+        query: { activeId }
       });
     },
     remove(item) {
@@ -255,27 +258,31 @@ export default {
       postDelActivity({
         id: item.row.id
       }).then(res => {
-        getActivityList({
-          tradingAreaId: this.tradingAreaId
-        }).then(res => {
-          this.tableData = res.data.data.parameterType;
-        });
+        this.getActivityListFun(this.tradingAreaId, 1);
       });
     },
     // 去添加
     routerPushAddActiveInfo() {
-      console.log(this.tradingAreaId);
-
       this.$router.push({
         path: "/hotActiveAdd",
         query: { activeId: this.tradingAreaId }
       });
+    },
+    getActivityListFun(tradingAreaId, pageNo) {
+      var that = this;
+      getActivityList({
+        pageSize: 15,
+        tradingAreaId,
+        pageNo
+      }).then(res => {
+        that.tableData = res.data.data.parameterType;
+      });
     }
   },
   watch: {
-    //时时监听路由的改变
+    // 时时监听路由的改变
     $route: function(to, from) {
-      //this.$store.dispatch('pageNumberReset');    //当路由改变时，将文章列表当前第几页的信息重置为第1页
+      // this.$store.dispatch('pageNumberReset');    //当路由改变时，将文章列表当前第几页的信息重置为第1页
       if (to.path != "/index") {
         var tradingAreaId,
           routerName = this.$route.name;
@@ -294,11 +301,7 @@ export default {
             break;
         }
         this.tradingAreaId = tradingAreaId;
-        getActivityList({
-          tradingAreaId: tradingAreaId
-        }).then(res => {
-          this.tableData = res.data.data.parameterType;
-        });
+        this.getActivityListFun(tradingAreaId, 1);
       }
     }
   },
@@ -320,11 +323,7 @@ export default {
         break;
     }
     this.tradingAreaId = tradingAreaId;
-    getActivityList({
-      tradingAreaId: tradingAreaId
-    }).then(res => {
-      this.tableData = res.data.data.parameterType;
-    });
+    this.getActivityListFun(tradingAreaId, 1);
   }
 };
 </script>
@@ -337,4 +336,3 @@ tbody {
   }
 }
 </style>
-

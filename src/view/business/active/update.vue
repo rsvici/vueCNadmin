@@ -89,16 +89,6 @@
             ></DatePicker>
           </FormItem>
 
-          <!-- <FormItem label="活动时间 : ">
-            <DatePicker
-              type="datetimerange"
-              placement="bottom-start"
-              placeholder="选择时间"
-              style="width: 285px"
-              v-model="formItem.activityBeginTime"
-            ></DatePicker>
-          </FormItem> -->
-
           <FormItem label="地点 : ">
             <Input
               v-model="formItem.place"
@@ -228,6 +218,62 @@
             </Table>
           </FormItem>
 
+          <!-- 剧照 -->
+          <!-- 上传图片 -->
+          <FormItem label="剧照 : ">
+            <div
+              class="demo-upload-list"
+              v-for="(item,index) in uploadImageList"
+              v-bind:key="index"
+            >
+              <template>
+                <img :src="item">
+                <div class="demo-upload-list-cover">
+                  <Icon
+                    type="ios-eye-outline"
+                    @click.native="handleViewImageList(item)"
+                  ></Icon>
+                  <Icon
+                    type="ios-trash-outline"
+                    @click.native="handleRemoveImageList(index)"
+                  ></Icon>
+                </div>
+              </template>
+
+            </div>
+            <!-- 上传 -->
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="ImageListSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              type="drag"
+              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              style="display: inline-block;width:120px;"
+            >
+              <div style="width: 120px;height:120px;line-height: 120px;">
+                <Icon
+                  type="ios-camera"
+                  size="30"
+                ></Icon>
+              </div>
+            </Upload>
+
+            <!-- 图片大图 -->
+            <Modal
+              title="剧照"
+              v-model="imageListVisible"
+            >
+              <img
+                :src="showuploadImage"
+                v-if="imageListVisible"
+                style="width: 100%"
+              >
+            </Modal>
+          </FormItem>
+
           <FormItem label="购票连接(可选) : ">
             <Input
               v-model="formItem.ticketLink"
@@ -235,15 +281,7 @@
               placeholder="请输入购票URL格式:http://xxx.xxx.xxx"
             />
           </FormItem>
-          <!-- 多选 -->
-          <!-- <FormItem label="Checkbox">
-          <CheckboxGroup v-model="formItem.checkbox">
-            <Checkbox label="Eat"></Checkbox>
-            <Checkbox label="Sleep"></Checkbox>
-            <Checkbox label="Run"></Checkbox>
-            <Checkbox label="Movie"></Checkbox>
-          </CheckboxGroup>
-          </FormItem> -->
+
           <!-- 选择页面 -->
           <FormItem>
             <Button
@@ -297,7 +335,7 @@
   </div>
 </template>
 <script>
-import { postUpdActivity } from "@/api/data";
+import { postUpdActivity, getActivityList } from "@/api/data";
 import { routeEqual } from "@/libs/util";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
@@ -306,21 +344,26 @@ export default {
   },
   data() {
     return {
+      // 多图上传
+      imageListVisible: false, // 是否显示图片
+      uploadImageList: [], // 上传数组
+      showuploadImage: [], // 显示图片
+
       showWebNum: 0, // 显示页面
       formItem: {
         name: "", // 名称
         introduction: "", // 简介
-        tradingAreaId: "", //商户id
-        coverUrl: "", //封面
+        tradingAreaId: "", // 商户id
+        coverUrl: "", // 封面
         activityBeginTime: "", // 开始时间
-        activityEndTime: "", //结束时间
+        activityEndTime: "", // 结束时间
         place: "", // 地点
-        activityType: "", //活动类型
-        type: "1", //类型
-        labelOne: "0", //标签
-        labelTow: "0", //标签
-        ticketLink: "", //购票链接
-        activityDec: "" //活动详情
+        activityType: "", // 活动类型
+        type: "1", // 类型
+        labelOne: "0", // 标签
+        labelTow: "0", // 标签
+        ticketLink: "", // 购票链接
+        activityDec: "" // 活动详情
       },
       actionInfo: {
         name: "",
@@ -407,6 +450,22 @@ export default {
       console.log(res);
       this.actionInfo.url = res.data;
     },
+
+    // 封面上传
+    handleViewImageList(item) {
+      //显示图片
+      this.imageListVisible = true;
+      this.showuploadImage = item;
+    },
+    ImageListSuccess(res, file) {
+      this.uploadImageList.push(res.data);
+      console.log(this.uploadImageList);
+    },
+    handleRemoveImageList(index) {
+      //删除指定图片
+      this.uploadImageList.splice(index, 1);
+    },
+
     // 上传文件错误
     handleFormatError(file) {
       this.$Notice.warning({
@@ -441,7 +500,7 @@ export default {
     addActivty() {
       var that = this;
       this.formItem.activityDetail = this.columnsdata;
-      console.log(this.formItem);
+      this.formItem.still = this.uploadImageList.join(",");
       var newTradingArea = this.formItem;
       // console.log(newTradingArea)
       postUpdActivity(newTradingArea).then(res => {
@@ -454,20 +513,30 @@ export default {
         item => !routeEqual(this.$route, item)
       );
       this.$router.go(-1);
+    },
+    getActiveInfo(id) {
+      var that = this;
+      getActivityList({
+        id
+      }).then(res => {
+        that.formItem = res.data.data.parameterType[0];
+        if (that.formItem.activityBeginTime > 1000) {
+          that.formItem.activityBeginTime = new Date(
+            that.formItem.activityBeginTime
+          );
+        }
+        if (that.formItem.activityEndTime > 1000) {
+          that.formItem.activityEndTime = new Date(
+            that.formItem.activityEndTime
+          );
+        }
+        that.uploadImageList = that.formItem.still.split(",");
+        that.columnsdata = that.formItem.activityDetail;
+      });
     }
   },
   mounted() {
-    this.formItem = JSON.parse(this.$route.query.activeData);
-    console.log(this.formItem.activityDetail);
-    if (this.formItem.activityBeginTime > 1000) {
-      this.formItem.activityBeginTime = new Date(
-        this.formItem.activityBeginTime
-      );
-    }
-    if (this.formItem.activityEndTime > 1000) {
-      this.formItem.activityEndTime = new Date(this.formItem.activityEndTime);
-    }
-    this.columnsdata = this.formItem.activityDetail;
+    this.getActiveInfo(this.$route.query.activeId);
   },
   watch: {
     msg(val) {

@@ -11,8 +11,8 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
             @on-change="changePage"
           ></Page>
         </div>
@@ -50,6 +50,10 @@ export default {
   },
   data() {
     return {
+      // 分页
+      current: 1,
+      total: 0,
+      // 表格
       columns: [
         {
           title: "商场名称",
@@ -177,6 +181,7 @@ export default {
     changePage(event) {
       // 分页
       console.log(event);
+      this.getTradingAreaListFun(event);
     },
     show(params) {
       console.log(params.row.content);
@@ -206,9 +211,9 @@ export default {
         query: { shopData: query.row }
       });
     },
-    goMarket(busniss) {
-      console.log(busniss);
-      this.$router.push({ path: "/active", query: { tradingAreaId: busniss } });
+    goMarket(index) {
+      console.log(index);
+      this.$router.push({ path: "/active", query: { tradingAreaId: index } });
     },
     // 去添加
     routerPushAddActiveInfo() {
@@ -216,16 +221,22 @@ export default {
         path: "/busnissAdd",
         query: { busnissId: 0 }
       });
+    },
+    getTradingAreaListFun(pageNo) {
+      var that = this;
+      getTradingAreaList({
+        type:0,
+        isShoppingMall: 0,
+        pageSize: 15,
+        pageNo
+      }).then(res => {
+        that.tableData = res.data.data.parameterType;
+        // console.log(res);
+      });
     }
   },
   mounted() {
-    getTradingAreaList({
-      type: 0,
-      isShoppingMall: 0
-    }).then(res => {
-      this.tableData = res.data.data.parameterType;
-      // console.log(res);
-    });
+    this.getTradingAreaListFun(1);
   }
 };
 </script>
@@ -242,7 +253,7 @@ tbody {
   p {
     word-wrap: break-word;
   }
-  img{
+  img {
     width: 100%;
   }
 }

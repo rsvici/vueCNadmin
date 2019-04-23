@@ -10,8 +10,8 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
             @on-change="changePage"
           ></Page>
         </div>
@@ -48,6 +48,10 @@ export default {
   },
   data() {
     return {
+      // 分页
+      current: 1,
+      total: 0,
+      // 表格
       columns: [
         {
           title: "活动名称",
@@ -69,7 +73,7 @@ export default {
             });
           }
         },
-        { title: "简介", key: "introduction"  ,ellipsis: true },
+        { title: "简介", key: "introduction", ellipsis: true },
         {
           title: "时间",
           key: "activityBeginTime",
@@ -110,23 +114,23 @@ export default {
           render: (h, params) => {
             return h("div", formatCheck(params.row.auditStatus));
           },
-          filters: [
-            {
-              label: "通过",
-              value: "1"
-            },
-            {
-              label: "未通过",
-              value: "2"
-            },
-            {
-              label: "未审核",
-              value: "0"
-            }
-          ],
-          filterMethod(value, row) {
-            return row.auditStatus.indexOf(value) > -1;
-          }
+          // filters: [
+          //   {
+          //     label: "通过",
+          //     value: "1"
+          //   },
+          //   {
+          //     label: "未通过",
+          //     value: "2"
+          //   },
+          //   {
+          //     label: "未审核",
+          //     value: "0"
+          //   }
+          // ],
+          // filterMethod(value, row) {
+          //   return row.auditStatus.indexOf(value) > -1;
+          // }
         },
         {
           title: "操作",
@@ -148,7 +152,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params.row.id);
                     }
                   }
                 },
@@ -166,7 +170,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.update(params);
+                      this.update(params.row.id);
                     }
                   }
                 },
@@ -205,42 +209,42 @@ export default {
       });
     },
     changePage(event) {
-      //分页
-      console.log(event);
+      // 分页
+      this.getActivityListFun(event);
     },
-    show(index) {
-      // 查看
-      this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+    show(id) {
+      this.$router.push({
+        path: "/activeCheckShow",
+        query: { activeId: id }
       });
     },
-    update(item){
-      console.log(item.row);
+    update(activeId) {
       this.$router.push({
         path: "/activeCheck",
-        query: { activeData: JSON.stringify(item.row) }
+        query: { activeId}
       });
     },
     remove(item) {
       // 删除
+      var that=this;
       postDelActivity({
         id: item.row.id
       }).then(res => {
-        getActivityList({
-          Id: this.$route.query.activeId
-        }).then(res => {
-          this.tableData = res.data.data.parameterType;
-        });
+        that.getActivityListFun(1);
       });
     },
+    getActivityListFun(pageNo) {
+      getActivityList({
+        pageSize: 15,
+        pageNo,
+        auditStatus:0
+      }).then(res => {
+        this.tableData = res.data.data.parameterType;
+      });
+    }
   },
   mounted() {
-    getActivityList({
-      tradingAreaId: this.$route.query.tradingAreaId
-    }).then(res => {
-      this.tableData = res.data.data.parameterType;
-    });
+    this.getActivityListFun(1);
   }
 };
 </script>
@@ -253,4 +257,3 @@ tbody {
   }
 }
 </style>
-

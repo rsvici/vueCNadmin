@@ -23,6 +23,35 @@
         />
       </FormItem>
 
+      <!-- banner -->
+      <FormItem label="banner : ">
+        <div
+          class="demo-upload-list"
+          v-if="formItem.activityUrl"
+        >
+          <template>
+            <img :src="formItem.activityUrl">
+            <div class="demo-upload-list-cover">
+              <Icon
+                type="ios-eye-outline"
+                @click.native="handleViewBanner(formItem.activityUrl)"
+              ></Icon>
+            </div>
+          </template>
+        </div>
+        <!-- 图片大图 -->
+        <Modal
+          title="banner"
+          v-model="visibleBanner"
+        >
+          <img
+            :src="formItem.activityUrl"
+            v-if="visibleBanner"
+            style="width: 100%"
+          >
+        </Modal>
+      </FormItem>
+
       <!-- 上传图片 -->
       <FormItem label="封面 : ">
         <div
@@ -124,10 +153,7 @@
 
       <!-- 剧照 -->
       <!-- 上传图片 -->
-      <FormItem
-        label="剧照 : "
-        v-if="uploadImageList[0]"
-      >
+      <FormItem label="剧照 : " v-if="uploadImageList[0]">
         <div
           class="demo-upload-list"
           v-for="(item,index) in uploadImageList"
@@ -175,30 +201,12 @@
         ></VueUeditorWrap>
       </FormItem>
 
-      <FormItem label="审核反馈 : ">
-        <Input
-          v-model="check.auditDesc"
-          type="textarea"
-          :autosize="{minRows:4,maxRows:10}"
-          placeholder="请输入活动简介"
-        />
-      </FormItem>
-
       <FormItem>
-        <Button
-          style="margin-left: 10px"
-          type="success"
-          @click="checkaudtit(1)"
-        >通过</Button>
-        <Button
-          style="margin-left: 10px"
-          type="error"
-          @click="checkaudtit(2)"
-        >不通过</Button>
+
         <Button
           style="margin-left: 10px"
           @click="cancelForm"
-        >取消</Button>
+        >关闭</Button>
       </FormItem>
 
     </Form>
@@ -206,7 +214,7 @@
 
 </template>
 <script>
-import { postAudtitActivity, getActivityList } from "@/api/data";
+import { getActivityList } from "@/api/data";
 import { routeEqual } from "@/libs/util";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
@@ -224,7 +232,7 @@ export default {
       check: {
         auditDesc: "",
         auditStatus: "",
-        id: ""
+        Id: ""
       },
       showWebNum: 0, // 显示页面
       formItem: {
@@ -257,6 +265,7 @@ export default {
       },
       // 上传图片
       visible: false,
+      visibleBanner: false,
       // 表格
       columns: [
         {
@@ -317,21 +326,13 @@ export default {
     handleView() {
       this.visible = true;
     },
+    handleViewBanner() {
+      this.visibleBanner = true;
+    },
     handleViewImageList(item) {
       //显示图片
       this.imageListVisible = true;
       this.showuploadImage = item;
-    },
-    // 审核
-    checkaudtit(auditStatus) {
-      var that = this;
-      this.check.id = this.formItem.id;
-      this.check.auditStatus = auditStatus;
-      console.log(this.check);
-      postAudtitActivity(this.check).then(res => {
-        console.log(res);
-        that.cancelForm();
-      });
     },
     cancelForm() {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
@@ -349,13 +350,14 @@ export default {
           that.formItem.activityBeginTime
         );
         that.formItem.activityEndTime = new Date(that.formItem.activityEndTime);
-        
-        if (that.formItem.still)that.uploadImageList = that.formItem.still.split(",");
 
-        that.columnsdata = this.formItem.activityDetail;
+        that.uploadImageList=that.formItem.still.split(",")
+
+        that.columnsdata = that.formItem.activityDetail;
       });
     }
   },
+
   mounted() {
     this.getActiveInfo(this.$route.query.activeId);
   },

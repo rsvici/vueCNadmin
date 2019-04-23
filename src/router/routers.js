@@ -181,6 +181,17 @@ export default [
         },
         component: () => import ('@/view/check/check.vue'),
       },
+      {
+        path: '/activeCheckShow',
+        name: 'activeCheckShow',
+        meta: {
+          hideInMenu: true,          
+          title: '活动查看',
+          notCache: true,
+          icon: '_shenhe',
+        },
+        component: () => import ('@/view/check/show.vue'),
+      },
     ],
   },
   {
@@ -217,7 +228,7 @@ export default [
         path: '/HBanner',
         name: 'HBanner',
         meta: {
-          title: '热门精彩',
+          title: '推荐banner',
           notCache: true,
         },
         component: () => import ('@/view/hotActive/list.vue'),
@@ -226,7 +237,7 @@ export default [
         path: '/HFindWonderful',
         name: 'HFindWonderful',
         meta: {
-          title: '发现精彩',
+          title: '精彩',
           notCache: true,
         },
         component: () => import ('@/view/hotActive/list.vue'),
@@ -235,7 +246,7 @@ export default [
         path: '/HhotSpace',
         name: 'HhotSpace',
         meta: {
-          title: '热门场馆',
+          title: '热门',
           notCache: true,
         },
         component: () => import ('@/view/hotActive/list.vue'),
@@ -244,7 +255,7 @@ export default [
         path: '/HGame',
         name: 'HGame',
         meta: {
-          title: '电子竞技',
+          title: '运动',
           notCache: true,
         },
         component: () => import ('@/view/hotActive/list.vue'),
@@ -270,6 +281,17 @@ export default [
           notCache: true,
         },
         component: () => import ('@/view/hotActive/update.vue'),
+      },
+      {
+        path: '/hotActiveShow',
+        name: 'hotActiveShow',
+        meta: {
+          hideInBread: true,
+          hideInMenu: true,
+          title: '查看热门活动',
+          notCache: true,
+        },
+        component: () => import ('@/view/hotActive/show.vue'),
       },
     ],
   },
@@ -341,6 +363,7 @@ export default [
         },
         component: () => import ('@/view/business/list/update.vue'),
       },
+      
     ],
   },
   {
@@ -430,6 +453,17 @@ export default [
           notCache: true,
         },
         component: () => import ('@/view/business/active/update.vue'),
+      },
+      {
+        path: '/activeShwo',
+        name: 'activeShwo',
+        meta: {
+          // hideInBread: true,
+          // hideInMenu:true,
+          title: '查看活动',
+          notCache: true,
+        },
+        component: () => import ('@/view/business/active/show.vue'),
       },
     ],
   },

@@ -175,30 +175,12 @@
         ></VueUeditorWrap>
       </FormItem>
 
-      <FormItem label="审核反馈 : ">
-        <Input
-          v-model="check.auditDesc"
-          type="textarea"
-          :autosize="{minRows:4,maxRows:10}"
-          placeholder="请输入活动简介"
-        />
-      </FormItem>
-
       <FormItem>
-        <Button
-          style="margin-left: 10px"
-          type="success"
-          @click="checkaudtit(1)"
-        >通过</Button>
-        <Button
-          style="margin-left: 10px"
-          type="error"
-          @click="checkaudtit(2)"
-        >不通过</Button>
+
         <Button
           style="margin-left: 10px"
           @click="cancelForm"
-        >取消</Button>
+        >关闭</Button>
       </FormItem>
 
     </Form>
@@ -206,7 +188,7 @@
 
 </template>
 <script>
-import { postAudtitActivity, getActivityList } from "@/api/data";
+import { getActivityList } from "@/api/data";
 import { routeEqual } from "@/libs/util";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
@@ -224,7 +206,7 @@ export default {
       check: {
         auditDesc: "",
         auditStatus: "",
-        id: ""
+        Id: ""
       },
       showWebNum: 0, // 显示页面
       formItem: {
@@ -322,17 +304,6 @@ export default {
       this.imageListVisible = true;
       this.showuploadImage = item;
     },
-    // 审核
-    checkaudtit(auditStatus) {
-      var that = this;
-      this.check.id = this.formItem.id;
-      this.check.auditStatus = auditStatus;
-      console.log(this.check);
-      postAudtitActivity(this.check).then(res => {
-        console.log(res);
-        that.cancelForm();
-      });
-    },
     cancelForm() {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
         item => !routeEqual(this.$route, item)
@@ -350,12 +321,13 @@ export default {
         );
         that.formItem.activityEndTime = new Date(that.formItem.activityEndTime);
         
-        if (that.formItem.still)that.uploadImageList = that.formItem.still.split(",");
+        that.uploadImageList=that.formItem.still.split(",")
 
         that.columnsdata = this.formItem.activityDetail;
       });
     }
   },
+
   mounted() {
     this.getActiveInfo(this.$route.query.activeId);
   },

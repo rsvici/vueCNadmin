@@ -12,8 +12,8 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
             @on-change="changePage"
           ></Page>
         </div>
@@ -27,74 +27,90 @@
   </div>
 </template>
 <script>
-import Tables from '_c/tables'
-import { getUserList } from '@/api/data'
-import { formatDate } from '@/libs/formatdate'
+import Tables from "_c/tables";
+import { getUserList } from "@/api/data";
+import { formatDate } from "@/libs/formatdate";
 export default {
-  name: 'wechatlist',
+  name: "wechatlist",
   components: {
     Tables
   },
-  data () {
+  data() {
     return {
+       // 分页
+      current: 1,
+      total: 0,
+      // 表格
       columns: [
-        { title: 'openid', key: 'openid' },
-        { title: '手机号', key: 'phone' },
-        { title: '出生日期', key: 'birthday' },
+        { title: "openid", key: "openid" },
+        { title: "手机号", key: "phone" },
+        { title: "出生日期", key: "birthday" },
         {
-          title: '地址',
-          key: '',
+          title: "地址",
+          key: "",
           render: (h, params) => {
-            console.log(params)
+            console.log(params);
             return h(
-              'div', params.row.province + params.row.city + params.row.county + params.row.live
-            )
+              "div",
+              params.row.province +
+                params.row.city +
+                params.row.county +
+                params.row.live
+            );
           }
         },
         {
-          title: '创建时间',
-          key: 'createDate',
+          title: "创建时间",
+          key: "createDate",
           render: (h, params) => {
-            console.log(params)
+            console.log(params);
             return h(
-              'div',
-              formatDate(new Date(params.row.createDate), 'yyyy-MM-dd hh:mm')
-            )
+              "div",
+              formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
+            );
           }
         }
       ],
       tableData: []
-    }
+    };
   },
   methods: {
-    exportExcel () {
+    exportExcel() {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      })
+      });
     },
-    changePage (event) {
+    changePage(event) {
       // 分页
-      console.log(event)
+      this.getUserListFun(event);
     },
-    show (index) {
+    show(index) {
       // 查看
       this.$Modal.info({
-        title: 'User Info',
+        title: "User Info",
         content: `Name`
-      })
+      });
     },
-    remove (index) {
+    remove(index) {
       // 删除
-      console.log(index)
+      console.log(index);
+    },
+    getUserListFun(pageNo) {
+      var that = this;
+      getUserList({
+        pageSize: 15,
+        pageNo
+      }).then(res => {
+        that.tableData = res.data.data.parameterType;
+        that.total = res.data.data.totalRecord;
+        console.log(res);
+      });
     }
   },
-  mounted () {
-    console.log(getUserList)
-    getUserList().then(res => {
-      this.tableData = res.data.data.parameterType
-      console.log(res)
-    })
+  mounted() {
+    // console.log(getUserList);
+    this.getUserListFun(1);
   }
-}
+};
 </script>

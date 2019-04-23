@@ -12,8 +12,8 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="200"
-            :current="1"
+            :total="total"
+            :current="current"
             @on-change="changePage"
           ></Page>
         </div>
@@ -55,6 +55,10 @@ export default {
   },
   data() {
     return {
+      // 分页
+      current: 1,
+      total: 0,
+      // biaoge
       columns: [
         {
           title: "活动名称",
@@ -155,7 +159,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.index);
+                      this.show(params.row.id);
                     }
                   }
                 },
@@ -173,7 +177,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.update(params);
+                      this.update(params.row.id);
                     }
                   }
                 },
@@ -212,21 +216,20 @@ export default {
       });
     },
     changePage(event) {
-      //分页
-      console.log(event);
+      // 分页
+      this.getActivityListFun(event);
     },
-    show(index) {
+    show(activeId) {
       // 查看
-      this.$Modal.info({
-        title: "User Info",
-        content: `Name`
+      this.$router.push({
+        path: "/activeShwo",
+        query: { activeId }
       });
     },
-    update(item) {
-      console.log(item.row);
+    update(activeId) {
       this.$router.push({
         path: "/activeUpdata",
-        query: { activeData: JSON.stringify(item.row) }
+        query: { activeId }
       });
     },
     remove(item) {
@@ -234,11 +237,7 @@ export default {
       postDelActivity({
         id: item.row.id
       }).then(res => {
-        getActivityList({
-          Id: this.$route.query.activeId
-        }).then(res => {
-          this.tableData = res.data.data.parameterType;
-        });
+        this.getActivityListFun(1);
       });
     },
     // 去添加
@@ -248,14 +247,20 @@ export default {
         path: "/activeAdd",
         query: { tradingAreaId: this.$route.query.tradingAreaId }
       });
+    },
+    getActivityListFun(pageNo) {
+      var that = this;
+      getActivityList({
+        tradingAreaId: this.$route.query.tradingAreaId,
+        pageSize: 15,
+        pageNo
+      }).then(res => {
+        that.tableData = res.data.data.parameterType;
+      });
     }
   },
   mounted() {
-    getActivityList({
-      tradingAreaId: this.$route.query.tradingAreaId
-    }).then(res => {
-      this.tableData = res.data.data.parameterType;
-    });
+    this.getActivityListFun(1);
   }
 };
 </script>
@@ -268,4 +273,3 @@ tbody {
   }
 }
 </style>
-
