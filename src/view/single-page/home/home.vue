@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       inforCardData: [
-        { title: '新增用户', icon: 'md-person-add', count: 36, color: '#2d8cf0' },
+        { title: '新增用户', icon: 'md-person-add', count: 559, color: '#2d8cf0' },
         { title: '累计点击', icon: 'md-locate', count: 674, color: '#19be6b' },
         { title: '新增问答', icon: 'md-help-circle', count: 0, color: '#ff9900' },
         { title: '分享统计', icon: 'md-share', count: 13, color: '#ed3f14' },
@@ -54,15 +54,15 @@ export default {
       ],
       pieData: [
         {value: 335, name: '直接访问1'},
-        {value: 310, name: '直接访问2'},
-        {value: 234, name: '直接访问3'},
+        {value: 410, name: '直接访问2'},
+        {value: 334, name: '直接访问3'},
         {value: 135, name: '直接访问4'},
         {value: 1548, name: '直接访问5'}
       ],
       barData: {
-        Mon: 182,
-        Tue: 342,
-        Wed: 163,
+        Mon: 292,
+        Tue: 442,
+        Wed: 233,
         Thu: 0,
         Fri: 0,
         Sat: 0,

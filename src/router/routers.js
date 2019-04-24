@@ -103,7 +103,7 @@ export default [
         meta: {
           title: '积分管理',
           notCache: true,
-          icon: '_juzhenduoxuan',
+          icon: '_jifen',
         },
         component: () => import ('@/view/integralt/list.vue'),
       },
