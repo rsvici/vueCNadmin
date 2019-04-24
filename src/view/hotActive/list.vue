@@ -80,37 +80,18 @@ export default {
             });
           }
         },
-        {
-          title: "活动图",
-          key: "coverUrl",
-          render: (h, params) => {
-            // console.log(params.row.title);
-            return h("img", {
-              attrs: {
-                src: params.row.coverUrl
-              },
-              style: {
-                height: "80px",
-                "margin-top": "5px"
-              }
-            });
-          }
-        },
-        {
-          title: "简介",
-          key: "introduction",
-          ellipsis: true
-        },
+        // {
+        //   title: "简介",
+        //   key: "introduction",
+        //   ellipsis: true
+        // },
         {
           title: "时间",
           key: "activityBeginTime",
           render: (h, params) => {
             return h(
               "div",
-              formatDate(
-                new Date(params.row.activityBeginTime),
-                "yyyy-MM-dd hh:mm"
-              )
+              formatDate(new Date(params.row.activityBeginTime), "yyyy-MM-dd")
             );
           }
         },
@@ -135,30 +116,30 @@ export default {
             return h("div", formatLabelTow(params.row.labelTow));
           }
         },
-        // {
-        //   title: "审核状态",
-        //   key: "auditStatus",
-        //   render: (h, params) => {
-        //     return h("div", formatCheck(params.row.auditStatus));
-        //   },
-        //   filters: [
-        //     {
-        //       label: "通过",
-        //       value: "1"
-        //     },
-        //     {
-        //       label: "未通过",
-        //       value: "2"
-        //     },
-        //     {
-        //       label: "未审核",
-        //       value: "0"
-        //     }
-        //   ],
-        //   filterMethod(value, row) {
-        //     return row.auditStatus.indexOf(value) > -1;
-        //   }
-        // },
+        {
+          title: "审核状态",
+          key: "auditStatus",
+          render: (h, params) => {
+            return h("div", formatCheck(params.row.auditStatus));
+          },
+          filters: [
+            {
+              label: "通过",
+              value: "1"
+            },
+            {
+              label: "未通过",
+              value: "2"
+            },
+            {
+              label: "未审核",
+              value: "0"
+            }
+          ],
+          filterMethod(value, row) {
+            return row.auditStatus.indexOf(value) > -1;
+          }
+        },
         {
           title: "操作",
           key: "action",
@@ -220,6 +201,28 @@ export default {
                   }
                 },
                 "删除"
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info",
+                    size: "small"
+                  },
+                  class: {
+                    background:
+                      !params.row.auditDesc || params.row.auditDesc == 0
+                  },
+                  style: {
+                    marginRight: "5px"
+                  },
+                  on: {
+                    click: () => {
+                      this.showCheck(params.row.auditDesc);
+                    }
+                  }
+                },
+                "审核反馈"
               )
             ]);
           }
@@ -242,7 +245,7 @@ export default {
     },
     show(activeId) {
       // 查看
-       this.$router.push({
+      this.$router.push({
         path: "/hotActiveShow",
         query: { activeId }
       });
@@ -260,6 +263,15 @@ export default {
       }).then(res => {
         this.getActivityListFun(this.tradingAreaId, 1);
       });
+    },
+    showCheck(content) {
+      console.log(1);
+      if (content && content != 0) {
+        this.$Modal.info({
+          title: "审核反馈",
+          content
+        });
+      }
     },
     // 去添加
     routerPushAddActiveInfo() {
@@ -333,6 +345,11 @@ tbody {
     color: -webkit-link;
     text-decoration: underline;
     cursor: pointer;
+  }
+  .background {
+    background-color: #f1f1f1;
+    border-color: #eee;
+    color: #999;
   }
 }
 </style>

@@ -49,7 +49,7 @@
               :on-exceeded-size="handleMaxSize"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -100,7 +100,7 @@
               :on-exceeded-size="handleMaxSize"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -222,7 +222,7 @@
                 :on-exceeded-size="handleMaxSize"
                 multiple
                 type="drag"
-                action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+                action="/CLMAP/upload/uploadFile"
                 style="display: inline-block;width:120px;"
               >
                 <div style="width: 120px;height:120px;line-height: 120px;">
@@ -287,7 +287,7 @@
               :max-size="2048"
               :on-format-error="handleFormatError"
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">

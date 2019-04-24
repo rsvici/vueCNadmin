@@ -83,8 +83,8 @@ export default {
             color: '#4608A6'
           }},
           data: [320, 332, 301, 334, 0, 0, 0]
-        },
-       
+        }
+
       ]
     }
     this.$nextTick(() => {

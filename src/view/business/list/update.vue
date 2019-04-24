@@ -62,7 +62,7 @@
             :on-exceeded-size="handleMaxSize"
             multiple
             type="drag"
-            action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+            action="/CLMAP/upload/uploadFile"
             style="display: inline-block;width:120px;"
           >
             <div style="width: 120px;height:120px;line-height: 120px;">
@@ -119,10 +119,10 @@ export default {
   },
   data() {
     return {
-      longitudeX:'',
-      longitudeY:'',
+      longitudeX: "",
+      longitudeY: "",
       formItem: {
-        isShoppingMall:'0',
+        isShoppingMall: "0",
         name: "", // 名称
         url: "", // 图片url
         type: "", // 商圈类型
@@ -166,9 +166,14 @@ export default {
     referingForm() {
       // 提交
       var that = this;
-      this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
+      this.formItem.longitude = [this.longitudeX, this.longitudeY].join(",");
+
       var newTradingArea = this.formItem;
-      console.log(newTradingArea)
+      delete newTradingArea.createDate;
+      delete newTradingArea.isshoppingmall;
+      delete newTradingArea.updateDate;
+
+      console.log(newTradingArea);
       postUpdTradingArea(newTradingArea).then(res => {
         console.log(res);
         that.cancelForm();
@@ -183,9 +188,9 @@ export default {
   },
   mounted() {
     this.formItem = this.$route.query.shopData;
-    this.longitudeX= this.formItem.longitude.split(',')[0]
-    this.longitudeY= this.formItem.longitude.split(',')[1]
-    this.msg=this.$route.query.shopData.msg;
+    this.longitudeX = this.formItem.longitude.split(",")[0];
+    this.longitudeY = this.formItem.longitude.split(",")[1];
+    this.msg = this.$route.query.shopData.msg;
   }
 };
 </script>
