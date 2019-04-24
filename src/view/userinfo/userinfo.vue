@@ -37,12 +37,12 @@ export default {
   },
   data() {
     return {
-       // 分页
+      // 分页
       current: 1,
       total: 0,
       // 表格
       columns: [
-        { title: "openid", key: "openid" },
+        { title: "用户名", key: "nickname" },
         { title: "手机号", key: "phone" },
         { title: "出生日期", key: "birthday" },
         {
@@ -59,6 +59,8 @@ export default {
             );
           }
         },
+        { title: "积分", key: "integralPrice" },
+
         {
           title: "创建时间",
           key: "createDate",
@@ -69,7 +71,8 @@ export default {
               formatDate(new Date(params.row.createDate), "yyyy-MM-dd hh:mm")
             );
           }
-        }
+        },
+        { title: "openid", key: "openid" }
       ],
       tableData: []
     };

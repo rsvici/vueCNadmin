@@ -93,7 +93,7 @@ export const postAddTradingArea = info => {
 export const postUpdTradingArea = info => {
   return axios.request({
     url: 'tradingArea/update',
-    params: info,
+    data: info,
     method: 'post'
   })
 }
@@ -168,7 +168,7 @@ export const getUserList = info => {
   return axios.request({
     url: 'login/registeredList',
     method: 'get',
-    params:info
+    params: info
   })
 }
 
@@ -177,7 +177,7 @@ export const getLogList = info => {
   return axios.request({
     url: 'logger/logList',
     method: 'get',
-    params:info
+    params: info
   })
 }
 

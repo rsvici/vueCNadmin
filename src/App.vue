@@ -30,4 +30,9 @@ body {
     font-size: 12px;
   }
 }
+.ivu-table-cell img{
+  height:100%!important;
+  width:100%!important;
+  max-width:100px!important;
+}
 </style>

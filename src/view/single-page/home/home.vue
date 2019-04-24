@@ -45,10 +45,10 @@ export default {
   data () {
     return {
       inforCardData: [
-        { title: '新增用户', icon: 'md-person-add', count: 803, color: '#2d8cf0' },
-        { title: '累计点击', icon: 'md-locate', count: 232, color: '#19be6b' },
-        { title: '新增问答', icon: 'md-help-circle', count: 142, color: '#ff9900' },
-        { title: '分享统计', icon: 'md-share', count: 657, color: '#ed3f14' },
+        { title: '新增用户', icon: 'md-person-add', count: 36, color: '#2d8cf0' },
+        { title: '累计点击', icon: 'md-locate', count: 674, color: '#19be6b' },
+        { title: '新增问答', icon: 'md-help-circle', count: 0, color: '#ff9900' },
+        { title: '分享统计', icon: 'md-share', count: 13, color: '#ed3f14' },
         { title: '新增互动', icon: 'md-chatbubbles', count: 12, color: '#E46CBB' },
         { title: '新增页面', icon: 'md-map', count: 14, color: '#9A66E4' }
       ],
@@ -60,13 +60,13 @@ export default {
         {value: 1548, name: '直接访问5'}
       ],
       barData: {
-        Mon: 13253,
-        Tue: 34235,
-        Wed: 26321,
-        Thu: 12340,
-        Fri: 24643,
-        Sat: 1322,
-        Sun: 1324
+        Mon: 182,
+        Tue: 342,
+        Wed: 163,
+        Thu: 0,
+        Fri: 0,
+        Sat: 0,
+        Sun: 0
       }
     }
   },

@@ -7,10 +7,10 @@
       >
         <!-- 第一页 -->
 
-        <FormItem label="公众号名称 : ">
+        <FormItem label="积分价格 : ">
           <Input
             v-model="formItem.integralPrice"
-            placeholder="请输入公众号名称"
+            placeholder="请输入积分价格"
           />
         </FormItem>
 
@@ -22,7 +22,7 @@
         </FormItem> -->
 
         <!-- 上传图片 -->
-        <FormItem label="缩略图 : ">
+        <FormItem label="商品封面 : ">
           <div
             class="demo-upload-list"
             v-if="formItem.integralUrl"
@@ -61,7 +61,7 @@
 
           <!-- 图片大图 -->
           <Modal
-            title="公众号封面"
+            title="商品封面"
             v-model="visible"
           >
             <img
