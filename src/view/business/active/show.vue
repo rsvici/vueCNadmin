@@ -52,6 +52,14 @@
         </Modal>
       </FormItem>
 
+      <FormItem label=" 电影属性: ">
+        <Input
+          v-model="formItem.labelThree"
+          placeholder="请输入电影属性"
+          readonly="readonly"
+        />
+      </FormItem>
+
       <FormItem label="活动时间 : ">
         <DatePicker
           type="datetime"
@@ -77,6 +85,15 @@
           readonly="readonly"
         />
       </FormItem>
+
+      <FormItem label="地点坐标: ">
+        <Input
+          v-model="formItem.longitude"
+          placeholder="请输入经度坐标"
+          readonly="readonly"
+        />
+      </FormItem>
+
       <FormItem label="类型">
         <Select
           v-model="formItem.activityType"
@@ -321,8 +338,8 @@ export default {
           that.formItem.activityBeginTime
         );
         that.formItem.activityEndTime = new Date(that.formItem.activityEndTime);
-        
-        that.uploadImageList=that.formItem.still.split(",")
+
+        that.uploadImageList = that.formItem.still.split(",");
 
         that.columnsdata = this.formItem.activityDetail;
       });

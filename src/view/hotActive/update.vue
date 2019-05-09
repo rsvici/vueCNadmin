@@ -124,6 +124,13 @@
             </Modal>
           </FormItem>
 
+          <FormItem label=" 电影属性: ">
+            <Input
+              v-model="formItem.labelThree"
+              placeholder="请输入电影属性"
+            />
+          </FormItem>
+
           <FormItem label="活动时间 : ">
             <DatePicker
               type="datetime"
@@ -146,6 +153,21 @@
               placeholder="请输入活动地点"
             />
           </FormItem>
+
+          <FormItem label="经度坐标: ">
+            <Input
+              v-model="longitudeX"
+              placeholder="请输入经度坐标"
+            />
+          </FormItem>
+
+          <FormItem label="纬度坐标 : ">
+            <Input
+              v-model="longitudeY"
+              placeholder="请输入纬度坐标"
+            />
+          </FormItem>
+
           <FormItem label="类型">
             <Select v-model="formItem.activityType">
               <Option value="0">话剧</Option>
@@ -385,7 +407,8 @@ export default {
       imageListVisible: false, // 是否显示图片
       uploadImageList: [], // 图片数组
       showuploadImage: [], // 显示图片
-
+      longitudeX: "",
+      longitudeY: "",
       showWebNum: 0, // 显示页面
       formItem: {
         name: "", // 名称
@@ -401,7 +424,9 @@ export default {
         labelOne: "0", // 标签
         labelTow: "0", // 标签
         ticketLink: "", // 购票链接
-        activityDec: "" // 活动详情
+        activityDec: "", // 活动详情
+        labelThree: "", //电影属性
+        longitude: "" //经纬度
       },
       actionInfo: {
         name: "",
@@ -549,7 +574,7 @@ export default {
     addActivty() {
       var that = this;
       this.formItem.activityDetail = this.columnsdata;
-      this.formItem.still  = this.uploadImageList.join(',');
+      this.formItem.still = this.uploadImageList.join(",");
       var newTradingArea = this.formItem;
       // console.log(newTradingArea)
       postUpdActivity(newTradingArea).then(res => {
@@ -583,7 +608,9 @@ export default {
           );
         }
 
-        that.uploadImageList = that.formItem.still.split(',');
+        this.longitudeX = this.formItem.longitude.split(",")[0];
+        this.longitudeY = this.formItem.longitude.split(",")[1];
+        that.uploadImageList = that.formItem.still.split(",");
         that.columnsdata = that.formItem.activityDetail;
       });
     }

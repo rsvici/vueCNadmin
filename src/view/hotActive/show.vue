@@ -81,6 +81,14 @@
         </Modal>
       </FormItem>
 
+      <FormItem label=" 电影属性: ">
+        <Input
+          v-model="formItem.labelThree"
+          placeholder="请输入电影属性"
+          readonly="readonly"
+        />
+      </FormItem>
+
       <FormItem label="活动时间 : ">
         <DatePicker
           type="datetime"
@@ -106,6 +114,15 @@
           readonly="readonly"
         />
       </FormItem>
+
+      <FormItem label="地点坐标: ">
+        <Input
+          v-model="formItem.longitude"
+          placeholder="请输入经度坐标"
+          readonly="readonly"
+        />
+      </FormItem>
+
       <FormItem label="类型">
         <Select
           v-model="formItem.activityType"
@@ -153,7 +170,10 @@
 
       <!-- 剧照 -->
       <!-- 上传图片 -->
-      <FormItem label="剧照 : " v-if="uploadImageList[0]">
+      <FormItem
+        label="剧照 : "
+        v-if="uploadImageList[0]"
+      >
         <div
           class="demo-upload-list"
           v-for="(item,index) in uploadImageList"
@@ -351,7 +371,7 @@ export default {
         );
         that.formItem.activityEndTime = new Date(that.formItem.activityEndTime);
 
-        that.uploadImageList=that.formItem.still.split(",")
+        that.uploadImageList = that.formItem.still.split(",");
 
         that.columnsdata = that.formItem.activityDetail;
       });
