@@ -32,20 +32,20 @@
 </template>
 
 <script>
-import LoginForm from "_c/login-form";
-import { login } from "@/api/user";
+import LoginForm from '_c/login-form'
+import { login } from '@/api/user'
 export default {
   components: {
     LoginForm
   },
-  data() {
+  data () {
     return {
       pointWord: true
-    };
+    }
   },
   methods: {
     // ...mapActions(["handleLogin", "getUserInfo"]),
-    handleSubmit({ username, password }) {
+    handleSubmit ({ username, password }) {
       // var info={
       //   username,password
       // }
@@ -54,12 +54,12 @@ export default {
       //   return;
 
       // });
-      if (username == "admin" && password == "123456") {
+      if (username == 'admin' && password == '123456') {
         this.$router.push({
-          name: "home"
-        });
+          name: 'home'
+        })
       } else {
-        this.pointWord=false
+        this.pointWord = false
       }
 
       // this.handleLogin({ userName, password }).then(res => {
@@ -71,7 +71,7 @@ export default {
       // });
     }
   }
-};
+}
 </script>
 
 <style>

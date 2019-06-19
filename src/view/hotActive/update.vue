@@ -43,7 +43,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="handleBannerSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
@@ -94,7 +94,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
@@ -238,7 +238,7 @@
                 ref="upload"
                 :show-upload-list="false"
                 :on-success="handleActionSuccess"
-                :format="['jpg','jpeg','png']"
+                :format="['jpg','jpeg','png','webp']"
                 :max-size="2048"
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
@@ -305,7 +305,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="ImageListSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               type="drag"
@@ -425,8 +425,8 @@ export default {
         labelTow: "0", // 标签
         ticketLink: "", // 购票链接
         activityDec: "", // 活动详情
-        labelThree: "", //电影属性
-        longitude: "" //经纬度
+        labelThree: "", // 电影属性
+        longitude: "" // 经纬度
       },
       actionInfo: {
         name: "",
@@ -525,7 +525,7 @@ export default {
 
     // 剧照上传
     handleViewImageList(item) {
-      //显示图片
+      // 显示图片
       this.imageListVisible = true;
       this.showuploadImage = item;
     },
@@ -534,7 +534,7 @@ export default {
       console.log(this.uploadImageList);
     },
     handleRemoveImageList(index) {
-      //删除指定图片
+      // 删除指定图片
       this.uploadImageList.splice(index, 1);
     },
 
@@ -574,6 +574,7 @@ export default {
     addActivty() {
       var that = this;
       this.formItem.activityDetail = this.columnsdata;
+      this.formItem.longitude = [this.longitudeX, this.longitudeY].join(",");
       this.formItem.still = this.uploadImageList.join(",");
       var newTradingArea = this.formItem;
       // console.log(newTradingArea)
@@ -610,7 +611,11 @@ export default {
 
         this.longitudeX = this.formItem.longitude.split(",")[0];
         this.longitudeY = this.formItem.longitude.split(",")[1];
-        that.uploadImageList = that.formItem.still.split(",");
+        if (that.formItem.still) {
+          that.uploadImageList = that.formItem.still.split(",");
+        } else {
+          that.uploadImageList = [];
+        }
         that.columnsdata = that.formItem.activityDetail;
       });
     }

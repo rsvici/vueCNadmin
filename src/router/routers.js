@@ -1,5 +1,5 @@
-import Main from '@/components/main';
-import parentView from '@/components/parent-view';
+import Main from '@/components/main'
+import parentView from '@/components/parent-view'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -22,9 +22,9 @@ export default [
     name: 'login',
     meta: {
       title: 'Login - 登录',
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import ('@/view/login/login.vue'),
+    component: () => import('@/view/login/login.vue')
   },
   {
     path: '/',
@@ -32,7 +32,7 @@ export default [
     redirect: '/home',
     component: Main,
     meta: {
-      notCache: true,
+      notCache: true
     },
     children: [
       {
@@ -41,17 +41,17 @@ export default [
         meta: {
           title: '首页',
           notCache: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/single-page/home'),
-      },
-    ],
+        component: () => import('@/view/single-page/home')
+      }
+    ]
   },
   {
     path: '/wechatList',
     name: 'wechatList',
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     component: Main,
     children: [
@@ -61,9 +61,9 @@ export default [
         meta: {
           title: '微信矩阵',
           notCache: true,
-          icon: '_juzhenduoxuan',
+          icon: '_juzhenduoxuan'
         },
-        component: () => import ('@/view/wechatlist/list.vue'),
+        component: () => import('@/view/wechatlist/list.vue')
       },
       {
         path: 'wechatAdd',
@@ -72,9 +72,9 @@ export default [
           title: '添加微信矩阵',
           notCache: true,
           hideInMenu: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/wechatlist/add.vue'),
+        component: () => import('@/view/wechatlist/add.vue')
       },
       {
         path: 'wechatUpdate',
@@ -83,17 +83,17 @@ export default [
           title: '修改微信矩阵',
           notCache: true,
           hideInMenu: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/wechatlist/update.vue'),
-      },
-    ],
+        component: () => import('@/view/wechatlist/update.vue')
+      }
+    ]
   },
   {
     path: '/integralt',
     name: 'integralt',
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     component: Main,
     children: [
@@ -103,9 +103,9 @@ export default [
         meta: {
           title: '积分管理',
           notCache: true,
-          icon: '_jifen',
+          icon: '_jifen'
         },
-        component: () => import ('@/view/integralt/list.vue'),
+        component: () => import('@/view/integralt/list.vue')
       },
       {
         path: 'integraltAdd',
@@ -114,9 +114,9 @@ export default [
           title: '添加积分信息',
           notCache: true,
           hideInMenu: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/integralt/add.vue'),
+        component: () => import('@/view/integralt/add.vue')
       },
       {
         path: 'integraltUpdate',
@@ -125,11 +125,11 @@ export default [
           title: '修改积分信息',
           notCache: true,
           hideInMenu: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/integralt/update.vue'),
-      },
-    ],
+        component: () => import('@/view/integralt/update.vue')
+      }
+    ]
   },
 
   {
@@ -137,7 +137,7 @@ export default [
     name: 'userInfo',
     component: Main,
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     children: [
       {
@@ -146,18 +146,18 @@ export default [
         meta: {
           title: '注册用户信息',
           notCache: true,
-          icon: '_yonghu',
+          icon: '_yonghu'
         },
-        component: () => import ('@/view/userinfo/userinfo.vue'),
-      },
-    ],
+        component: () => import('@/view/userinfo/userinfo.vue')
+      }
+    ]
   },
   {
     path: '/check',
     name: 'list',
     component: Main,
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     children: [
       {
@@ -166,40 +166,40 @@ export default [
         meta: {
           title: '审核列表',
           notCache: true,
-          icon: '_shenhe',
+          icon: '_shenhe'
         },
-        component: () => import ('@/view/check/list.vue'),
+        component: () => import('@/view/check/list.vue')
       },
       {
         path: '/activeCheck',
         name: 'activeCheck',
         meta: {
-          hideInMenu: true,          
+          hideInMenu: true,
           title: '活动审核',
           notCache: true,
-          icon: '_shenhe',
+          icon: '_shenhe'
         },
-        component: () => import ('@/view/check/check.vue'),
+        component: () => import('@/view/check/check.vue')
       },
       {
         path: '/activeCheckShow',
         name: 'activeCheckShow',
         meta: {
-          hideInMenu: true,          
+          hideInMenu: true,
           title: '活动查看',
           notCache: true,
-          icon: '_shenhe',
+          icon: '_shenhe'
         },
-        component: () => import ('@/view/check/show.vue'),
-      },
-    ],
+        component: () => import('@/view/check/show.vue')
+      }
+    ]
   },
   {
     path: '/comment',
     name: 'comment',
     component: Main,
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     children: [
       {
@@ -208,11 +208,11 @@ export default [
         meta: {
           title: '评论管理',
           notCache: true,
-          icon: '_pinglun',
+          icon: '_pinglun'
         },
-        component: () => import ('@/view/comment/list.vue'),
-      },
-    ],
+        component: () => import('@/view/comment/list.vue')
+      }
+    ]
   },
   {
     path: '/hotActive',
@@ -221,7 +221,7 @@ export default [
     meta: {
       title: '热门活动',
       notCache: true,
-      icon: '_remen',
+      icon: '_remen'
     },
     children: [
       {
@@ -229,36 +229,36 @@ export default [
         name: 'HBanner',
         meta: {
           title: '推荐banner',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/list.vue'),
+        component: () => import('@/view/hotActive/list.vue')
       },
       {
         path: '/HFindWonderful',
         name: 'HFindWonderful',
         meta: {
           title: '精彩',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/list.vue'),
+        component: () => import('@/view/hotActive/list.vue')
       },
       {
         path: '/HhotSpace',
         name: 'HhotSpace',
         meta: {
           title: '热门',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/list.vue'),
+        component: () => import('@/view/hotActive/list.vue')
       },
       {
         path: '/HGame',
         name: 'HGame',
         meta: {
           title: '运动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/list.vue'),
+        component: () => import('@/view/hotActive/list.vue')
       },
       {
         path: '/hotActiveAdd',
@@ -267,9 +267,9 @@ export default [
           hideInBread: true,
           hideInMenu: true,
           title: '添加热门活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/add.vue'),
+        component: () => import('@/view/hotActive/add.vue')
       },
       {
         path: '/hotActiveUpdata',
@@ -278,9 +278,9 @@ export default [
           hideInBread: true,
           hideInMenu: true,
           title: '修改热门活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/update.vue'),
+        component: () => import('@/view/hotActive/update.vue')
       },
       {
         path: '/hotActiveShow',
@@ -289,18 +289,18 @@ export default [
           hideInBread: true,
           hideInMenu: true,
           title: '查看热门活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/hotActive/show.vue'),
-      },
-    ],
+        component: () => import('@/view/hotActive/show.vue')
+      }
+    ]
   },
   {
     path: '/busniss',
     name: 'busniss',
     meta: {
       icon: '_shangquan-',
-      title: '热门商圈',
+      title: '热门商圈'
     },
     component: Main,
     children: [
@@ -309,12 +309,12 @@ export default [
         name: 'zhongshan',
         meta: {
           icon: 'md-funnel',
-          title: '中山公园商圈',
+          title: '中山公园商圈'
         },
         props: {
-          busnissId: '0',
+          busnissId: '0'
         },
-        component: () => import ('@/view/business/list/zhongshan.vue'),
+        component: () => import('@/view/business/list/zhongshan.vue')
       },
       {
         path: 'xinhongqiao',
@@ -322,24 +322,24 @@ export default [
         meta: {
           // access: ['super_admin'],
           icon: 'md-funnel',
-          title: '新虹桥商圈',
+          title: '新虹桥商圈'
         },
         props: {
-          busnissId: '1',
+          busnissId: '1'
         },
-        component: () => import ('@/view/business/list/xinhongqiao.vue'),
+        component: () => import('@/view/business/list/xinhongqiao.vue')
       },
       {
         path: 'linkong',
         name: 'linkong',
         meta: {
           icon: 'md-funnel',
-          title: '临空商圈',
+          title: '临空商圈'
         },
         props: {
-          busnissId: '2',
+          busnissId: '2'
         },
-        component: () => import ('@/view/business/list/linkong.vue'),
+        component: () => import('@/view/business/list/linkong.vue')
       },
       {
         path: '/busnissAdd',
@@ -348,9 +348,9 @@ export default [
           // hideInBread: true,
           hideInMenu: true,
           title: '添加商场',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/list/add.vue'),
+        component: () => import('@/view/business/list/add.vue')
       },
       {
         path: '/busnissUpdate',
@@ -359,12 +359,12 @@ export default [
           // hideInBread: true,
           hideInMenu: true,
           title: '修改商场',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/list/update.vue'),
-      },
-      
-    ],
+        component: () => import('@/view/business/list/update.vue')
+      }
+
+    ]
   },
   {
     path: '/market1',
@@ -372,7 +372,7 @@ export default [
     meta: {
       // hideInBread: true,
       hideInMenu: true,
-      title: '商户中心',
+      title: '商户中心'
     },
     component: Main,
     children: [
@@ -384,9 +384,9 @@ export default [
           hideInMenu: true,
           title: '商户列表',
           notCache: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/business/market/list.vue'),
+        component: () => import('@/view/business/market/list.vue')
       },
       {
         path: '/marketAdd',
@@ -395,9 +395,9 @@ export default [
           // hideInBread: true,
           hideInMenu: true,
           title: '添加商户',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/market/add.vue'),
+        component: () => import('@/view/business/market/add.vue')
       },
       {
         path: '/marketUpdate',
@@ -406,18 +406,18 @@ export default [
           // hideInBread: true,
           hideInMenu: true,
           title: '修改商户',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/market/update.vue'),
-      },
-    ],
+        component: () => import('@/view/business/market/update.vue')
+      }
+    ]
   },
   {
     path: '/active1',
     name: 'active1',
     meta: {
       hideInMenu: true,
-      title: '活动中心',
+      title: '活动中心'
     },
     component: Main,
     children: [
@@ -428,9 +428,9 @@ export default [
           // hideInMenu:true,
           title: '活动列表',
           notCache: true,
-          icon: 'md-home',
+          icon: 'md-home'
         },
-        component: () => import ('@/view/business/active/list.vue'),
+        component: () => import('@/view/business/active/list.vue')
       },
       {
         path: '/activeAdd',
@@ -439,9 +439,9 @@ export default [
           // hideInBread: true,
           // hideInMenu:true,
           title: '添加活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/active/add.vue'),
+        component: () => import('@/view/business/active/add.vue')
       },
       {
         path: '/activeUpdata',
@@ -450,9 +450,9 @@ export default [
           // hideInBread: true,
           // hideInMenu:true,
           title: '修改活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/active/update.vue'),
+        component: () => import('@/view/business/active/update.vue')
       },
       {
         path: '/activeShwo',
@@ -461,19 +461,49 @@ export default [
           // hideInBread: true,
           // hideInMenu:true,
           title: '查看活动',
-          notCache: true,
+          notCache: true
         },
-        component: () => import ('@/view/business/active/show.vue'),
-      },
-    ],
+        component: () => import('@/view/business/active/show.vue')
+      }
+    ]
   },
-
+  {
+    path: '/access',
+    name: 'access',
+    component: Main,
+    meta: {
+      title: '权限管理',
+      notCache: true,
+      icon: '_remen'
+    },
+    children: [
+      {
+        path: '/sysUser',
+        name: 'sysUser',
+        meta: {
+          title: '用户管理',
+          notCache: true
+        },
+        component: () => import('@/view/access/user.vue')
+      },
+      {
+        path: '/sysRole',
+        name: 'sysRole',
+        meta: {
+          title: '角色管理',
+          notCache: true
+        },
+        component: () => import('@/view/access/role.vue')
+      },
+     
+    ]
+  },
   {
     path: '/log',
     name: 'log',
     component: Main,
     meta: {
-      hideInBread: true,
+      hideInBread: true
     },
     children: [
       {
@@ -482,35 +512,35 @@ export default [
         meta: {
           title: '日志信息',
           notCache: true,
-          icon: '_rizhi-',
+          icon: '_rizhi-'
         },
-        component: () => import ('@/view/log/log.vue'),
-      },
-    ],
+        component: () => import('@/view/log/log.vue')
+      }
+    ]
   },
 
   {
     path: '/401',
     name: 'error_401',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import ('@/view/error-page/401.vue'),
+    component: () => import('@/view/error-page/401.vue')
   },
   {
     path: '/500',
     name: 'error_500',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import ('@/view/error-page/500.vue'),
+    component: () => import('@/view/error-page/500.vue')
   },
   {
     path: '*',
     name: 'error_404',
     meta: {
-      hideInMenu: true,
+      hideInMenu: true
     },
-    component: () => import ('@/view/error-page/404.vue'),
-  },
-];
+    component: () => import('@/view/error-page/404.vue')
+  }
+]

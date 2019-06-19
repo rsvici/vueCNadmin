@@ -25,17 +25,17 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
-import { getActivityList, postDelActivity } from "@/api/data";
+import Tables from '_c/tables'
+import { getActivityList, postDelActivity } from '@/api/data'
 import {
   formatDate,
   formatCheck,
   formatType,
   formatLabelOne,
   formatLabelTow
-} from "@/libs/formatdate";
+} from '@/libs/formatdate'
 export default {
-  name: "activelist",
+  name: 'activelist',
   components: {
     Tables
   },
@@ -43,10 +43,10 @@ export default {
   props: {
     busnissId: {
       type: String,
-      default: "0"
+      default: '0'
     }
   },
-  data() {
+  data () {
     return {
       // 分页
       current: 1,
@@ -54,66 +54,66 @@ export default {
       // 表格
       columns: [
         {
-          title: "活动名称",
-          key: "name"
+          title: '活动名称',
+          key: 'name'
         },
         {
-          title: "封面",
-          key: "coverUrl",
+          title: '封面',
+          key: 'coverUrl',
           render: (h, params) => {
             // console.log(params.row.title);
-            return h("img", {
+            return h('img', {
               attrs: {
                 src: params.row.coverUrl
               },
               style: {
-                height: "80px",
-                "margin-top": "5px"
+                height: '80px',
+                'margin-top': '5px'
               }
-            });
+            })
           }
         },
-        { title: "简介", key: "introduction", ellipsis: true },
+        { title: '简介', key: 'introduction', ellipsis: true },
         {
-          title: "时间",
-          key: "activityBeginTime",
+          title: '时间',
+          key: 'activityBeginTime',
           render: (h, params) => {
             return h(
-              "div",
+              'div',
               formatDate(
                 new Date(params.row.activityBeginTime),
-                "yyyy-MM-dd hh:mm"
+                'yyyy-MM-dd hh:mm'
               )
-            );
+            )
           }
         },
         {
-          title: "类型",
-          key: "activityType",
+          title: '类型',
+          key: 'activityType',
           render: (h, params) => {
-            return h("div", formatType(params.row.activityType));
+            return h('div', formatType(params.row.activityType))
           }
         },
         {
-          title: "标签1",
-          key: "labelOne",
+          title: '标签1',
+          key: 'labelOne',
           render: (h, params) => {
-            return h("div", formatLabelOne(params.row.labelOne));
+            return h('div', formatLabelOne(params.row.labelOne))
           }
         },
         {
-          title: "标签2",
-          key: "labelTow",
+          title: '标签2',
+          key: 'labelTow',
           render: (h, params) => {
-            return h("div", formatLabelTow(params.row.labelTow));
+            return h('div', formatLabelTow(params.row.labelTow))
           }
         },
         {
-          title: "审核状态",
-          key: "auditStatus",
+          title: '审核状态',
+          key: 'auditStatus',
           render: (h, params) => {
-            return h("div", formatCheck(params.row.auditStatus));
-          },
+            return h('div', formatCheck(params.row.auditStatus))
+          }
           // filters: [
           //   {
           //     label: "通过",
@@ -133,120 +133,120 @@ export default {
           // }
         },
         {
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           width: 250,
-          align: "center",
-          searchable: "false",
+          align: 'center',
+          searchable: 'false',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "primary",
-                    size: "small"
+                    type: 'primary',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.show(params.row.id);
+                      this.show(params.row.id)
                     }
                   }
                 },
-                "查看"
+                '查看'
               ),
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "warning",
-                    size: "small"
+                    type: 'warning',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.update(params.row.id);
+                      this.update(params.row.id)
                     }
                   }
                 },
-                "审核"
+                '审核'
               ),
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "error",
-                    size: "small"
+                    type: 'error',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.remove(params);
+                      this.remove(params)
                     }
                   }
                 },
-                "删除"
+                '删除'
               )
-            ]);
+            ])
           }
         }
       ],
       tableData: []
-    };
+    }
   },
   methods: {
-    exportExcel() {
+    exportExcel () {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      });
+      })
     },
-    changePage(event) {
+    changePage (event) {
       // 分页
-      this.getActivityListFun(event);
+      this.getActivityListFun(event)
     },
-    show(id) {
+    show (id) {
       this.$router.push({
-        path: "/activeCheckShow",
+        path: '/activeCheckShow',
         query: { activeId: id }
-      });
+      })
     },
-    update(activeId) {
+    update (activeId) {
       this.$router.push({
-        path: "/activeCheck",
+        path: '/activeCheck',
         query: { activeId}
-      });
+      })
     },
-    remove(item) {
+    remove (item) {
       // 删除
-      var that=this;
+      var that = this
       postDelActivity({
         id: item.row.id
       }).then(res => {
-        that.getActivityListFun(1);
-      });
+        that.getActivityListFun(1)
+      })
     },
-    getActivityListFun(pageNo) {
+    getActivityListFun (pageNo) {
       getActivityList({
         pageSize: 15,
         pageNo,
-        auditStatus:0
+        auditStatus: 0
       }).then(res => {
-        this.tableData = res.data.data.parameterType;
-      });
+        this.tableData = res.data.data.parameterType
+      })
     }
   },
-  mounted() {
-    this.getActivityListFun(1);
+  mounted () {
+    this.getActivityListFun(1)
   }
-};
+}
 </script>
 <style lang="less">
 tbody {

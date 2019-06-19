@@ -27,64 +27,64 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
-import { getLogList } from "@/api/data";
-import { formatDate } from "@/libs/formatdate";
+import Tables from '_c/tables'
+import { getLogList } from '@/api/data'
+import { formatDate } from '@/libs/formatdate'
 
 export default {
-  name: "wechatlist",
+  name: 'wechatlist',
   components: {
     Tables
   },
-  data() {
+  data () {
     return {
       // 分页
       current: 1,
       total: 0,
       // 表格
       columns: [
-        { title: "模块", key: "module" },
-        { title: "方法", key: "method" },
-        { title: "状态描述", key: "statusDesc" },
-        { title: "操作人昵称", key: "args" },
-        { title: "ip", key: "ip" },
+        { title: '模块', key: 'module' },
+        { title: '方法', key: 'method' },
+        { title: '状态描述', key: 'statusDesc' },
+        { title: '操作人昵称', key: 'args' },
+        { title: 'ip', key: 'ip' },
         {
-          title: "时间",
-          key: "createTime",
+          title: '时间',
+          key: 'createTime',
           render: (h, params) => {
             return h(
-              "div",
-              formatDate(new Date(params.row.createTime), "yyyy-MM-dd hh:mm")
-            );
+              'div',
+              formatDate(new Date(params.row.createTime), 'yyyy-MM-dd hh:mm')
+            )
           }
         }
       ],
       tableData: []
-    };
+    }
   },
   methods: {
-    exportExcel() {
+    exportExcel () {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      });
+      })
     },
-    changePage(event) {
-      //分页
-      this.getLogListFun(event);
+    changePage (event) {
+      // 分页
+      this.getLogListFun(event)
     },
-    getLogListFun(pageNo) {
+    getLogListFun (pageNo) {
       getLogList({
         pageSize: 15,
         pageNo
       }).then(res => {
-        this.tableData = res.data.data.parameterType;
-        this.total=res.data.data.totalRecord;
-      });
+        this.tableData = res.data.data.parameterType
+        this.total = res.data.data.totalRecord
+      })
     }
   },
-  mounted() {
-    this.getLogListFun(1);
+  mounted () {
+    this.getLogListFun(1)
   }
-};
+}
 </script>

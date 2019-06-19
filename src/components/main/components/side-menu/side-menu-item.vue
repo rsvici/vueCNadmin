@@ -44,10 +44,10 @@
   </Submenu>
 </template>
 <script>
-import mixin from "./mixin";
-import itemMixin from "./item-mixin";
+import mixin from './mixin'
+import itemMixin from './item-mixin'
 export default {
-  name: "SideMenuItem",
+  name: 'SideMenuItem',
   mixins: [mixin, itemMixin],
   props: {
     rootIconSize: {
@@ -55,5 +55,5 @@ export default {
       default: 16
     }
   }
-};
+}
 </script>

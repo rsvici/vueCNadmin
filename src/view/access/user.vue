@@ -7,15 +7,6 @@
         v-model="tableData"
         :columns="columns"
       />
-      <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-          <Page
-            :total="total"
-            :current="current"
-            @on-change="changePage"
-          ></Page>
-        </div>
-      </div>
       <Button
         style="margin: 10px 0;"
         type="primary"
@@ -31,7 +22,7 @@
 </template>
 <script>
 import Tables from '_c/tables'
-import { getMatrixList } from '@/api/data'
+import { sysUserList } from '@/api/user'
 import { postdelMatrix } from '@/api/data'
 
 export default {
@@ -122,10 +113,7 @@ export default {
         filename: `table-${new Date().valueOf()}.csv`
       })
     },
-    changePage (event) {
-      // 分页
-      this.getMatrixListFun(event)
-    },
+  
     remove (params) {
       // 删除
       console.log(params.row.id, params)
@@ -149,21 +137,17 @@ export default {
         name: 'wechatAdd'
       })
     },
-    getMatrixListFun (pageNo) {
+    getSysUserListFun (pageNo) {
       var that = this
-      getMatrixList({
-        pageSize: 15,
-        pageNo
+      sysUserList({
       }).then(res => {
-        that.tableData = res.data.data.parameterType
-        that.total = res.data.data.totalRecord
         console.log(res)
       })
     }
   },
 
   mounted () {
-    this.getMatrixListFun(1)
+    this.getSysUserListFun(1)
   }
 }
 </script>

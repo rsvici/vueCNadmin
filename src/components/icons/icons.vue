@@ -26,8 +26,8 @@ export default {
         color: this.color
       }
     }
-  },
-  
+  }
+
 }
 </script>
 

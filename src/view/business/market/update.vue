@@ -110,84 +110,84 @@
   </div>
 </template>
 <script>
-import { routeEqual } from "@/libs/util";
-import { postUpdTradingArea } from "@/api/data";
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import { routeEqual } from '@/libs/util'
+import { postUpdTradingArea } from '@/api/data'
+const VueUeditorWrap = require('vue-ueditor-wrap')
 export default {
   components: {
     VueUeditorWrap
   },
-  data() {
+  data () {
     return {
-      longitudeX:'',
-      longitudeY:'',
+      longitudeX: '',
+      longitudeY: '',
       formItem: {
-        isShoppingMall:'1',
-        name: "", // 名称
-        url: "", // 图片url
-        type: "", // 商圈类型
-        description: "", //描述
-        longitude: "", //经纬度
-        content: "" //详情富文本内容
+        isShoppingMall: '1',
+        name: '', // 名称
+        url: '', // 图片url
+        type: '', // 商圈类型
+        description: '', // 描述
+        longitude: '', // 经纬度
+        content: '' // 详情富文本内容
       },
       // 上传图片
       visible: false,
-      msg: "", //
+      msg: '', //
       myConfig: {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: "60%",
-        UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
+        initialFrameWidth: '60%',
+        UEDITOR_HOME_URL: './UEditor/',
+        serverUrl: 'http://www.appsun.com.cn/CLMAP/ueditor/dispatch'
       }
-    };
-  },
-  methods: {
-    handleView() {
-      this.visible = true;
-    },
-    handleSuccess(res, file) {
-      console.log(res);
-      this.formItem.url = res.data;
-    },
-    handleFormatError(file) {
-      this.$Notice.warning({
-        title: "文件格式不正确",
-        desc: "图片格式不正确，请选择JPG或PNG。"
-      });
-    },
-    handleMaxSize(file) {
-      this.$Notice.warning({
-        title: "文件大小超过限制",
-        desc: "请上传不超过2M的图片。"
-      });
-    },
-    referingForm() {
-      // 提交
-      var that = this;
-      // this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
-      var newTradingArea = this.formItem;
-      console.log(newTradingArea)
-      postUpdTradingArea(newTradingArea).then(res => {
-        console.log(res);
-        that.cancelForm();
-      });
-    },
-    cancelForm() {
-      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
-        item => !routeEqual(this.$route, item)
-      );
-      this.$router.go(-1);
     }
   },
-  mounted() {
-    this.formItem = this.$route.query.shopData;
+  methods: {
+    handleView () {
+      this.visible = true
+    },
+    handleSuccess (res, file) {
+      console.log(res)
+      this.formItem.url = res.data
+    },
+    handleFormatError (file) {
+      this.$Notice.warning({
+        title: '文件格式不正确',
+        desc: '图片格式不正确，请选择JPG或PNG。'
+      })
+    },
+    handleMaxSize (file) {
+      this.$Notice.warning({
+        title: '文件大小超过限制',
+        desc: '请上传不超过2M的图片。'
+      })
+    },
+    referingForm () {
+      // 提交
+      var that = this
+      // this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
+      var newTradingArea = this.formItem
+      console.log(newTradingArea)
+      postUpdTradingArea(newTradingArea).then(res => {
+        console.log(res)
+        that.cancelForm()
+      })
+    },
+    cancelForm () {
+      this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
+        item => !routeEqual(this.$route, item)
+      )
+      this.$router.go(-1)
+    }
+  },
+  mounted () {
+    this.formItem = this.$route.query.shopData
     // this.longitudeX= this.formItem.longitude.split(',')[0]
     // this.longitudeY= this.formItem.longitude.split(',')[1]
-    this.msg=this.$route.query.shopData.msg;
+    this.msg = this.$route.query.shopData.msg
   }
-};
+}
 </script>
 <style>
 .demo-upload-list {

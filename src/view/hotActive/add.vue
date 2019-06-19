@@ -43,7 +43,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="handleBannerSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
@@ -94,7 +94,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
@@ -238,7 +238,7 @@
                 ref="upload"
                 :show-upload-list="false"
                 :on-success="handleActionSuccess"
-                :format="['jpg','jpeg','png']"
+                :format="['jpg','jpeg','png','webp']"
                 :max-size="2048"
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
@@ -304,7 +304,7 @@
               ref="upload"
               :show-upload-list="false"
               :on-success="ImageListSuccess"
-              :format="['jpg','jpeg','png']"
+              :format="['jpg','jpeg','png','webp']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               type="drag"
@@ -386,54 +386,54 @@
   </div>
 </template>
 <script>
-import { postAddactivity } from "@/api/data";
-import { routeEqual } from "@/libs/util";
-const VueUeditorWrap = require("vue-ueditor-wrap");
+import { postAddactivity } from '@/api/data'
+import { routeEqual } from '@/libs/util'
+const VueUeditorWrap = require('vue-ueditor-wrap')
 export default {
   components: {
     VueUeditorWrap
   },
-  data() {
+  data () {
     return {
       // 多图上传
       imageListVisible: false, // 是否显示图片
       uploadImageList: [], // 上传数组
       showuploadImage: [], // 显示图片
 
-      longitudeX:'',//经纬度
-      longitudeY:'',//经纬度
+      longitudeX: '', // 经纬度
+      longitudeY: '', // 经纬度
       // 显示页面
       showWebNum: 0,
       formItem: {
-        name: "", // 名称
-        introduction: "", // 简介
-        tradingAreaId: "", // 商户id
-        activityUrl: "", // banner
-        coverUrl: "", // 封面
-        activityBeginTime: "", // 开始时间
-        activityEndTime: "", // 结束时间
-        place: "", // 地点
-        activityType: "", // 活动类型
-        type: "1", // 类型
-        labelOne: "0", // 标签
-        labelTow: "0", // 标签
-        ticketLink: "", // 购票链接
-        activityDec: "" ,// 活动详情
-        labelThree: "", //电影属性
-        longitude: "", //经纬度
+        name: '', // 名称
+        introduction: '', // 简介
+        tradingAreaId: '', // 商户id
+        activityUrl: '', // banner
+        coverUrl: '', // 封面
+        activityBeginTime: '', // 开始时间
+        activityEndTime: '', // 结束时间
+        place: '', // 地点
+        activityType: '', // 活动类型
+        type: '1', // 类型
+        labelOne: '0', // 标签
+        labelTow: '0', // 标签
+        ticketLink: '', // 购票链接
+        activityDec: '', // 活动详情
+        labelThree: '', // 电影属性
+        longitude: '' // 经纬度
       },
       actionInfo: {
-        name: "",
-        role: "",
-        url: ""
+        name: '',
+        role: '',
+        url: ''
       },
       myConfig: {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
         initialFrameWidth: 500,
-        UEDITOR_HOME_URL: "./UEditor/",
-        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
+        UEDITOR_HOME_URL: './UEditor/',
+        serverUrl: 'http://www.appsun.com.cn/CLMAP/ueditor/dispatch'
       },
       // 上传图片
       visible: false,
@@ -441,158 +441,158 @@ export default {
       // 表格
       columns: [
         {
-          title: "图片",
-          key: "url",
+          title: '图片',
+          key: 'url',
           render: (h, params) => {
             // console.log(params.row.title);
-            return h("img", {
+            return h('img', {
               attrs: {
                 src: params.row.url
               },
               style: {
-                height: "80px",
-                width: "80px",
-                "margin-top": "5px"
+                height: '80px',
+                width: '80px',
+                'margin-top': '5px'
               }
-            });
+            })
           }
         },
         {
-          title: "描述一",
-          key: "name"
+          title: '描述一',
+          key: 'name'
         },
         {
-          title: "描述二",
-          key: "role"
+          title: '描述二',
+          key: 'role'
         },
         {
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           width: 150,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "error",
-                    size: "small"
+                    type: 'error',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
-                      this.talbeRemove(params.index);
+                      this.talbeRemove(params.index)
                     }
                   }
                 },
-                "删除"
+                '删除'
               )
-            ]);
+            ])
           }
         }
       ],
       columnsdata: []
-    };
+    }
   },
   methods: {
-    handleView() {
-      this.visible = true;
+    handleView () {
+      this.visible = true
     },
-    handleViewBanner() {
-      this.visibleBanner = true;
+    handleViewBanner () {
+      this.visibleBanner = true
     },
 
     // banner上传成功
-    handleBannerSuccess(res, file) {
-      console.log(res);
-      this.formItem.activityUrl = res.data;
+    handleBannerSuccess (res, file) {
+      console.log(res)
+      this.formItem.activityUrl = res.data
     },
     // 图片上传成功
-    handleSuccess(res, file) {
-      console.log(res);
-      this.formItem.coverUrl = res.data;
+    handleSuccess (res, file) {
+      console.log(res)
+      this.formItem.coverUrl = res.data
     },
     // 演员列表上传成功
-    handleActionSuccess(res, file) {
-      console.log(res);
-      this.actionInfo.url = res.data;
+    handleActionSuccess (res, file) {
+      console.log(res)
+      this.actionInfo.url = res.data
     },
 
     // 封面上传
-    handleViewImageList(item) {
-      //显示图片
-      this.imageListVisible = true;
-      this.showuploadImage = item;
+    handleViewImageList (item) {
+      // 显示图片
+      this.imageListVisible = true
+      this.showuploadImage = item
     },
-    ImageListSuccess(res, file) {
-      this.uploadImageList.push(res.data);
-      console.log(this.uploadImageList);
+    ImageListSuccess (res, file) {
+      this.uploadImageList.push(res.data)
+      console.log(this.uploadImageList)
     },
-    handleRemoveImageList(index) {
-      //删除指定图片
-      this.uploadImageList.splice(index, 1);
+    handleRemoveImageList (index) {
+      // 删除指定图片
+      this.uploadImageList.splice(index, 1)
     },
 
     // 上传文件错误
-    handleFormatError(file) {
+    handleFormatError (file) {
       this.$Notice.warning({
-        title: "文件格式不正确",
-        desc: "图片格式不正确，请选择JPG或PNG。"
-      });
+        title: '文件格式不正确',
+        desc: '图片格式不正确，请选择JPG或PNG。'
+      })
     },
     // 上传超过限制
-    handleMaxSize(file) {
+    handleMaxSize (file) {
       this.$Notice.warning({
-        title: "文件大小超过限制",
-        desc: "请上传不超过2M的图片。"
-      });
+        title: '文件大小超过限制',
+        desc: '请上传不超过2M的图片。'
+      })
     },
     // 删除列表
-    talbeRemove(rowindex) {
-      console.log(rowindex);
-      this.columnsdata.splice(rowindex, 1);
-      console.log(this.columnsdata);
+    talbeRemove (rowindex) {
+      console.log(rowindex)
+      this.columnsdata.splice(rowindex, 1)
+      console.log(this.columnsdata)
     },
     // 添加角色列表
-    addActionInfo() {
-      console.log(this.formItem);
-      this.columnsdata.push(this.actionInfo);
+    addActionInfo () {
+      console.log(this.formItem)
+      this.columnsdata.push(this.actionInfo)
       this.actionInfo = {
-        name: "",
-        role: "",
-        url: ""
-      };
+        name: '',
+        role: '',
+        url: ''
+      }
     },
     // 添加活动
-    addActivty() {
-      var that = this;
-      this.formItem.activityDetail = this.columnsdata;
-       this.formItem.longitude=[this.longitudeX,this.longitudeY].join(',');
-      this.formItem.still = this.uploadImageList.join(",");
-      var newTradingArea = this.formItem;
+    addActivty () {
+      var that = this
+      this.formItem.activityDetail = this.columnsdata
+      this.formItem.longitude = [this.longitudeX, this.longitudeY].join(',')
+      this.formItem.still = this.uploadImageList.join(',')
+      var newTradingArea = this.formItem
       postAddactivity(newTradingArea).then(res => {
-        console.log(res);
-        that.cancelForm();
-      });
+        console.log(res)
+        that.cancelForm()
+      })
     },
-    cancelForm() {
+    cancelForm () {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
         item => !routeEqual(this.$route, item)
-      );
-      this.$router.go(-1);
+      )
+      this.$router.go(-1)
     }
   },
-  mounted() {
-    this.formItem.tradingAreaId = Number(this.$route.query.activeId);
-    this.uploadList = this.$refs.upload.fileList;
-    console.log(this.uploadList);
+  mounted () {
+    this.formItem.tradingAreaId = Number(this.$route.query.activeId)
+    this.uploadList = this.$refs.upload.fileList
+    console.log(this.uploadList)
   },
   watch: {
-    msg(val) {
-      console.log(val);
+    msg (val) {
+      console.log(val)
     }
   }
-};
+}
 </script>
 <style>
 .demo-upload-list {

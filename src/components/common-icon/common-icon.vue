@@ -34,9 +34,9 @@ export default {
       return iconName.slice(1)
     }
   },
-  mounted() {
+  mounted () {
     // console.log(this.size)
-  },
+  }
 }
 </script>
 
