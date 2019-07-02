@@ -16,8 +16,7 @@ import parentView from '@/components/parent-view'
  * }
  */
 
-export default [
-  {
+export default [{
     path: '/login',
     name: 'login',
     meta: {
@@ -34,19 +33,18 @@ export default [
     meta: {
       notCache: true
     },
-    children: [
-      {
-        path: '/home',
-        name: 'home',
-        meta: {
-          title: '首页',
-          notCache: true,
-          icon: 'md-home'
-        },
-        component: () => import('@/view/single-page/home')
-      }
-    ]
+    children: [{
+      path: '/home',
+      name: 'home',
+      meta: {
+        title: '首页',
+        notCache: true,
+        icon: 'md-home'
+      },
+      component: () => import('@/view/single-page/home')
+    }]
   },
+  // 微信矩阵
   {
     path: '/wechatList',
     name: 'wechatList',
@@ -54,8 +52,7 @@ export default [
       hideInBread: true
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: '/wechatList',
         name: 'wechatList',
         meta: {
@@ -89,6 +86,7 @@ export default [
       }
     ]
   },
+  // 积分管理
   {
     path: '/integralt',
     name: 'integralt',
@@ -96,8 +94,7 @@ export default [
       hideInBread: true
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: '/integralt',
         name: 'integralt',
         meta: {
@@ -131,7 +128,51 @@ export default [
       }
     ]
   },
-
+  //活动类型
+  //活动类型
+  //活动类型
+  {
+    path: '/activitytype',
+    name: 'activitytype',
+    meta: {
+      hideInBread: true
+    },
+    component: Main,
+    children: [{
+        path: '/activitytype',
+        name: 'activitytype',
+        meta: {
+          title: '活动类型',
+          notCache: true,
+          icon: '_jifen'
+        },
+        component: () => import('@/view/activitytype/list.vue')
+      },
+      {
+        path: 'activitytypeAdd',
+        name: 'activitytypeAdd',
+        meta: {
+          title: '添加活动类型',
+          notCache: true,
+          hideInMenu: true,
+          icon: 'md-home'
+        },
+        component: () => import('@/view/activitytype/add.vue')
+      },
+      {
+        path: 'activitytypeUpdate',
+        name: 'activitytypeUpdate',
+        meta: {
+          title: '修改活动类型',
+          notCache: true,
+          hideInMenu: true,
+          icon: 'md-home'
+        },
+        component: () => import('@/view/activitytype/update.vue')
+      }
+    ]
+  },
+  // 用户信息
   {
     path: '/userInfo',
     name: 'userInfo',
@@ -139,19 +180,18 @@ export default [
     meta: {
       hideInBread: true
     },
-    children: [
-      {
-        path: '/userInfo',
-        name: 'userInfo',
-        meta: {
-          title: '注册用户信息',
-          notCache: true,
-          icon: '_yonghu'
-        },
-        component: () => import('@/view/userinfo/userinfo.vue')
-      }
-    ]
+    children: [{
+      path: '/userInfo',
+      name: 'userInfo',
+      meta: {
+        title: '注册用户信息',
+        notCache: true,
+        icon: '_yonghu'
+      },
+      component: () => import('@/view/userinfo/userinfo.vue')
+    }]
   },
+  // 审核列表
   {
     path: '/check',
     name: 'list',
@@ -159,8 +199,7 @@ export default [
     meta: {
       hideInBread: true
     },
-    children: [
-      {
+    children: [{
         path: '/list',
         name: 'list',
         meta: {
@@ -194,6 +233,7 @@ export default [
       }
     ]
   },
+  // 评论
   {
     path: '/comment',
     name: 'comment',
@@ -201,19 +241,18 @@ export default [
     meta: {
       hideInBread: true
     },
-    children: [
-      {
-        path: '/comment',
-        name: 'comment',
-        meta: {
-          title: '评论管理',
-          notCache: true,
-          icon: '_pinglun'
-        },
-        component: () => import('@/view/comment/list.vue')
-      }
-    ]
+    children: [{
+      path: '/comment',
+      name: 'comment',
+      meta: {
+        title: '评论管理',
+        notCache: true,
+        icon: '_pinglun'
+      },
+      component: () => import('@/view/comment/list.vue')
+    }]
   },
+  // 热门活动
   {
     path: '/hotActive',
     name: 'hotActive',
@@ -223,8 +262,7 @@ export default [
       notCache: true,
       icon: '_remen'
     },
-    children: [
-      {
+    children: [{
         path: '/HBanner',
         name: 'HBanner',
         meta: {
@@ -295,6 +333,7 @@ export default [
       }
     ]
   },
+  // 热门商圈
   {
     path: '/busniss',
     name: 'busniss',
@@ -303,8 +342,7 @@ export default [
       title: '热门商圈'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'zhongshan',
         name: 'zhongshan',
         meta: {
@@ -366,6 +404,7 @@ export default [
 
     ]
   },
+  // 商户中心
   {
     path: '/market1',
     name: 'market1',
@@ -375,8 +414,7 @@ export default [
       title: '商户中心'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: '/market',
         name: 'market',
         meta: {
@@ -412,6 +450,7 @@ export default [
       }
     ]
   },
+  // 活动中心
   {
     path: '/active1',
     name: 'active1',
@@ -420,8 +459,7 @@ export default [
       title: '活动中心'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: '/active',
         name: 'active',
         meta: {
@@ -467,6 +505,7 @@ export default [
       }
     ]
   },
+  // 权限管理
   {
     path: '/access',
     name: 'access',
@@ -476,8 +515,7 @@ export default [
       notCache: true,
       icon: '_remen'
     },
-    children: [
-      {
+    children: [{
         path: '/sysUser',
         name: 'sysUser',
         meta: {
@@ -495,7 +533,7 @@ export default [
         },
         component: () => import('@/view/access/role.vue')
       },
-     
+
     ]
   },
   {
@@ -505,18 +543,16 @@ export default [
     meta: {
       hideInBread: true
     },
-    children: [
-      {
-        path: '/log',
-        name: 'log',
-        meta: {
-          title: '日志信息',
-          notCache: true,
-          icon: '_rizhi-'
-        },
-        component: () => import('@/view/log/log.vue')
-      }
-    ]
+    children: [{
+      path: '/log',
+      name: 'log',
+      meta: {
+        title: '日志信息',
+        notCache: true,
+        icon: '_rizhi-'
+      },
+      component: () => import('@/view/log/log.vue')
+    }]
   },
 
   {

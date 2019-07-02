@@ -1,5 +1,5 @@
 <template>
-  <div class="activelist">
+  <div>
     <Card>
       <Table
         ref="tables"
@@ -12,7 +12,6 @@
           <Page
             :total="total"
             :current="current"
-            :page-size="15"
             @on-change="changePage"
           ></Page>
         </div>
@@ -22,54 +21,49 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
+      <Button
+        style="margin: 10px 20px;padding:10px 30px;"
+        type="success"
+        @click="routerPushAddWechat"
+      >添加</Button>
     </Card>
   </div>
 </template>
 <script>
 import Tables from '_c/tables'
-import { getCommentList,postCommentHide } from '@/api/data'
-import { formatDate } from '@/libs/formatdate'
+import { getActivitytypelList } from '@/api/data'
+import { postdelActivitytype } from '@/api/data'
+
 export default {
-  name: 'activelist',
+  name: 'wechatlist',
   components: {
     Tables
-  },
-  // 路由传入的值
-  props: {
-    busnissId: {
-      type: String,
-      default: '0'
-    }
   },
   data () {
     return {
       // 分页
       current: 1,
       total: 0,
-
-      // 表单
+      // 表格
       columns: [
+        { title: '活动类型名称', key: 'typeName' },
         {
-          title: '活动名称',
-          key: 'activityName'
-        },
-        {
-          title: '活动简介',
-          key: 'introduction',
-          ellipsis: true
-        },
-        { title: '评论内容', key: 'commentDes' },
-        {
-          title: '评论时间',
-          key: 'commentTime',
+          title: '活动类型图标',
+          key: 'typeIcon',
           render: (h, params) => {
-            return h(
-              'div',
-              formatDate(new Date(params.row.commentTime), 'yyyy-MM-dd hh:mm')
-            )
+            // console.log(params.row.title);
+            return h('img', {
+              attrs: {
+                src: params.row.typeIcon
+              },
+              style: {
+                'max-height': '60px!important',
+                'max-width': '60px!important',
+                'margin-top': '5px'
+              }
+            })
           }
         },
-        { title: '用户名', key: 'nickname' },
         {
           title: '操作',
           key: 'action',
@@ -90,11 +84,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.commentGoTop(params.index)
+                      this.updateInfo(params)
                     }
                   }
                 },
-                '置顶'
+                '修改'
               ),
               h(
                 'Button',
@@ -104,15 +98,16 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    width:'auto'
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index)
+                      this.remove(params)
                     }
                   }
                 },
-                '隐藏'
+                '删除'
               )
             ])
           }
@@ -128,26 +123,36 @@ export default {
         filename: `table-${new Date().valueOf()}.csv`
       })
     },
-    show (index) {
-      // 查看
-      this.$Modal.info({
-        title: 'User Info',
-        content: `Name`
-      })
-    },
     changePage (event) {
       // 分页
-      this.getCommentListFun(event)
+      this.getIntegralListFun(event)
     },
-    remove (index) {
+    remove (params) {
       // 删除
-      console.log(index)
+      console.log(params.row.id, params)
+      postdelActivitytype({
+        id: params.row.id
+      }).then(res => {
+        this.tableData.splice(params.index, 1)
+      })
     },
-    // 置顶
-    commentGoTop () {},
-    getCommentListFun (pageNo) {
+    updateInfo (params) {
+      // 修改页面
+      // console.log(params);
+      this.$router.push({
+        name: 'activitytypeUpdate',
+        params: { wechatDate: params.row }
+      })
+    },
+    routerPushAddWechat () {
+      console.log(this.$route.params.marketId)
+      this.$router.push({
+        name: 'activitytypeAdd'
+      })
+    },
+    getIntegralListFun (pageNo) {
       var that = this
-      getCommentList({
+      getActivitytypelList({
         pageSize: 15,
         pageNo
       }).then(res => {
@@ -157,16 +162,7 @@ export default {
     }
   },
   mounted () {
-    this.getCommentListFun(1)
+    this.getIntegralListFun(1)
   }
 }
 </script>
-<style lang="less">
-tbody {
-  .tabletitle {
-    color: -webkit-link;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-}
-</style>

@@ -1,6 +1,9 @@
 import axios from '@/libs/api.request'
 
 // 获取微信矩阵列表
+// 获取微信矩阵列表
+// 获取微信矩阵列表
+// 获取微信矩阵列表
 export const getMatrixList = info => {
   return axios.request({
     url: 'matrixList/list',
@@ -36,6 +39,9 @@ export const postdelMatrix = info => {
 }
 
 // 获取积分商品列表
+// 获取积分商品列表
+// 获取积分商品列表
+// 获取积分商品列表
 export const getIntegralList = info => {
   return axios.request({
     url: 'integral/list',
@@ -70,6 +76,49 @@ export const postdelIntegralt = info => {
     method: 'post'
   })
 }
+
+// 获取活动类型列表
+// 获取活动类型列表
+// 获取活动类型列表
+// 获取活动类型列表
+export const getActivitytypelList = info => {
+  return axios.request({
+    url: 'activityType/list',
+    params: info,
+    method: 'get'
+  })
+}
+
+// 添加活动类型列表
+export const postAddActivitytype= info => {
+  return axios.request({
+    url: 'activityType/add',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 修改活动类型列表
+export const postUpdActivitytype = info => {
+  return axios.request({
+    url: 'activityType/update',
+    params: info,
+    method: 'post'
+  })
+}
+
+// 删除活动类型列表
+export const postdelActivitytype = info => {
+  return axios.request({
+    url: 'activityType/delete',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+
+
 
 // 获取商圈,商场列表
 export const getTradingAreaList = info => {
@@ -162,6 +211,17 @@ export const getCommentList = info => {
     method: 'get'
   })
 }
+// 隐藏评论
+export const postCommentHide = info => {
+  return axios.request({
+    url: 'collect/isHide',
+    params: info,
+    method: 'get'
+  })
+}
+
+
+
 
 // 获取用户信息列表
 export const getUserList = info => {
