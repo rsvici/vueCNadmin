@@ -23,7 +23,7 @@
           </FormItem>
 
           <!-- banner -->
-          <FormItem label="banner : ">
+          <FormItem label="首页banner ，申请热门必填 : ">
             <div
               class="demo-upload-list"
               v-if="formItem.activityUrl"
@@ -49,7 +49,7 @@
               :on-exceeded-size="handleMaxSize"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -100,7 +100,7 @@
               :on-exceeded-size="handleMaxSize"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -124,11 +124,20 @@
             </Modal>
           </FormItem>
 
-          <FormItem label=" 电影属性: ">
+          <FormItem label=" 属性: ">
             <Input
               v-model="formItem.labelThree"
-              placeholder="请输入电影属性"
+              placeholder="请输入属性"
             />
+          </FormItem>
+
+          <FormItem label="活动发布时间 : ">
+            <DatePicker
+              type="datetime"
+              placeholder="活动发布时间"
+              style="width: 200px"
+              v-model="formItem.releaseTime"
+            ></DatePicker>
           </FormItem>
 
           <FormItem label="活动时间 : ">
@@ -205,23 +214,23 @@
         <!-- 第二页 -->
         <div v-show="showWebNum==1">
           <Card style="width:60%;margin-left:100px;">
-            <FormItem label="人员姓名 : ">
+            <FormItem label="描述一 : ">
               <Input
                 v-model="actionInfo.name"
                 type="text"
-                placeholder="请输入人员姓名"
+                placeholder="请输入描述一"
               />
             </FormItem>
-            <FormItem label="饰演角色 : ">
+            <FormItem label="描述二 : ">
               <Input
                 v-model="actionInfo.role"
                 type="text"
-                placeholder="请输入饰演角色"
+                placeholder="请输入描述二"
               />
             </FormItem>
 
             <!-- 上传图片 -->
-            <FormItem label="人员头像 : ">
+            <FormItem label="列表图片 : ">
               <div
                 class="demo-upload-list"
                 v-if="actionInfo.url"
@@ -244,7 +253,7 @@
                 :on-exceeded-size="handleMaxSize"
                 multiple
                 type="drag"
-                action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+                action="/CLMAP/upload/uploadFile"
                 style="display: inline-block;width:120px;"
               >
                 <div style="width: 120px;height:120px;line-height: 120px;">
@@ -266,7 +275,7 @@
           </Card>
 
           <FormItem
-            label="演员列表 : "
+            label="活动列表 : "
             style="margin-top:30px;"
           >
             <Table
@@ -277,9 +286,9 @@
             </Table>
           </FormItem>
 
-          <!-- 剧照 -->
+          <!-- 多图显示 -->
           <!-- 上传图片 -->
-          <FormItem label="剧照 : ">
+          <FormItem label="多图显示 : ">
             <div
               class="demo-upload-list"
               v-for="(item,index) in uploadImageList"
@@ -309,7 +318,7 @@
               :max-size="2048"
               :on-format-error="handleFormatError"
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -322,7 +331,7 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="剧照"
+              title="多图显示"
               v-model="imageListVisible"
             >
               <img
@@ -333,7 +342,7 @@
             </Modal>
           </FormItem>
 
-          <FormItem label="购票连接(可选) : ">
+          <FormItem label="跳转链接 : ">
             <Input
               v-model="formItem.ticketLink"
               type="url"
@@ -425,7 +434,7 @@ export default {
         labelTow: "0", // 标签
         ticketLink: "", // 购票链接
         activityDec: "", // 活动详情
-        labelThree: "", // 电影属性
+        labelThree: "", // 属性
         longitude: "" // 经纬度
       },
       actionInfo: {
@@ -517,13 +526,13 @@ export default {
       console.log(res);
       this.formItem.coverUrl = res.data;
     },
-    // 演员列表上传成功
+    // 活动列表上传成功
     handleActionSuccess(res, file) {
       console.log(res);
       this.actionInfo.url = res.data;
     },
 
-    // 剧照上传
+    // 多图显示上传
     handleViewImageList(item) {
       // 显示图片
       this.imageListVisible = true;
@@ -606,6 +615,12 @@ export default {
         if (that.formItem.activityEndTime > 1000) {
           that.formItem.activityEndTime = new Date(
             that.formItem.activityEndTime
+          );
+        }
+
+        if (that.formItem.releaseTime > 1000) {
+          that.formItem.releaseTime = new Date(
+            that.formItem.releaseTime
           );
         }
 

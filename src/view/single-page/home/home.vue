@@ -48,7 +48,7 @@ export default {
         { title: '总用户量', icon: 'md-person-add', count: 1134, color: '#2d8cf0' },
         { title: '累计点击', icon: 'md-locate', count: '13639', color: '#19be6b' },
         { title: '分享统计', icon: 'md-share', count: 13, color: '#ed3f14' },
-        { title: '新增活动', icon: 'md-chatbubbles', count:67, color: '#E46CBB' },
+        { title: '新增活动', icon: 'md-chatbubbles', count: 67, color: '#E46CBB' },
         { title: '新增页面', icon: 'md-map', count: 14, color: '#9A66E4' }
       ],
       pieData: [

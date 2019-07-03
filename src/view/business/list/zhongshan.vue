@@ -236,6 +236,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$router)
     this.getTradingAreaListFun(1)
   }
 }

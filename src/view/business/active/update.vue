@@ -7,6 +7,17 @@
       >
         <!-- 第一页 -->
         <div v-show="showWebNum==0">
+
+          <FormItem label="类型">
+            <Select v-model="formItem.activityType">
+              <Option
+                v-for="item in activityTypeList"
+               :value="item.id"
+                :key="item.id"
+              >{{item.typeName}}</Option>
+            </Select>
+          </FormItem>
+
           <FormItem label="名称 : ">
             <Input
               v-model="formItem.name"
@@ -22,8 +33,59 @@
             />
           </FormItem>
 
+          <!-- banner -->
+          <FormItem label="首页banner ，申请热门必填 : ">
+            <div
+              class="demo-upload-list"
+              v-if="formItem.activityUrl"
+            >
+              <template>
+                <img :src="formItem.activityUrl">
+                <div class="demo-upload-list-cover">
+                  <Icon
+                    type="ios-eye-outline"
+                    @click.native="handleViewBanner(formItem.activityUrl)"
+                  ></Icon>
+                </div>
+              </template>
+            </div>
+            <!-- 上传 -->
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleBannerSuccess"
+              :format="['jpg','jpeg','png','webp']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              multiple
+              type="drag"
+              action="/CLMAP/upload/uploadFile"
+              style="display: inline-block;width:120px;"
+            >
+              <div style="width: 120px;height:120px;line-height: 120px;">
+                <Icon
+                  type="ios-camera"
+                  size="30"
+                ></Icon>
+              </div>
+            </Upload>
+
+            <!-- 图片大图 -->
+            <Modal
+              title="banner"
+              v-model="visibleBanner"
+            >
+              <img
+                :src="formItem.activityUrl"
+                v-if="visibleBanner"
+                style="width: 100%"
+              >
+            </Modal>
+          </FormItem>
+
           <!-- 上传图片 -->
-          <FormItem label="封面 : ">
+          <FormItem label="活动图 : ">
             <div
               class="demo-upload-list"
               v-if="formItem.coverUrl"
@@ -49,7 +111,7 @@
               :on-exceeded-size="handleMaxSize"
               multiple
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -62,7 +124,7 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="封面"
+              title="活动图"
               v-model="visible"
             >
               <img
@@ -73,11 +135,20 @@
             </Modal>
           </FormItem>
 
-          <FormItem label=" 电影属性: ">
+          <FormItem label=" 属性: ">
             <Input
               v-model="formItem.labelThree"
-              placeholder="请输入电影属性"
+              placeholder="请输入属性"
             />
+          </FormItem>
+
+          <FormItem label="活动发布时间 : ">
+            <DatePicker
+              type="datetime"
+              placeholder="活动发布时间"
+              style="width: 200px"
+              v-model="formItem.releaseTime"
+            ></DatePicker>
           </FormItem>
 
           <FormItem label="活动时间 : ">
@@ -117,15 +188,6 @@
             />
           </FormItem>
 
-          <FormItem label="类型">
-            <Select v-model="formItem.activityType">
-              <Option value="0">话剧</Option>
-              <Option value="1">电影</Option>
-              <Option value="2">活动</Option>
-              <Option value="3">运动</Option>
-              <Option value="4">...</Option>
-            </Select>
-          </FormItem>
           <FormItem label="标签1">
             <RadioGroup v-model="formItem.labelOne">
               <Radio label="0">文化/体育</Radio>
@@ -154,23 +216,23 @@
         <!-- 第二页 -->
         <div v-show="showWebNum==1">
           <Card style="width:60%;margin-left:100px;">
-            <FormItem label="人员姓名 : ">
+            <FormItem label="描述一 : ">
               <Input
                 v-model="actionInfo.name"
                 type="text"
-                placeholder="请输入人员姓名"
+                placeholder="请输入描述一"
               />
             </FormItem>
-            <FormItem label="饰演角色 : ">
+            <FormItem label="描述二 : ">
               <Input
                 v-model="actionInfo.role"
                 type="text"
-                placeholder="请输入饰演角色"
+                placeholder="请输入描述二"
               />
             </FormItem>
 
             <!-- 上传图片 -->
-            <FormItem label="人员头像 : ">
+            <FormItem label="列表图片 : ">
               <div
                 class="demo-upload-list"
                 v-if="actionInfo.url"
@@ -178,10 +240,7 @@
                 <template>
                   <img :src="actionInfo.url">
                   <div class="demo-upload-list-cover">
-                    <Icon
-                      type="ios-eye-outline"
-                      @click.native="handleView(actionInfo.url)"
-                    ></Icon>
+
                   </div>
                 </template>
               </div>
@@ -196,7 +255,7 @@
                 :on-exceeded-size="handleMaxSize"
                 multiple
                 type="drag"
-                action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+                action="/CLMAP/upload/uploadFile"
                 style="display: inline-block;width:120px;"
               >
                 <div style="width: 120px;height:120px;line-height: 120px;">
@@ -207,17 +266,6 @@
                 </div>
               </Upload>
 
-              <!-- 图片大图 -->
-              <Modal
-                title="人员头像"
-                v-model="visible"
-              >
-                <img
-                  :src="actionInfo.url"
-                  v-if="visible"
-                  style="width: 100%"
-                >
-              </Modal>
             </FormItem>
 
             <FormItem>
@@ -229,7 +277,7 @@
           </Card>
 
           <FormItem
-            label="演员列表 : "
+            label="活动列表 : "
             style="margin-top:30px;"
           >
             <Table
@@ -240,9 +288,9 @@
             </Table>
           </FormItem>
 
-          <!-- 剧照 -->
+          <!-- 多图显示 -->
           <!-- 上传图片 -->
-          <FormItem label="剧照 : ">
+          <FormItem label="多图显示 : ">
             <div
               class="demo-upload-list"
               v-for="(item,index) in uploadImageList"
@@ -272,7 +320,7 @@
               :max-size="2048"
               :on-format-error="handleFormatError"
               type="drag"
-              action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+              action="/CLMAP/upload/uploadFile"
               style="display: inline-block;width:120px;"
             >
               <div style="width: 120px;height:120px;line-height: 120px;">
@@ -285,7 +333,7 @@
 
             <!-- 图片大图 -->
             <Modal
-              title="剧照"
+              title="多图显示"
               v-model="imageListVisible"
             >
               <img
@@ -296,7 +344,7 @@
             </Modal>
           </FormItem>
 
-          <FormItem label="购票连接(可选) : ">
+          <FormItem label="跳转链接 : ">
             <Input
               v-model="formItem.ticketLink"
               type="url"
@@ -357,7 +405,11 @@
   </div>
 </template>
 <script>
-import { postUpdActivity, getActivityList } from "@/api/data";
+import {
+  postUpdActivity,
+  getActivityList,
+  getActivitytypelList
+} from "@/api/data";
 import { routeEqual } from "@/libs/util";
 const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
@@ -366,9 +418,10 @@ export default {
   },
   data() {
     return {
+      activityTypeList: [],
       // 多图上传
       imageListVisible: false, // 是否显示图片
-      uploadImageList: [], // 上传数组
+      uploadImageList: [], // 图片数组
       showuploadImage: [], // 显示图片
       longitudeX: "",
       longitudeY: "",
@@ -377,17 +430,17 @@ export default {
         name: "", // 名称
         introduction: "", // 简介
         tradingAreaId: "", // 商户id
+        activityUrl: "", // banner
         coverUrl: "", // 封面
         activityBeginTime: "", // 开始时间
         activityEndTime: "", // 结束时间
         place: "", // 地点
         activityType: "", // 活动类型
-        type: "1", // 类型
         labelOne: "0", // 标签
         labelTow: "0", // 标签
         ticketLink: "", // 购票链接
         activityDec: "", // 活动详情
-        labelThree: "", // 电影属性
+        labelThree: "", // 属性
         longitude: "" // 经纬度
       },
       actionInfo: {
@@ -399,12 +452,13 @@ export default {
         // 百度富文本
         autoHeightEnabled: true,
         initialFrameHeight: 400,
-        initialFrameWidth: "60%",
+        initialFrameWidth: 500,
         UEDITOR_HOME_URL: "./UEditor/",
         serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
       },
       // 上传图片
       visible: false,
+      visibleBanner: false,
       // 表格
       columns: [
         {
@@ -465,18 +519,26 @@ export default {
     handleView() {
       this.visible = true;
     },
+    handleViewBanner() {
+      this.visibleBanner = true;
+    },
+    // banner上传成功
+    handleBannerSuccess(res, file) {
+      console.log(res);
+      this.formItem.activityUrl = res.data;
+    },
     // 图片上传成功
     handleSuccess(res, file) {
       console.log(res);
       this.formItem.coverUrl = res.data;
     },
-    // 演员列表上传成功
+    // 活动列表上传成功
     handleActionSuccess(res, file) {
       console.log(res);
       this.actionInfo.url = res.data;
     },
 
-    // 封面上传
+    // 多图显示上传
     handleViewImageList(item) {
       // 显示图片
       this.imageListVisible = true;
@@ -498,6 +560,7 @@ export default {
         desc: "图片格式不正确，请选择JPG或PNG。"
       });
     },
+
     // 上传超过限制
     handleMaxSize(file) {
       this.$Notice.warning({
@@ -505,12 +568,12 @@ export default {
         desc: "请上传不超过2M的图片。"
       });
     },
+
     // 删除列表
     talbeRemove(rowindex) {
-      console.log(rowindex);
       this.columnsdata.splice(rowindex, 1);
-      console.log(this.columnsdata);
     },
+
     // 添加角色列表
     addActionInfo() {
       console.log(this.formItem);
@@ -521,6 +584,7 @@ export default {
         url: ""
       };
     },
+
     // 添加活动
     addActivty() {
       var that = this;
@@ -534,12 +598,15 @@ export default {
         that.cancelForm();
       });
     },
+
+    // 返回上一页
     cancelForm() {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
         item => !routeEqual(this.$route, item)
       );
       this.$router.go(-1);
     },
+    // 获取活动信息
     getActiveInfo(id) {
       var that = this;
       getActivityList({
@@ -556,6 +623,11 @@ export default {
             that.formItem.activityEndTime
           );
         }
+
+        if (that.formItem.releaseTime > 1000) {
+          that.formItem.releaseTime = new Date(that.formItem.releaseTime);
+        }
+        
         this.longitudeX = this.formItem.longitude.split(",")[0];
         this.longitudeY = this.formItem.longitude.split(",")[1];
         if (that.formItem.still) {
@@ -565,9 +637,17 @@ export default {
         }
         that.columnsdata = that.formItem.activityDetail;
       });
+    },
+    getActivityTypeFun() {
+      //获取活动类型
+      var that = this;
+      getActivitytypelList({}).then(res => {
+        this.activityTypeList = res.data.data.parameterType;
+      });
     }
   },
   mounted() {
+    this.getActivityTypeFun();
     this.getActiveInfo(this.$route.query.activeId);
   },
   watch: {

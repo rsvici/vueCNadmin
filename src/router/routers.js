@@ -128,9 +128,9 @@ export default [{
       }
     ]
   },
-  //活动类型
-  //活动类型
-  //活动类型
+  // 活动类型
+  // 活动类型
+  // 活动类型
   {
     path: '/activitytype',
     name: 'activitytype',
@@ -532,7 +532,7 @@ export default [{
           notCache: true
         },
         component: () => import('@/view/access/role.vue')
-      },
+      }
 
     ]
   },
@@ -554,6 +554,36 @@ export default [{
       component: () => import('@/view/log/log.vue')
     }]
   },
+
+  {
+    path: '/newshoplist',
+    name: 'newshoplist',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: '/newshoplist',
+      name: 'newshoplist',
+      meta: {
+        title: '管理商场',
+        notCache: true,
+        icon: '_shangquan-'
+      },
+      props: {
+        busnissId: '0'
+      },
+      component: () => import('@/view/business/list/zhongshan.vue')
+    }]
+  },
+
+
+
+
+
+
+
+
 
   {
     path: '/401',

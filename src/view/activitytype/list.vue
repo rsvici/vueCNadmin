@@ -99,7 +99,7 @@ export default {
                   },
                   style: {
                     marginRight: '5px',
-                    width:'auto'
+                    width: 'auto'
                   },
                   on: {
                     click: () => {

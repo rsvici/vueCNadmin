@@ -91,3 +91,16 @@ export function formatLabelTow (formatData) {
   }
   return formatData
 }
+
+// 申请热门
+export function formatApplyActivityAudit (formatData) {
+  switch (formatData) {
+    case true:
+      formatData = '通过'
+      break
+    case false:
+      formatData = '未审核'
+      break
+  }
+  return formatData
+}

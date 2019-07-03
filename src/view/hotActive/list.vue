@@ -23,26 +23,36 @@
         type="primary"
         @click="exportExcel"
       >导出为Csv文件</Button>
-      <Button
-        style="margin: 10px 20px;padding:10px 30px;"
-        type="success"
-        @click="routerPushAddActiveInfo"
-      >添加</Button>
     </Card>
+    <Modal
+      v-model="applyActivityModal"
+      title="是否在首页轮播显示"
+      @on-ok="applyActivityok"
+    >
+      <Form
+        :model="applyActivity"
+        :label-width="100"
+      >
+          <Select v-model="applyActivity.hotAudit">
+            <Option value="1">通过</Option>
+            <Option value="0">拒绝</Option>
+          </Select>
+      </Form>
+    </Modal>
   </div>
 </template>
 <script>
-import Tables from '_c/tables'
-import { getActivityList, postDelActivity } from '@/api/data'
+import Tables from "_c/tables";
+import { getActivityList, postDelActivity,postApplyActivityAudit } from "@/api/data";
 import {
   formatDate,
-  formatCheck,
+  formatApplyActivityAudit,
   formatType,
   formatLabelOne,
   formatLabelTow
-} from '@/libs/formatdate'
+} from "@/libs/formatdate";
 export default {
-  name: 'activelist',
+  name: "activelist",
   components: {
     Tables
   },
@@ -50,34 +60,40 @@ export default {
   props: {
     busnissId: {
       type: String,
-      default: '0'
+      default: "0"
     }
   },
-  data () {
+  data() {
     return {
+      // 申请
+      applyActivityModal: false,
+      applyActivity: {
+        id: "",
+        hotAudit: 1
+      },
       // 分页
       current: 1,
       total: 0,
       // 表格
       columns: [
         {
-          title: '活动名称',
-          key: 'name'
+          title: "活动名称",
+          key: "name"
         },
         {
-          title: 'banner',
-          key: 'activityUrl',
+          title: "banner",
+          key: "activityUrl",
           render: (h, params) => {
             // console.log(params.row.title);
-            return h('img', {
+            return h("img", {
               attrs: {
                 src: params.row.activityUrl
               },
               style: {
-                height: '80px',
-                'margin-top': '5px'
+                height: "80px",
+                "margin-top": "5px"
               }
-            })
+            });
           }
         },
         // {
@@ -86,258 +102,223 @@ export default {
         //   ellipsis: true
         // },
         {
-          title: '时间',
-          key: 'activityBeginTime',
+          title: "时间",
+          key: "activityBeginTime",
           render: (h, params) => {
             return h(
-              'div',
-              formatDate(new Date(params.row.activityBeginTime), 'yyyy-MM-dd')
-            )
+              "div",
+              formatDate(new Date(params.row.activityBeginTime), "yyyy-MM-dd")
+            );
           }
         },
         {
-          title: '类型',
-          key: 'activityType',
+          title: "标签1",
+          key: "labelOne",
           render: (h, params) => {
-            return h('div', formatType(params.row.activityType))
+            return h("div", formatLabelOne(params.row.labelOne));
           }
         },
         {
-          title: '标签1',
-          key: 'labelOne',
+          title: "标签2",
+          key: "labelTow",
           render: (h, params) => {
-            return h('div', formatLabelOne(params.row.labelOne))
+            return h("div", formatLabelTow(params.row.labelTow));
           }
         },
         {
-          title: '标签2',
-          key: 'labelTow',
+          title: "申请状态",
+          key: "hotAudit",
           render: (h, params) => {
-            return h('div', formatLabelTow(params.row.labelTow))
-          }
-        },
-        {
-          title: '审核状态',
-          key: 'auditStatus',
-          render: (h, params) => {
-            return h('div', formatCheck(params.row.auditStatus))
+            return h("div", formatApplyActivityAudit(params.row.hotAudit));
           },
           filters: [
             {
-              label: '通过',
-              value: '1'
+              label: "未审核",
+              value: false
             },
             {
-              label: '未通过',
-              value: '2'
-            },
-            {
-              label: '未审核',
-              value: '0'
+              label: "通过",
+              value: true
             }
           ],
-          filterMethod (value, row) {
-            return row.auditStatus.indexOf(value) > -1
+          filterMethod(value, row) {
+            return row.hotAudit.indexOf(value) > -1;
           }
         },
         {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 250,
-          align: 'center',
-          searchable: 'false',
+          align: "center",
+          searchable: "false",
           render: (h, params) => {
-            return h('div', [
+            return h("div", [
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'primary',
-                    size: 'small'
+                    type: "primary",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.show(params.row.id)
+                      this.show(params.row.id);
                     }
                   }
                 },
-                '查看'
+                "查看"
               ),
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'warning',
-                    size: 'small'
+                    type: "warning",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.update(params.row.id)
+                      this.applyActivityAuditStatus(params.row.id);
                     }
                   }
                 },
-                '修改'
+                "审核"
               ),
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    type: "error",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.remove(params)
+                      this.remove(params);
                     }
                   }
                 },
-                '删除'
-              ),
-              h(
-                'Button',
-                {
-                  props: {
-                    type: 'info',
-                    size: 'small'
-                  },
-                  class: {
-                    background:
-                      !params.row.auditDesc || params.row.auditDesc == 0
-                  },
-                  style: {
-                    marginRight: '5px'
-                  },
-                  on: {
-                    click: () => {
-                      this.showCheck(params.row.auditDesc)
-                    }
-                  }
-                },
-                '审核反馈'
+                "删除"
               )
-            ])
+            ]);
           }
         }
       ],
       tableData: [],
-      tradingAreaId: ''
-    }
+      type: ""
+    };
   },
   methods: {
-    exportExcel () {
+    exportExcel() {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      })
+      });
     },
-    changePage (event) {
+    changePage(event) {
       // 分页
-      this.getActivityListFun(this.tradingAreaId, event)
+      this.getActivityListFun(this.type, event);
     },
-    show (activeId) {
+    show(activeId) {
       // 查看
       this.$router.push({
-        path: '/hotActiveShow',
+        path: "/hotActiveShow",
         query: { activeId }
-      })
+      });
     },
-    update (activeId) {
-      this.$router.push({
-        path: '/hotActiveUpdata',
-        query: { activeId }
-      })
+    applyActivityok() {
+      console.log(this.applyActivity);
+      postApplyActivityAudit(this.applyActivity).then(res => {
+        this.getActivityListFun(1);
+      });
     },
-    remove (item) {
+    // 审核热门
+    applyActivityAuditStatus(id) {
+      this.applyActivityModal = true;
+      this.applyActivity.id = id;
+    },
+    remove(item) {
       // 删除
       postDelActivity({
         id: item.row.id
       }).then(res => {
-        this.getActivityListFun(this.tradingAreaId, 1)
-      })
+        this.getActivityListFun(this.type, 1);
+      });
     },
-    showCheck (content) {
-      console.log(1)
+    showCheck(content) {
+      console.log(1);
       if (content && content != 0) {
         this.$Modal.info({
-          title: '审核反馈',
+          title: "审核反馈",
           content
-        })
+        });
       }
     },
-    // 去添加
-    routerPushAddActiveInfo () {
-      this.$router.push({
-        path: '/hotActiveAdd',
-        query: { activeId: this.tradingAreaId }
-      })
-    },
-    getActivityListFun (tradingAreaId, pageNo) {
-      var that = this
+    getActivityListFun(type, pageNo) {
+      var that = this;
       getActivityList({
         pageSize: 15,
-        tradingAreaId,
+        type,
         pageNo
       }).then(res => {
-        that.tableData = res.data.data.parameterType
-      })
+        that.tableData = res.data.data.parameterType;
+      });
     }
   },
   watch: {
     // 时时监听路由的改变
-    $route: function (to, from) {
+    $route: function(to, from) {
       // this.$store.dispatch('pageNumberReset');    //当路由改变时，将文章列表当前第几页的信息重置为第1页
-      if (to.path != '/index') {
-        var tradingAreaId,
-          routerName = this.$route.name
+      if (to.path != "/index") {
+        var type,
+          routerName = this.$route.name;
         switch (routerName) {
-          case 'HBanner':
-            tradingAreaId = 44
-            break
-          case 'HFindWonderful':
-            tradingAreaId = 45
-            break
-          case 'HhotSpace':
-            tradingAreaId = 47
-            break
-          case 'HGame':
-            tradingAreaId = 49
-            break
+          case "HBanner":
+            type = 1;
+            break;
+          case "HFindWonderful":
+            type = 2;
+            break;
+          case "HhotSpace":
+            type = 3;
+            break;
+          case "HGame":
+            type = 4;
+            break;
         }
-        this.tradingAreaId = tradingAreaId
-        this.getActivityListFun(tradingAreaId, 1)
+        this.type = type;
+        this.getActivityListFun(type, 1);
       }
     }
   },
-  mounted () {
-    var tradingAreaId,
-      routerName = this.$route.name
+  mounted() {
+    var type,
+      routerName = this.$route.name;
     switch (routerName) {
-      case 'HBanner':
-        tradingAreaId = 44
-        break
-      case 'HFindWonderful':
-        tradingAreaId = 45
-        break
-      case 'HhotSpace':
-        tradingAreaId = 47
-        break
-      case 'HGame':
-        tradingAreaId = 49
-        break
+      case "HBanner":
+        type = 1;
+        break;
+      case "HFindWonderful":
+        type = 2;
+        break;
+      case "HhotSpace":
+        type = 3;
+        break;
+      case "HGame":
+        type = 4;
+        break;
     }
-    this.tradingAreaId = tradingAreaId
-    this.getActivityListFun(tradingAreaId, 1)
+    this.type = type;
+    this.getActivityListFun(type, 1);
   }
-}
+};
 </script>
 <style lang="less">
 tbody {

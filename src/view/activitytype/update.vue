@@ -36,12 +36,12 @@
             :show-upload-list="false"
             :on-success="handleSuccess"
             :format="['jpg','jpeg','png']"
-            :max-size="20480" 
+            :max-size="20480"
             :on-format-error="handleFormatError"
             :on-exceeded-size="handleMaxSize"
             multiple
             type="drag"
-            action="http://www.appsun.com.cn/CLMAP/upload/uploadFile"
+            action="/CLMAP/upload/uploadFile"
             style="display: inline-block;width:120px;"
           >
             <div style="width: 120px;height:120px;line-height: 120px;">

@@ -111,7 +111,7 @@
       </FormItem>
 
       <FormItem
-        label="演员列表 : "
+        label="活动列表 : "
         style="margin-top:30px;"
       >
         <Table
@@ -122,10 +122,10 @@
         </Table>
       </FormItem>
 
-      <!-- 剧照 -->
+      <!-- 多图显示 -->
       <!-- 上传图片 -->
       <FormItem
-        label="剧照 : "
+        label="多图显示 : "
         v-if="uploadImageList[0]"
       >
         <div
@@ -146,7 +146,7 @@
         </div>
         <!-- 图片大图 -->
         <Modal
-          title="剧照"
+          title="多图显示"
           v-model="imageListVisible"
         >
           <img
@@ -157,7 +157,7 @@
         </Modal>
       </FormItem>
 
-      <FormItem label="购票连接(可选) : ">
+      <FormItem label="跳转链接 : ">
         <Input
           v-model="formItem.ticketLink"
           type="url"
@@ -197,7 +197,7 @@ export default {
   },
   data () {
     return {
-      // 剧照
+      // 多图显示
       imageListVisible: false, // 是否显示图片
       uploadImageList: [], // 图片数组
       showuploadImage: [], // 显示图片

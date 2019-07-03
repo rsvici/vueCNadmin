@@ -90,7 +90,7 @@ export const getActivitytypelList = info => {
 }
 
 // 添加活动类型列表
-export const postAddActivitytype= info => {
+export const postAddActivitytype = info => {
   return axios.request({
     url: 'activityType/add',
     params: info,
@@ -115,10 +115,6 @@ export const postdelActivitytype = info => {
     method: 'post'
   })
 }
-
-
-
-
 
 // 获取商圈,商场列表
 export const getTradingAreaList = info => {
@@ -155,6 +151,21 @@ export const postdelTradingArea = info => {
     method: 'post'
   })
 }
+
+// 审核热门活动是否通过
+export const postApplyActivityAudit = info => {
+  return axios.request({
+    url: 'activity/applyActivityAudit',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+
+
+
+
 
 // 活动
 // 活动
@@ -203,6 +214,17 @@ export const postAudtitActivity = info => {
   })
 }
 
+// 申请活动
+export const postApplyActivity = info => {
+  return axios.request({
+    url: 'activity/applyActivity',
+    params: info,
+    method: 'post'
+  })
+}
+
+
+
 // 评论列表
 export const getCommentList = info => {
   return axios.request({
@@ -215,13 +237,10 @@ export const getCommentList = info => {
 export const postCommentHide = info => {
   return axios.request({
     url: 'collect/isHide',
-    params: info,
-    method: 'get'
+    data: info,
+    method: 'post'
   })
 }
-
-
-
 
 // 获取用户信息列表
 export const getUserList = info => {
