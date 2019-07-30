@@ -34,6 +34,7 @@
 <script>
 import LoginForm from '_c/login-form'
 import { login } from '@/api/user'
+import { mapActions } from 'vuex'
 export default {
   components: {
     LoginForm
@@ -44,7 +45,7 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(["handleLogin", "getUserInfo"]),
+    ...mapActions(["handleLogin", "getUserInfo"]),
     handleSubmit ({ username, password }) {
       // var info={
       //   username,password
@@ -54,21 +55,24 @@ export default {
       //   return;
 
       // });
-      if (username == 'admin' && password == '123456') {
-        this.$router.push({
-          name: 'home'
-        })
-      } else {
-        this.pointWord = false
-      }
 
-      // this.handleLogin({ userName, password }).then(res => {
-      //   this.getUserInfo().then(res => {
-      //     this.$router.push({
-      //       name: this.$config.homeName
-      //     });
-      //   });
-      // });
+      // if (username == 'admin' && password == '123456') {
+      //   this.$router.push({
+      //     name: 'home'
+      //   })
+      // } else {
+      //   this.pointWord = false
+      // }
+
+      this.handleLogin({ username, password }).then(res => {
+        this.getUserInfo().then(res => {
+          this.$router.push({
+            name: this.$config.homeName
+          });
+        })
+      }).catch(err=>{
+          console.log(err)
+        });;
     }
   }
 }

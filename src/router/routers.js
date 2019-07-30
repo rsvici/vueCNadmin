@@ -144,7 +144,7 @@ export default [{
         meta: {
           title: '活动类型',
           notCache: true,
-          icon: '_jifen'
+          icon: '_huodong-copy'
         },
         component: () => import('@/view/activitytype/list.vue')
       },
@@ -513,7 +513,7 @@ export default [{
     meta: {
       title: '权限管理',
       notCache: true,
-      icon: '_remen'
+      icon: '_quanxian'
     },
     children: [{
         path: '/sysUser',
@@ -568,7 +568,7 @@ export default [{
       meta: {
         title: '管理商场',
         notCache: true,
-        icon: '_shangquan-'
+        icon: '_shangchang'
       },
       props: {
         busnissId: '0'

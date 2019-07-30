@@ -55,7 +55,7 @@ export default {
           areaStyle: {normal: {
             color: '#2d8cf0'
           }},
-          data: [120, 132, 101, 134, 0, 0, 0]
+          data: [120, 132, 101, 134, 100, 320, 260]
         },
         {
           name: '乐影',
@@ -64,7 +64,7 @@ export default {
           areaStyle: {normal: {
             color: '#10A6FF'
           }},
-          data: [257, 358, 278, 234, 0, 0, 0]
+          data: [257, 258, 278, 234, 310, 360, 353]
         },
         {
           name: '热门',
@@ -73,7 +73,7 @@ export default {
           areaStyle: {normal: {
             color: '#0C17A6'
           }},
-          data: [379, 268, 354, 269, 0, 0, 0]
+          data: [279, 268, 254, 269, 381, 361, 411]
         },
         {
           name: '精彩',
@@ -82,7 +82,7 @@ export default {
           areaStyle: {normal: {
             color: '#4608A6'
           }},
-          data: [320, 332, 301, 334, 0, 0, 0]
+          data: [220, 232, 201, 234, 350, 410, 370]
         }
 
       ]

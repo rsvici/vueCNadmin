@@ -8,146 +8,189 @@
         :columns="columns"
       />
       <Button
-        style="margin: 10px 0;"
-        type="primary"
-        @click="exportExcel"
-      >导出为Csv文件</Button>
-      <Button
         style="margin: 10px 20px;padding:10px 30px;"
         type="success"
         @click="routerPushAddWechat"
       >添加</Button>
+
+      <!-- 添加修改信息 -->
+      <Modal
+        v-model="addUpdateUserInfoBol"
+        :title="modalTitle"
+        @on-ok="addUpdateUserInfoOk"
+      >
+        <Form
+          :model="addUpdateUserInfoObj"
+          :label-width="100"
+        >
+          <FormItem label="用户名称 : ">
+            <Input
+              v-model="addUpdateUserInfoObj.username"
+              placeholder="请输入用户名称"
+            />
+          </FormItem>
+          <FormItem label="用户密码 : ">
+            <Input
+              v-model="addUpdateUserInfoObj.password"
+              placeholder="请输入用户密码"
+            />
+          </FormItem>
+          <FormItem label="活动模块">
+            <Select v-model="addUpdateUserInfoObj.role">
+              <Option
+                v-for="item in selectRoleList"
+                :value="item.roleId"
+                :key="item.roleId"
+              >{{item.roleName}}</Option>
+            </Select>
+          </FormItem>
+        </Form>
+      </Modal>
+
     </Card>
   </div>
 </template>
 <script>
-import Tables from '_c/tables'
-import { sysUserList } from '@/api/user'
-import { postdelMatrix } from '@/api/data'
+import Tables from "_c/tables";
+import {
+  sysUserList,
+  saveUserInfo,
+  updateUserInfo,
+  deleteUserInfo,
+  getRoleList
+} from "@/api/user";
 
 export default {
-  name: 'wechatlist',
+  name: "wechatlist",
   components: {
     Tables
   },
-  data () {
+  data() {
     return {
+      modalTitle: "添加用户",
+      selectRoleList: [], //角色信息
+      // 添加角色
+      addUpdateUserInfoBol: false,
+      addUpdateUserInfoObj: {
+        username: "",
+        password: "",
+        role: ""
+      },
       // 分页
       current: 1,
       total: 0,
       // 表格
       columns: [
-        { title: '公众号名称', key: 'name' },
-        { title: '公众号链接', key: 'officialCcountsUrl' },
+        { title: "用户名称", key: "username" },
+        { title: "用户密码", key: "password" },
         {
-          title: '公众号封面',
-          key: 'imageUrl',
-          render: (h, params) => {
-            // console.log(params.row.title);
-            return h('img', {
-              attrs: {
-                src: params.row.imageUrl
-              },
-              style: {
-                height: '80px',
-                'margin-top': '5px'
-              }
-            })
-          }
-        },
-        {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 250,
-          align: 'center',
-          searchable: 'false',
+          align: "center",
+          searchable: "false",
           render: (h, params) => {
-            return h('div', [
+            return h("div", [
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'warning',
-                    size: 'small'
+                    type: "warning",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.updateInfo(params)
+                      this.updateInfo(params);
                     }
                   }
                 },
-                '修改'
+                "修改"
               ),
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    type: "error",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.remove(params)
+                      this.remove(params);
                     }
                   }
                 },
-                '删除'
+                "删除"
               )
-            ])
+            ]);
           }
         }
       ],
       tableData: []
-    }
+    };
   },
   methods: {
-    exportExcel () {
+    exportExcel() {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      })
+      });
     },
-  
-    remove (params) {
-      // 删除
-      console.log(params.row.id, params)
-      postdelMatrix({
-        id: params.row.id
+    // 确认修改
+    addUpdateUserInfoOk() {
+      if (this.addUpdateUserInfoObj.userId) {
+        updateUserInfo(this.addUpdateUserInfoObj).then(res => {
+          this.getSysUserListFun();
+        });
+      } else {
+        saveUserInfo(this.addUpdateUserInfoObj).then(res => {
+          this.getSysUserListFun();
+        });
+      }
+    },
+
+    // 删除
+    remove(params) {
+      deleteUserInfo({
+        userId: params.row.userId
       }).then(res => {
-        this.tableData.splice(params.index, 1)
-      })
+        this.tableData.splice(params.index, 1);
+      });
     },
-    updateInfo (params) {
-      // 修改页面
-      // console.log(params);
-      this.$router.push({
-        name: 'wechatUpdate',
-        params: { wechatDate: params.row }
-      })
+    // 修改
+    updateInfo(params) {
+      this.modalTitle = "修改用户";
+      this.addUpdateUserInfoBol = true;
+      this.addUpdateUserInfoObj = params.row;
     },
-    routerPushAddWechat () {
-      console.log(this.$route.params.marketId)
-      this.$router.push({
-        name: 'wechatAdd'
-      })
+    // 添加
+    routerPushAddWechat() {
+      this.modalTitle = "添加用户";
+      this.addUpdateUserInfoBol = true;
     },
-    getSysUserListFun (pageNo) {
-      var that = this
-      sysUserList({
-      }).then(res => {
-        console.log(res)
-      })
+    // 获取用户列表
+    getSysUserListFun() {
+      var that = this;
+      sysUserList({}).then(res => {
+        that.tableData = res.data.data.parameterType;
+      });
+    },
+    // 获取角色列表
+    getRoleListFun() {
+      var that = this;
+      getRoleList({}).then(res => {
+        that.selectRoleList = res.data.data.parameterType;
+      });
     }
   },
-
-  mounted () {
-    this.getSysUserListFun(1)
+  mounted() {
+    this.getSysUserListFun();
+    this.getRoleListFun();
   }
-}
+};
 </script>
