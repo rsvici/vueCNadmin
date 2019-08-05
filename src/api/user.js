@@ -3,17 +3,15 @@ import axios from '@/libs/api.request'
 export const login = info => {
   return axios.request({
     url: 'userInfo/login',
-    data: info,
-    method: 'post'
+    params: info,
+    method: 'post',
   })
 }
 
-export const getUserInfo = (token) => {
+export const getUserInfo = info=> {
   return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
+    url: 'sysMenu/getUserMenuList',
+    params: info,
     method: 'get'
   })
 }
@@ -32,6 +30,15 @@ export const logout = (token) => {
 export const sysUserList = info => {
   return axios.request({
     url: 'sysUser/listUser',
+    params: info,
+    method: 'get'
+  })
+}
+
+// 获取详细用户信息
+export const sysUserInfo = info => {
+  return axios.request({
+    url: 'sysUser/getInfo',
     params: info,
     method: 'get'
   })
@@ -61,7 +68,7 @@ export const deleteUserInfo = info => {
   })
 }
 // 角色列表
-// 查看用户列表
+// 查看角色列表
 export const getRoleList = info => {
   return axios.request({
     url: 'sysMenu/getRoleList',
@@ -70,15 +77,15 @@ export const getRoleList = info => {
   })
 }
 
-// 添加用户信息
+// 添加角色信息
 export const saveSysMenuInfo = info => {
   return axios.request({
-    url: 'sysMenu/add',
-    params: info,
-    method: 'get'
+    url: 'sysMenu/save',
+    data: info,
+    method: 'post'
   })
 }
-// 修改用户信息
+// 修改角色信息
 export const updateSysMenuInfo = info => {
   return axios.request({
     url: 'sysMenu/update',
@@ -86,7 +93,7 @@ export const updateSysMenuInfo = info => {
     method: 'post'
   })
 }
-// 删除用户信息
+// 删除角色信息
 export const deleteSysMenuInfo = info => {
   return axios.request({
     url: 'sysMenu/delete',

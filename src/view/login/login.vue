@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["handleLogin", "getUserInfo"]),
+    ...mapActions(['handleLogin', 'getUserInfo']),
     handleSubmit ({ username, password }) {
       // var info={
       //   username,password
@@ -68,11 +68,11 @@ export default {
         this.getUserInfo().then(res => {
           this.$router.push({
             name: this.$config.homeName
-          });
+          })
         })
-      }).catch(err=>{
-          console.log(err)
-        });;
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

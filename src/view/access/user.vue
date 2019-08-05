@@ -51,146 +51,155 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
+import Tables from '_c/tables'
 import {
   sysUserList,
   saveUserInfo,
   updateUserInfo,
   deleteUserInfo,
-  getRoleList
-} from "@/api/user";
+  getRoleList,
+  sysUserInfo
+} from '@/api/user'
 
 export default {
-  name: "wechatlist",
+  name: 'wechatlist',
   components: {
     Tables
   },
-  data() {
+  data () {
     return {
-      modalTitle: "添加用户",
-      selectRoleList: [], //角色信息
+      modalTitle: '添加用户',
+      selectRoleList: [], // 角色信息
       // 添加角色
       addUpdateUserInfoBol: false,
       addUpdateUserInfoObj: {
-        username: "",
-        password: "",
-        role: ""
+        username: '',
+        password: '',
+        role: ''
       },
       // 分页
       current: 1,
       total: 0,
       // 表格
       columns: [
-        { title: "用户名称", key: "username" },
-        { title: "用户密码", key: "password" },
+        { title: '用户名称', key: 'username' },
+        { title: '用户密码', key: 'password' },
         {
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           width: 250,
-          align: "center",
-          searchable: "false",
+          align: 'center',
+          searchable: 'false',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "warning",
-                    size: "small"
+                    type: 'warning',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.updateInfo(params);
+                      this.updateInfo(params)
                     }
                   }
                 },
-                "修改"
+                '修改'
               ),
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "error",
-                    size: "small"
+                    type: 'error',
+                    size: 'small'
                   },
                   style: {
-                    marginRight: "5px"
+                    marginRight: '5px'
                   },
                   on: {
                     click: () => {
-                      this.remove(params);
+                      this.remove(params)
                     }
                   }
                 },
-                "删除"
+                '删除'
               )
-            ]);
+            ])
           }
         }
       ],
       tableData: []
-    };
+    }
   },
   methods: {
-    exportExcel() {
+    exportExcel () {
       // 导出csv
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      });
+      })
     },
     // 确认修改
-    addUpdateUserInfoOk() {
+    addUpdateUserInfoOk () {
       if (this.addUpdateUserInfoObj.userId) {
         updateUserInfo(this.addUpdateUserInfoObj).then(res => {
-          this.getSysUserListFun();
-        });
+          this.getSysUserListFun()
+        })
       } else {
         saveUserInfo(this.addUpdateUserInfoObj).then(res => {
-          this.getSysUserListFun();
-        });
+          this.getSysUserListFun()
+        })
       }
     },
 
     // 删除
-    remove(params) {
+    remove (params) {
       deleteUserInfo({
         userId: params.row.userId
       }).then(res => {
-        this.tableData.splice(params.index, 1);
-      });
+        this.tableData.splice(params.index, 1)
+      })
     },
     // 修改
-    updateInfo(params) {
-      this.modalTitle = "修改用户";
+    updateInfo (params) {
+      this.modalTitle = '修改用户';
+      sysUserInfo({userId:params.row.userId}).then(res => {
+        console.log(res)
+      })
       this.addUpdateUserInfoBol = true;
       this.addUpdateUserInfoObj = params.row;
     },
     // 添加
-    routerPushAddWechat() {
-      this.modalTitle = "添加用户";
-      this.addUpdateUserInfoBol = true;
+    routerPushAddWechat () {
+      this.modalTitle = '添加用户';
+      this.addUpdateUserInfoObj={
+        username: '',
+        password: '',
+        role: ''
+      }
+      this.addUpdateUserInfoBol = true
     },
     // 获取用户列表
-    getSysUserListFun() {
-      var that = this;
+    getSysUserListFun () {
+      var that = this
       sysUserList({}).then(res => {
-        that.tableData = res.data.data.parameterType;
-      });
+        that.tableData = res.data.data.parameterType
+      })
     },
     // 获取角色列表
-    getRoleListFun() {
-      var that = this;
+    getRoleListFun () {
+      var that = this
       getRoleList({}).then(res => {
-        that.selectRoleList = res.data.data.parameterType;
-      });
+        that.selectRoleList = res.data.data.parameterType
+      })
     }
   },
-  mounted() {
-    this.getSysUserListFun();
-    this.getRoleListFun();
+  mounted () {
+    this.getSysUserListFun()
+    this.getRoleListFun()
   }
-};
+}
 </script>

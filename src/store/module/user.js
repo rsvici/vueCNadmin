@@ -1,39 +1,54 @@
-import { login, logout, getUserInfo } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import {
+  login,
+  logout,
+  getUserInfo
+} from '@/api/user'
+import {
+  setToken,
+  getToken,
+  setUserId,
+  getUserId,
+} from '@/libs/util'
 
 export default {
   state: {
     userName: '',
-    userId: '',
+    userId:getUserId(),
     avatorImgPath: '',
     token: getToken(),
     access: '',
     hasGetInfo: false
   },
   mutations: {
-    setAvator (state, avatorPath) {
+    setAvator(state, avatorPath) {
       state.avatorImgPath = avatorPath
     },
-    setUserId (state, id) {
+    setUserId(state, id) {
       state.userId = id
+      setUserId(id)
     },
-    setUserName (state, name) {
+    setUserName(state, name) {
       state.userName = name
     },
-    setAccess (state, access) {
+    setAccess(state, access) {
       state.access = access
     },
-    setToken (state, token) {
+    setToken(state, token) {
       state.token = token
       setToken(token)
     },
-    setHasGetInfo (state, status) {
+    setHasGetInfo(state, status) {
       state.hasGetInfo = status
     }
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, {username, password}) {
+    handleLogin({
+      commit
+    }, {
+      username,
+      password
+    }) {
       username = username.trim()
       return new Promise((resolve, reject) => {
         login({
@@ -42,6 +57,7 @@ export default {
         }).then(res => {
           const data = res.data
           commit('setToken', data.token)
+          commit('setUserId', data.userId)
           resolve()
         }).catch(err => {
           reject(err)
@@ -50,7 +66,10 @@ export default {
     },
 
     // 退出登录
-    handleLogOut ({ state, commit }) {
+    handleLogOut({
+      state,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         // logout(state.token).then(() => {
         //   commit('setToken', '')
@@ -60,21 +79,24 @@ export default {
         //   reject(err)
         // })
         // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
+        commit('setUserId', '')
         commit('setToken', '')
         commit('setAccess', [])
         resolve()
       })
     },
     // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
+    getUserInfo({
+      state,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
+          getUserInfo({
+            userId: state.userId
+          }).then(res => {
             const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
+            commit('setAccess',['admin'])
             commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {

@@ -4,9 +4,13 @@ import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
+export const USER_ID_KEY = 'userId'
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+}
+export const setUserId = (userId) => {
+  Cookies.set(USER_ID_KEY, userId, {expires: config.cookieExpires || 1})
 }
 
 export const getToken = () => {
@@ -14,6 +18,14 @@ export const getToken = () => {
   if (token) return token
   else return false
 }
+
+export const getUserId  = () => {
+  const userId = Cookies.get(USER_ID_KEY)
+  if (userId) return userId
+  else return false
+}
+
+
 
 export const hasChild = (item) => {
   return item.children && item.children.length !== 0
@@ -172,6 +184,8 @@ export const canTurnTo = (name, access, routes) => {
 
   return routePermissionJudge(routes)
 }
+
+
 
 /**
  * @param {String} url
