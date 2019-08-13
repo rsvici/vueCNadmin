@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-01-07 14:52:59
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-12 12:35:48
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
@@ -64,6 +72,7 @@ router.beforeEach((to, from, next) => {
     store.dispatch('getUserInfo').then(newres => {
       // 如果本地不存在路由数据则动态获取
       if (!menu || menu.length === 0) {
+        console.log(111)
         getUserInfo({
           userId: getUserId()
         }).then(res => {

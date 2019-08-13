@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-01-07 14:52:59
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-12 12:39:01
+ */
 import {
   getBreadCrumbList,
   setTagNavListInLocalstorage,
@@ -60,7 +68,6 @@ export default {
       if (list) {
         tagList = [...list]
       } else tagList = getTagNavListFromLocalstorage() || []
-      console.log('tagList',tagList)
       if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
       let homeTagIndex = tagList.findIndex(item => item.name === homeName)
       if (homeTagIndex > 0) {
@@ -68,7 +75,6 @@ export default {
         tagList.unshift(homeTag)
       }
       state.tagNavList = tagList
-      console.log(state.tagNavList,list)
       setTagNavListInLocalstorage([...tagList])
     },
     closeTag(state, route) {
@@ -90,7 +96,6 @@ export default {
       type = 'unshift'
     }) {
       let router = getRouteTitleHandled(route)
-      console.log('addTag',router);
       if (!routeHasExist(state.tagNavList, router)) {
         if (type === 'push') state.tagNavList.push(router)
         else {

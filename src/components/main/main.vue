@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-01-07 14:52:59
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-12 12:37:59
+ -->
 <template>
   <Layout
     style="height: 100%"
@@ -183,13 +191,11 @@ export default {
   watch: {
     $route(newRoute) {
       const { name, params, meta, query } = newRoute;
-      console.log("main新的：", newRoute);
       this.setBreadCrumb(newRoute);
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute));
       this.$refs.sideMenu.updateOpenName(newRoute.name);
 
       this.tagNavList.forEach((item, key) => {
-        console.log(item.name);
         if (item.name == name) {
           this.tagNavList[key].query = query;
           this.tagNavList[key].params = params;
@@ -206,7 +212,6 @@ export default {
      * @description 初始化设置面包屑导航和标签导航
      */
     this.setTagNavList();
-    console.log('this.$store.state.app.homeRoute',this.$store.state.app.homeRoute)
     this.addTag({
       route: this.$store.state.app.homeRoute
     });

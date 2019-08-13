@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-01-07 14:52:59
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-12 12:46:08
+ */
 import {
   login,
   logout,
@@ -13,7 +21,7 @@ import {
 export default {
   state: {
     userName: '',
-    userId:getUserId(),
+    userId: getUserId(),
     avatorImgPath: '',
     token: getToken(),
     access: '',
@@ -55,9 +63,11 @@ export default {
           username,
           password
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
-          commit('setUserId', data.userId)
+          if (res.data) {
+            const data = res.data
+            commit('setToken', data.token)
+            commit('setUserId', data.userId)
+          }
           resolve()
         }).catch(err => {
           reject(err)
@@ -90,22 +100,22 @@ export default {
       state,
       commit
     }) {
-      return new Promise((resolve, reject) => {
-        try {
-          getUserInfo({
-            userId: state.userId
-          }).then(res => {
-            const data = res.data
-            commit('setAccess',['admin'])
-            commit('setHasGetInfo', true)
-            resolve(data)
-          }).catch(err => {
-            reject(err)
-          })
-        } catch (error) {
-          reject(error)
-        }
-      })
+      // return new Promise((resolve, reject) => {
+      //   try {
+      //     getUserInfo({
+      //       userId: state.userId
+      //     }).then(res => {
+      //       const data = res.data
+      commit('setAccess', ['admin'])
+      commit('setHasGetInfo', true)
+      //     resolve(data)
+      //   }).catch(err => {
+      //     reject(err)
+      //   })
+      // } catch (error) {
+      //   reject(error)
+      // }
+      // })
     }
   }
 }

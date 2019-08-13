@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-06-13 10:56:15
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-13 18:08:56
+ -->
 <template>
   <div>
     <Card>
@@ -52,7 +60,10 @@
             </CheckboxGroup>
           </FormItem>
           <FormItem label="选择商场">
-            <CheckboxGroup v-model="addUpdateUserInfoObj.tradingAreaId">
+            <CheckboxGroup
+              v-model="addUpdateUserInfoObj.tradingAreaId"
+              :label="addUpdateUserInfoObj.tradingAreaId"
+            >
               <Checkbox
                 v-for="item in TradingAreaList"
                 :label="item.id"
@@ -67,29 +78,29 @@
   </div>
 </template>
 <script>
-import Tables from '_c/tables'
+import Tables from "_c/tables";
 import {
   getRoleList,
   saveSysMenuInfo,
   updateSysMenuInfo,
   deleteSysMenuInfo
-} from '@/api/user'
-import { getTradingAreaList } from '@/api/data'
+} from "@/api/user";
+import { getTradingAreaList } from "@/api/data";
 export default {
-  name: 'wechatlist',
+  name: "wechatlist",
   components: {
     Tables
   },
-  data () {
+  data() {
     return {
       TradingAreaList: [], // 商圈列表
-      modalTitle: '添加角色',
+      modalTitle: "添加角色",
       selectRoleList: [], // 角色信息
       // 添加角色
       addUpdateUserInfoBol: false,
       addUpdateUserInfoObj: {
-        roleName: '',
-        remark: '',
+        roleName: "",
+        remark: "",
         menuIds: [],
         tradingAreaId: []
       },
@@ -98,114 +109,121 @@ export default {
       total: 0,
       // 表格
       columns: [
-        { title: '角色名称', key: 'roleName' },
-        { title: '描述', key: 'remark' },
+        { title: "角色名称", key: "roleName" },
+        { title: "描述", key: "remark" },
         {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 250,
-          align: 'center',
-          searchable: 'false',
+          align: "center",
+          searchable: "false",
           render: (h, params) => {
-            return h('div', [
+            return h("div", [
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'warning',
-                    size: 'small'
+                    type: "warning",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.updateInfo(params)
+                      this.updateInfo(params);
                     }
                   }
                 },
-                '修改'
+                "修改"
               ),
               h(
-                'Button',
+                "Button",
                 {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    type: "error",
+                    size: "small"
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: "5px"
                   },
                   on: {
                     click: () => {
-                      this.remove(params)
+                      this.remove(params);
                     }
                   }
                 },
-                '删除'
+                "删除"
               )
-            ])
+            ]);
           }
         }
       ],
       tableData: []
-    }
+    };
   },
   methods: {
     // 确认修改添加
-    addUpdateUserInfoOk () {
+    addUpdateUserInfoOk() {
       if (this.addUpdateUserInfoObj.roleId) {
         updateSysMenuInfo(this.addUpdateUserInfoObj).then(res => {
-          this.getRoleListFun()
-        })
+          this.getRoleListFun();
+        });
       } else {
         saveSysMenuInfo(this.addUpdateUserInfoObj).then(res => {
-          this.getRoleListFun()
-        })
+          this.getRoleListFun();
+        });
       }
     },
     // 删除
-    remove (params) {
+    remove(params) {
       deleteSysMenuInfo({
-        userId: params.row.userId
+        roleIds: params.row.roleId
       }).then(res => {
-        this.tableData.splice(params.index, 1)
-      })
+        this.tableData.splice(params.index, 1);
+      });
     },
     // 修改
-    updateInfo (params) {
-      this.modalTitle = '修改角色'
-      this.addUpdateUserInfoBol = true
-      this.addUpdateUserInfoObj = params.row
+    updateInfo(params) {
+      this.modalTitle = "修改角色";
+      this.addUpdateUserInfoBol = true;
+      this.addUpdateUserInfoObj = params.row;
+      console.log(params.row);
     },
     // 添加
-    routerPushAddWechat () {
-      this.modalTitle = '添加角色'
-      this.addUpdateUserInfoObj={
-        roleName: '',
-        remark: '',
+    routerPushAddWechat() {
+      this.modalTitle = "添加角色";
+      (this.addUpdateUserInfoObj = {
+        roleName: "",
+        remark: "",
         menuIds: [],
         tradingAreaId: []
-      },
-      this.addUpdateUserInfoBol = true
+      }),
+        (this.addUpdateUserInfoBol = true);
     },
     // 获取角色列表
-    getRoleListFun () {
-      var that = this
+    getRoleListFun() {
+      var that = this;
       getRoleList({}).then(res => {
-        that.tableData = res.data.data.parameterType
-      })
+        var data = res.data.data.parameterType;
+        data.forEach((val, key) => {
+          data[key].tradingAreaId = val.tradingAreaId.split(",");
+          data[key].tradingAreaId = data[key].tradingAreaId.map(Number);
+        });
+        console.log(data);
+        that.tableData = data;
+      });
     },
-    getTradingAreaListFun () {
-      var that = this
+    getTradingAreaListFun() {
+      var that = this;
       getTradingAreaList({}).then(res => {
-        that.TradingAreaList = res.data.data.parameterType
-      })
+        that.TradingAreaList = res.data.data.parameterType;
+      });
     }
   },
-  mounted () {
-    this.getRoleListFun()
-    this.getTradingAreaListFun()
+  mounted() {
+    this.getRoleListFun();
+    this.getTradingAreaListFun();
   }
-}
+};
 </script>

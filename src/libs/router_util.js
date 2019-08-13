@@ -23,9 +23,15 @@ export const loadMenu = () => {
   return list
 }
 
+function sortBy(field) {
+  return function(a,b) {
+    return a[field] - b[field];
+}
+}
 // 格式化菜单
 export const formatMenu = (list) => {
   let res = []
+  list.sysMenuList=list.sysMenuList.sort(sortBy("menuId"));
   forEach(list.sysMenuList, item => {
     let obj = {};
     if (item.url.indexOf('log') != -1) {
