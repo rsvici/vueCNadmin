@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-04-23 18:48:39
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-08-15 17:17:00
+ -->
 <template>
   <div class="activelist">
     <Card>
@@ -14,6 +22,7 @@
           <Page
             :total="total"
             :current="current"
+            page-size="15"
             @on-change="changePage"
           ></Page>
         </div>
@@ -81,9 +90,9 @@ export default {
     return {
       // 分页
       applyActivityModal: false,
-      applyActivity:{
-        id:'',
-        type:0,
+      applyActivity: {
+        id: "",
+        type: 0
       },
       current: 1,
       total: 0,
@@ -158,10 +167,10 @@ export default {
             return row.auditStatus.indexOf(value) > -1;
           }
         },
-         {
+        {
           title: "是否是热门活动",
           key: "hotAudit",
-          width:150,
+          width: 150,
           render: (h, params) => {
             return h("div", formatApplyActivityAudit(params.row.hotAudit));
           },
@@ -338,10 +347,8 @@ export default {
       this.applyActivity.id = id;
     },
     applyActivityok() {
-      console.log(this.applyActivity)
-       postApplyActivity(
-        this.applyActivity
-      ).then(res => {
+      console.log(this.applyActivity);
+      postApplyActivity(this.applyActivity).then(res => {
         this.getActivityListFun(1);
       });
     },
@@ -361,6 +368,7 @@ export default {
         pageNo
       }).then(res => {
         that.tableData = res.data.data.parameterType;
+        that.total = res.data.data.totalPage;
       });
     }
   },

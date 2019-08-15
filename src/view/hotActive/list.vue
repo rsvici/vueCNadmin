@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: rsvici
+ * @Date: 2019-04-23 18:50:11
+ * @LastEditors: rsvici
+ * @LastEditTime: 2019-04-23 18:50:11
+ -->
 <template>
   <div class="activelist">
     <Card>
