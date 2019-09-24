@@ -3,8 +3,8 @@
  * @version: 
  * @Author: rsvici
  * @Date: 2019-04-23 18:50:11
- * @LastEditors: rsvici
- * @LastEditTime: 2019-04-23 18:50:11
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-09-09 16:11:56
  -->
 <template>
   <div class="activelist">
@@ -244,7 +244,7 @@ export default {
     applyActivityok() {
       console.log(this.applyActivity);
       postApplyActivityAudit(this.applyActivity).then(res => {
-        this.getActivityListFun(1);
+        this.getActivityListFun(this.type,1);
       });
     },
     // 审核热门
