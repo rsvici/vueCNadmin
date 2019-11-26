@@ -1,3 +1,9 @@
+/*
+ * @Descripttion: 
+ * @Version: 
+ * @Author: rsvici
+ * @Date: 2019-04-23 18:04:36
+ */
 import axios from '@/libs/api.request'
 
 // 获取微信矩阵列表
@@ -76,6 +82,18 @@ export const postdelIntegralt = info => {
     method: 'post'
   })
 }
+
+
+// 	生成随机码
+export const postGenerateCode = info => {
+  return axios.request({
+    url: 'integral/generateCode',
+    params: info,
+    method: 'post'
+  })
+}
+
+
 
 // 获取活动类型列表
 // 获取活动类型列表

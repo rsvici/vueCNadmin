@@ -1,3 +1,9 @@
+<!--
+ * @Descripttion: 
+ * @Version: 
+ * @Author: rsvici
+ * @Date: 2019-02-21 17:18:42
+ -->
 <template>
   <div>
     <Card>
@@ -6,16 +12,34 @@
         :label-width="100"
       >
         <!-- 第一页 -->
-
-        <FormItem label="公众号名称 : ">
+        <FormItem label="商品名称 : ">
+          <Input
+            v-model="formItem.name"
+            placeholder="请输入商品名称"
+          />
+        </FormItem>
+        <FormItem label="积分价格 : ">
           <Input
             v-model="formItem.integralPrice"
-            placeholder="请输入公众号名称"
+            placeholder="请输入积分价格"
+          />
+        </FormItem>
+        <FormItem label="库存 : ">
+          <Input
+            v-model="formItem.inventory"
+            placeholder="请输入库存"
           />
         </FormItem>
 
+        <!-- <FormItem label="公众号URL : ">
+          <Input
+            v-model="formItem.officialCcountsUrl"
+            placeholder="请输入公众号URL"
+          />
+        </FormItem> -->
+
         <!-- 上传图片 -->
-        <FormItem label="缩略图 : ">
+        <FormItem label="商品封面 : ">
           <div
             class="demo-upload-list"
             v-if="formItem.integralUrl"
@@ -54,7 +78,7 @@
 
           <!-- 图片大图 -->
           <Modal
-            title="公众号封面"
+            title="商品封面"
             v-model="visible"
           >
             <img
@@ -63,6 +87,14 @@
               style="width: 100%"
             >
           </Modal>
+        </FormItem>
+
+        <FormItem label="详情 : ">
+          <VueUeditorWrap
+            v-model="formItem.integraDetail"
+            :config="myConfig"
+            :key="1"
+          ></VueUeditorWrap>
         </FormItem>
 
         <FormItem>
@@ -81,62 +113,77 @@
   </div>
 </template>
 <script>
-import { routeEqual } from '@/libs/util'
-import { postUpdIntegralt } from '@/api/data'
+import { routeEqual } from "@/libs/util";
+import { postUpdIntegralt } from "@/api/data";
+const VueUeditorWrap = require("vue-ueditor-wrap");
 export default {
-  data () {
+  components: {
+    VueUeditorWrap
+  },
+  data() {
     return {
       formItem: {
-        id: '',
-        integralPrice: '', // 名称
-        integralUrl: '' // 图片url
+        id: "",
+        integralPrice: "", // 名称
+        integralUrl: "", // 图片url
+        name: "",
+        inventory: "",
+        integraDetail: "123132",
       },
       // 上传图片
-      visible: false
-    }
+      visible: false,
+      myConfig: {
+        // 百度富文本
+        autoHeightEnabled: true,
+        initialFrameHeight: 400,
+        initialFrameWidth: "60%",
+        UEDITOR_HOME_URL: "./UEditor/",
+        serverUrl: "http://www.appsun.com.cn/CLMAP/ueditor/dispatch"
+      }
+    };
   },
   methods: {
-    handleView () {
-      this.visible = true
+    handleView() {
+      this.visible = true;
     },
-    handleSuccess (res, file) {
-      console.log(res)
-      this.formItem.integralUrl = res.data
+    handleSuccess(res, file) {
+      console.log(res);
+      this.formItem.integralUrl = res.data;
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '文件格式不正确',
-        desc: '图片格式不正确，请选择JPG或PNG。'
-      })
+        title: "文件格式不正确",
+        desc: "图片格式不正确，请选择JPG或PNG。"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '文件大小超过限制',
-        desc: '请上传不超过2M的图片。'
-      })
+        title: "文件大小超过限制",
+        desc: "请上传不超过2M的图片。"
+      });
     },
-    referingForm () {
+    referingForm() {
       // 提交
-      var that = this
-      var newMatrixInfo = this.formItem
-      console.log(newMatrixInfo)
+      var that = this;
+      var newMatrixInfo = this.formItem;
+      console.log(newMatrixInfo);
       postUpdIntegralt(newMatrixInfo).then(res => {
-        console.log(res)
-        that.cancelForm()
-      })
+        console.log(res);
+        that.cancelForm();
+      });
     },
-    cancelForm () {
+    cancelForm() {
       this.$store.state.app.tagNavList = this.$store.state.app.tagNavList.filter(
         item => !routeEqual(this.$route, item)
-      )
-      this.$router.go(-1)
+      );
+      this.$router.go(-1);
     }
   },
-  mounted () {
-    console.log(this.$route.params.wechatDate)
-    this.formItem = this.$route.params.wechatDate
+  mounted() {
+    console.log(this.$route.params.wechatDate);
+    this.formItem = this.$route.params.wechatDate;
   }
-}
+};
 </script>
 <style>
 .demo-upload-list {

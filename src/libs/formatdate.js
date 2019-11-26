@@ -1,3 +1,9 @@
+/*
+ * @Descripttion: 
+ * @Version: 
+ * @Author: rsvici
+ * @Date: 2019-04-23 18:04:36
+ */
 // 时间格式化
 export function formatDate (date, fmt) {
   if (date.getTime() < 100) {
@@ -100,6 +106,20 @@ export function formatApplyActivityAudit (formatData) {
       break
     case false:
       formatData = '未审核'
+      break
+  }
+  return formatData
+}
+
+
+// 申请热门
+export function formatIntegraltStatus (formatData) {
+  switch (formatData) {
+    case false:
+      formatData = '未生成'
+      break
+    case true:
+      formatData = '已生成'
       break
   }
   return formatData

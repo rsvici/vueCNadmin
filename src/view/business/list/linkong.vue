@@ -1,3 +1,9 @@
+<!--
+ * @Descripttion: 
+ * @Version: 
+ * @Author: rsvici
+ * @Date: 2019-04-23 18:49:02
+ -->
 <template>
   <div class="businesslist">
     <Card>
@@ -11,7 +17,7 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
-            :total="total"
+            :total="totalPage"
             :current="current"
             @on-change="changePage"
           ></Page>
@@ -52,7 +58,7 @@ export default {
     return {
       // 分页
       current: 1,
-      total: 0,
+      totalPage: 0,
       // 表格
       columns: [
         {
@@ -231,6 +237,7 @@ export default {
         pageNo
       }).then(res => {
         that.tableData = res.data.data.parameterType
+        that.totalPage=res.data.data.totalPage
         // console.log(res);
       })
     }
